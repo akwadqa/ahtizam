@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/gen/assets.gen.dart';
@@ -39,7 +40,7 @@ class ChooseLanguageScreen extends ConsumerWidget {
             ).centered(),
             Spacer(),
             CustomButtonWidget(
-                    text: "تسجيل",
+                    text: context.tr("lets_go"),
                     onTap: () {
                       // Navigate to next screen
                       context.navigateTo(OnBoardingRoute());
