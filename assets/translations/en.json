@@ -1,1 +1,11 @@
-{}
+{
+    "next": "Next",
+    "get_started": "Get started",
+    "lets_go": "Let`s Go",
+    "welcome_msg": "Welcome to ahtezam",
+    "welcome_dsc": "Welcome to ahtezam where you could move your broken down car easily and smothly",
+
+    "seconde_welcome_msg": "App features",
+    "seconde_welcome_dsc": "This app provide with latest emplement and quick response"
+
+}
