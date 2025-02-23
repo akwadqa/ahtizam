@@ -23,15 +23,39 @@ class $AssetsImagesGen {
   AssetGenImage get imErrorScreen =>
       const AssetGenImage('assets/images/im_error_screen.png');
 
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
   /// File path: assets/images/logo_im.png
   AssetGenImage get logoIm => const AssetGenImage('assets/images/logo_im.png');
+
+  /// File path: assets/images/onboarding1_im.png
+  AssetGenImage get onboarding1Im =>
+      const AssetGenImage('assets/images/onboarding1_im.png');
+
+  /// File path: assets/images/onboarding2_im.png
+  AssetGenImage get onboarding2Im =>
+      const AssetGenImage('assets/images/onboarding2_im.png');
+
+  /// File path: assets/images/onboarding2layer_im.png
+  AssetGenImage get onboarding2layerIm =>
+      const AssetGenImage('assets/images/onboarding2layer_im.png');
 
   /// File path: assets/images/qatar_flag.png
   AssetGenImage get qatarFlag =>
       const AssetGenImage('assets/images/qatar_flag.png');
 
   /// List of all assets
-  List<dynamic> get values => [emptyData, imErrorScreen, logoIm, qatarFlag];
+  List<dynamic> get values => [
+    emptyData,
+    imErrorScreen,
+    logo,
+    logoIm,
+    onboarding1Im,
+    onboarding2Im,
+    onboarding2layerIm,
+    qatarFlag,
+  ];
 }
 
 class $AssetsTranslationsGen {
