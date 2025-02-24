@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../gen/assets.gen.dart';
 import '../theme/app_colors.dart';
 
 class AppLogo extends StatelessWidget {
