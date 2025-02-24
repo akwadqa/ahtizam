@@ -1,4 +1,3 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -84,14 +83,17 @@ List<Widget> onBoardingItems(BuildContext context) => [
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Assets.images.onboarding1Im.image(width: double.infinity),
+          Assets.images.onboarding1Im.image(
+            width: MediaQuery.sizeOf(context).width,
+            fit: BoxFit.fitWidth,
+          ),
           30.verticalSpace,
           Text(
             context.tr("welcome_msg"),
             style:
                 Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 20),
           ).symmetricPadding(horizontal: 15),
-          2.verticalSpace,
+          4.verticalSpace,
           Text(
             context.tr("welcome_dsc"),
             style: Theme.of(context)
@@ -119,7 +121,10 @@ List<Widget> onBoardingItems(BuildContext context) => [
                     bottom: 10,
                     // bottom: 100,
                     // right: 160,
-                    child: Assets.images.onboarding2layerIm.image()),
+                    child: Assets.images.onboarding2layerIm.image(
+                      fit: BoxFit.fitWidth,
+                      width: MediaQuery.sizeOf(context).width,
+                    )),
               ],
             ),
           ),
@@ -129,7 +134,7 @@ List<Widget> onBoardingItems(BuildContext context) => [
             style:
                 Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 20),
           ).symmetricPadding(horizontal: 15),
-          2.verticalSpace,
+          4.verticalSpace,
           Text(
             context.tr("seconde_welcome_dsc"),
             style: Theme.of(context)
