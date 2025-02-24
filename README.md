@@ -1,5 +1,5 @@
 <div style="display: flex; justify-content: start; align-items: center; margin-bottom: 15px">
-  <span style="color: #00AACC; font-size: 3em; font-weight: bold;">AKWAD TEAM</span>
+  <span style="color: #00AACC; font-size: 3em; font-weight: bold;">AKWAD </span>
   <img src="https://i.ibb.co/f2Wym86/608114aa24859d84c2343a1fe2e4d49c.gif" alt="Description of the GIF" width="75" height="75">
 </div>
 
@@ -36,18 +36,17 @@ Steps you need to do for setup your project
 
    ```bash
    git clone <repository-url>
-2.** Install Dependencies:**
+2. **Install Dependencies:**
+
+   ```bash
+   flutter pub get
+
+3. ### <span style="color: #AA99EE;">**Generating code:**</span>
 
 
-  ```flutter pub get
+ To gwnwrate freezed file and when add new asset like image all you need to generate this files
+ This command:
 
-3. 
-### <span style="color: #AA99EE;">**Generating code:**</span>
-
-There is local storage based on `hive` package for storing user settings in the app,also, for
-locliziation we need to generate this file
-
-- ### <span style="color: #99B8EE;">**``Hive``:**</span>
 
 ```CSS
 dart run build_runner build --delete-conflicting-outputs
