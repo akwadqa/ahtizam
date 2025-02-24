@@ -73,29 +73,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   .symmetricPadding(horizontal: 15)
             ],
           ),
-          Positioned(
-            bottom: 100,
-            right: 160,
-            child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(onBoardingItems(context).length,
-                      (index) => buildDots(index))),
-            ),
-          )
         ],
-      ),
-    );
-  }
-
-  Container buildDots(int index) {
-    return Container(
-      height: 10,
-      width: currentIndex == index ? 10 : 10,
-      margin: EdgeInsets.only(right: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(22),
-        color: currentIndex == index ? AppColors.primary : AppColors.darkGray,
       ),
     );
   }
@@ -106,7 +84,7 @@ List<Widget> onBoardingItems(BuildContext context) => [
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Assets.images.onboarding1Im.image(),
+          Assets.images.onboarding1Im.image(width: double.infinity),
           30.verticalSpace,
           Text(
             context.tr("welcome_msg"),

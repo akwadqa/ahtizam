@@ -32,7 +32,7 @@ class _AppState extends ConsumerState<App> {
           deepLinkBuilder: (deepLink) => DeepLink.defaultPath),
       routeInformationParser: appRouter.defaultRouteParser(),
       theme: ref.watch(appThemeProvider),
-      onGenerateTitle: (context) => context.tr('appTitle'),
+      onGenerateTitle: (context) => context.tr('app_title'),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: Locale(currentLanguage),
