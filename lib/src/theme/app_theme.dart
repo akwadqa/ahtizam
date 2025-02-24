@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../gen/fonts.gen.dart';
 import 'app_colors.dart';
 
 part 'app_theme.g.dart';
@@ -10,7 +11,7 @@ abstract class AppTheme {
   // Define shared styles to avoid repetition
   static const TextStyle _baseTextStyle = TextStyle(
     color: AppColors.black900,
-    // fontFamily: FontFamily.tajawal,
+    fontFamily: FontFamily.cairo,
     fontWeight: FontWeight.w700,
   );
 
@@ -27,7 +28,7 @@ abstract class AppTheme {
     return ThemeData(
       colorScheme:
           ColorScheme.fromSwatch(primarySwatch: AppColors.primarySwatch),
-      // fontFamily: FontFamily.tajawal,
+      fontFamily: FontFamily.cairo,
       textTheme: TextTheme(
         displayLarge: _baseTextStyle.copyWith(fontSize: 24),
         displayMedium: _baseTextStyle.copyWith(fontSize: 20),
