@@ -3,10 +3,25 @@
     "next": "Next",
     "get_started": "Get started",
     "lets_go": "Let`s Go",
+
     "welcome_msg": "Welcome to ahtezam",
     "welcome_dsc": "Welcome to ahtezam where you could move your broken down car easily and smothly",
 
     "seconde_welcome_msg": "App features",
-    "seconde_welcome_dsc": "This app provide with latest emplement and quick response"
+    "seconde_welcome_dsc": "This app provide with latest emplement and quick response",
+
+    "login_weclome": "Welcome Back!",
+    "login_dsc": "Let`s sign in wth your phone ",
+    "sign_up_welcome": "Sign Up",
+    "sign_up_desc": "Create a new account to have special",
+    "send_code": "Send verification code",
+    "or": "or",
+    "donot_have_account": "don`t have an account? ",
+    "create_account": "create new account",
+    "already_have_account": "already have account",
+    "sign_in": "sign in",
+    "user_name": "User name",
+    "email": "Email",
+    "phone_number": "phone number"
 
 }

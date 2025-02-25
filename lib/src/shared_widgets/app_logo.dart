@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../theme/app_colors.dart';
 
 class AppLogo extends StatelessWidget {
@@ -12,8 +13,7 @@ class AppLogo extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Assets.images.logo.image(),
-
+        Assets.images.logo.image(height: 100, width: 100),
         SizedBox(width: 8),
         Text('App Name',
             style: TextStyle(

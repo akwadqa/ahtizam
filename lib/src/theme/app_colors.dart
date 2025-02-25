@@ -44,5 +44,5 @@ abstract class AppColors {
 
   static const Color white = Color(0xFFFFFFFF);
   static const Color offWhite = Color(0xFFF6F6F6);
-  static const Color lightPeach = Color(0xFFFFF5F1);
+  static const Color lightPeach = Color(0xFFFEFBF5);
 }
