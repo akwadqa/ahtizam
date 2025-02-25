@@ -46,8 +46,9 @@ abstract class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        enabledBorder: _outlineBorder(AppColors.lighterGray),
-        border: _outlineBorder(AppColors.lighterGray),
+        enabledBorder: _outlineBorder(AppColors.grayBorder),
+        border: _outlineBorder(AppColors.grayBorder),
+        focusedBorder: _outlineBorder(AppColors.primary),
         labelStyle: _baseTextStyle.copyWith(
           color: AppColors.black900,
           fontSize: 16,

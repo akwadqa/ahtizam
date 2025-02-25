@@ -28,6 +28,23 @@ class $AssetsFontsGen {
   List<String> get values => [cairoBold, cairoMedium, cairoRegular];
 }
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/mark_icon.svg
+  SvgGenImage get markIcon => const SvgGenImage('assets/icons/mark_icon.svg');
+
+  /// File path: assets/icons/qatar_flag.svg
+  SvgGenImage get qatarFlag => const SvgGenImage('assets/icons/qatar_flag.svg');
+
+  /// File path: assets/icons/qatar_flag2.svg
+  SvgGenImage get qatarFlag2 =>
+      const SvgGenImage('assets/icons/qatar_flag2.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [markIcon, qatarFlag, qatarFlag2];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -57,9 +74,13 @@ class $AssetsImagesGen {
   AssetGenImage get onboarding2layerIm =>
       const AssetGenImage('assets/images/onboarding2layer_im.png');
 
-  /// File path: assets/images/qatar_flag.png
-  AssetGenImage get qatarFlag =>
-      const AssetGenImage('assets/images/qatar_flag.png');
+  /// File path: assets/images/qatar_country.png
+  AssetGenImage get qatarCountry =>
+      const AssetGenImage('assets/images/qatar_country.png');
+
+  /// File path: assets/images/qatar_flag_image.png
+  AssetGenImage get qatarFlagImage =>
+      const AssetGenImage('assets/images/qatar_flag_image.png');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -70,7 +91,8 @@ class $AssetsImagesGen {
     onboarding1Im,
     onboarding2Im,
     onboarding2layerIm,
-    qatarFlag,
+    qatarCountry,
+    qatarFlagImage,
   ];
 }
 
@@ -91,6 +113,7 @@ class Assets {
   const Assets._();
 
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 }

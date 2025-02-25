@@ -14,5 +14,11 @@ class AppRouter extends RootStackRouter {
           page: OnBoardingRoute.page,
         ),
         AutoRoute(page: HomeRoute.page, children: []),
+        AutoRoute(
+          page: LoginRoute.page,
+        ),
+        AutoRoute(
+          page: SignupRoute.page,
+        ),
       ];
 }

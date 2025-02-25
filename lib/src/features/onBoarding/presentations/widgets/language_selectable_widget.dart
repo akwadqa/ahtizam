@@ -15,8 +15,6 @@ class LanguageSelectableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      // mainAxisSize: MainAxisSize.min,
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildChooseText(context),
         GestureDetector(
