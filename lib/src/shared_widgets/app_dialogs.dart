@@ -4,8 +4,8 @@ import '../theme/app_colors.dart';
 
 Future<void> showCustomDialog({
   required BuildContext context,
-  required String title,
-  required Widget icon,
+  required Widget title,
+  Widget? icon,
 }) {
   return showDialog(
     context: context,
@@ -24,16 +24,17 @@ Future<void> showCustomDialog({
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                icon,
+                icon ?? SizedBox(),
                 const SizedBox(height: 28),
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayLarge!
-                      .copyWith(fontSize: 22),
-                ),
+                title
+                // Text(
+                //   title,
+                //   textAlign: TextAlign.center,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .displayLarge!
+                //       .copyWith(fontSize: 22),
+                // ),
               ],
             ),
           ),
@@ -46,7 +47,7 @@ Future<void> showCustomDialog({
 showErrorDialog(BuildContext context, String message) {
   return showCustomDialog(
     context: context,
-    title: message,
+    title: Text(message),
     icon: Icon(
       Icons.error,
       color: AppColors.darkRed,

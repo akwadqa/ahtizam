@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
+import 'package:standard_project/src/theme/app_colors.dart';
 
 class CustomBackArrowWidget extends StatelessWidget {
   const CustomBackArrowWidget({super.key});
@@ -10,8 +11,18 @@ class CustomBackArrowWidget extends StatelessWidget {
       onTap: () {
         Navigator.pop(context);
       },
-      child: Icon(Icons.arrow_back_ios, color: Colors.black)
-          .onlyPadding(start: 20),
+      child: Container(
+          margin: EdgeInsetsDirectional.only(start: 10, bottom: 2),
+          padding: EdgeInsetsDirectional.only(start: 5),
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 18,
+          )),
     );
   }
 }

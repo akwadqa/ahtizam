@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/services_urls.dart';
 
-import '../features/auth/application/auth_service.dart';
+import '../features/auth/regestration/application/auth_service.dart';
 import '../localization/current_language.dart';
 
 part 'network_service.g.dart';

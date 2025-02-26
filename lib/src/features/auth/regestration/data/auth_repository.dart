@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../constants/end_points.dart';
-import '../../../network/network_service.dart';
+import '../../../../constants/end_points.dart';
+import '../../../../network/network_service.dart';
 
 part 'auth_repository.g.dart';
 

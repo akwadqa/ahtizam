@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
 
-import '../../../../../theme/app_colors.dart';
+import '../../../../../../theme/app_colors.dart';
 
 class AuthText extends StatelessWidget {
   const AuthText({super.key, required this.description, required this.title});
