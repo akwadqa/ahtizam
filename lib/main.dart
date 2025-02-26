@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'src/features/app/app.dart';
-import 'src/features/auth/application/auth_service.dart';
+import 'src/features/auth/regestration/application/auth_service.dart';
 import 'src/riverpod_observer.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:device_preview/device_preview.dart';

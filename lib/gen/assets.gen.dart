@@ -34,15 +34,8 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mark_icon.svg
   SvgGenImage get markIcon => const SvgGenImage('assets/icons/mark_icon.svg');
 
-  /// File path: assets/icons/qatar_flag.svg
-  SvgGenImage get qatarFlag => const SvgGenImage('assets/icons/qatar_flag.svg');
-
-  /// File path: assets/icons/qatar_flag2.svg
-  SvgGenImage get qatarFlag2 =>
-      const SvgGenImage('assets/icons/qatar_flag2.svg');
-
   /// List of all assets
-  List<SvgGenImage> get values => [markIcon, qatarFlag, qatarFlag2];
+  List<SvgGenImage> get values => [markIcon];
 }
 
 class $AssetsImagesGen {

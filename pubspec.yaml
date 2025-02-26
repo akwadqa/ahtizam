@@ -34,6 +34,7 @@ dependencies:
   another_stepper: ^1.2.2
   mockito: ^5.4.5
   device_preview: ^1.2.0
+  pinput: ^5.0.1
   # flutter_onboarding_slider: ^1.0.11
   # introduction_screen: ^3.1.9
   # flutter_keyboard_visibility: ^6.0.0

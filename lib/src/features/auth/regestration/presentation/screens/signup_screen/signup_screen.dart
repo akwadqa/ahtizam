@@ -1,22 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart' as local;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:queen_validators/queen_validators.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/auth/presentation/widgets/text_form_fields/user_name_form_field.dart';
+import 'package:standard_project/src/features/auth/regestration/presentation/widgets/text_form_fields/user_name_form_field.dart';
 
-import '../../../../../../gen/assets.gen.dart';
-import '../../../../../routing/app_router.gr.dart';
-import '../../../../../shared_widgets/app_dialogs.dart';
-import '../../../../../shared_widgets/custom_button_widget.dart';
-import '../../../../../shared_widgets/fade_circle_loading_indicator.dart';
-import '../../../../../shared_widgets/app_logo.dart';
-import '../../../../../theme/app_colors.dart';
-import '../../../../../utils/arabic_number_input_formatter.dart';
+import '../../../../../../../gen/assets.gen.dart';
+import '../../../../../../routing/app_router.gr.dart';
+import '../../../../../../shared_widgets/app_dialogs.dart';
+import '../../../../../../shared_widgets/custom_button_widget.dart';
+import '../../../../../../shared_widgets/fade_circle_loading_indicator.dart';
+import '../../../../../../theme/app_colors.dart';
 import '../../controller/auth_controller/auth_controller.dart';
 import '../../widgets/auth_text/auth_text.dart';
 import '../../widgets/text_form_fields/email_text_form_field.dart';
@@ -131,6 +127,8 @@ class _SignupScreenState extends State<SignupScreen> {
                 _formKey.currentState!.save();
                 // Uncomment to enable login functionality
                 // ref.read(authControllerProvider.notifier).login(_phoneNumber!);
+                context
+                    .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
               }
             },
             backgroundColor: AppColors.black,
