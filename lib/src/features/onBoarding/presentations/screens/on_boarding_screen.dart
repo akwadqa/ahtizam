@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/gen/assets.gen.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
@@ -8,15 +9,17 @@ import 'package:standard_project/src/routing/app_router.gr.dart';
 import 'package:standard_project/src/shared_widgets/custom_button_widget.dart';
 import 'package:standard_project/src/theme/app_colors.dart';
 
+import '../../../auth/regestration/application/auth_service.dart';
+
 @RoutePage()
-class OnBoardingScreen extends StatefulWidget {
+class OnBoardingScreen extends ConsumerStatefulWidget {
   const OnBoardingScreen({super.key});
 
   @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+  ConsumerState<OnBoardingScreen> createState() => _OnBoardingScreenState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   int currentIndex = 0;
   late PageController _controller;
 
@@ -66,9 +69,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       text: currentIndex == onBoardingItems(context).length - 1
           ? context.tr("get_started")
           : context.tr("next"),
-      onTap: () {
+      onTap: () async {
         if (currentIndex == onBoardingItems(context).length - 1) {
           context.navigateTo(LoginRoute());
+          await markAppOpened(ref);
         } else {
           _controller.nextPage(
             duration: const Duration(milliseconds: 500),
