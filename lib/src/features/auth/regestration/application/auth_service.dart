@@ -12,31 +12,29 @@ Future<SharedPreferences> sharedPreferences(Ref ref) async =>
 @Riverpod(keepAlive: true)
 class UserData extends _$UserData {
   @override
-  (String, int)? build() {
+  String? build() {
     final sharedPrefs = ref.watch(sharedPreferencesProvider).requireValue;
     final token = sharedPrefs.getString(Keys.token);
-    final userId = sharedPrefs.getInt(Keys.userId);
-    if (token != null && userId != null) {
-      return (
-        sharedPrefs.getString(Keys.token)!,
-        sharedPrefs.getInt(Keys.userId)!
-      );
+    // final userId = sharedPrefs.getInt(Keys.userId);
+    if (token != null) {
+      return sharedPrefs.getString(Keys.token)!
+          // sharedPrefs.getInt(Keys.userId)!
+          ;
     }
     return null;
   }
 
-  Future<void> setData(String token, int userId) async {
+  Future<void> setData(String token) async {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.setString(Keys.token, token);
-    await sharedPrefs.setInt(Keys.userId, userId);
 
-    state = (token, userId);
+    state = token;
   }
 
   Future<void> removeData() async {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.remove(Keys.token);
-    await sharedPrefs.remove(Keys.userId);
+    // await sharedPrefs.remove(Keys.userId);
     state = null;
   }
 }
@@ -44,4 +42,18 @@ class UserData extends _$UserData {
 @riverpod
 bool isAuthinticated(Ref ref) {
   return ref.watch(userDataProvider) != null;
+}
+
+/// **Check if the app is opened for the first time**
+@riverpod
+bool isFirstTimeOpeningApp(Ref ref) {
+  final sharedPrefs = ref.watch(sharedPreferencesProvider).requireValue;
+  return sharedPrefs.getBool(Keys.firstTime) ??
+      true; // Default to true (first time)
+}
+
+/// **Mark the app as opened (Not first time anymore)**
+Future<void> markAppOpened(WidgetRef ref) async {
+  final sharedPrefs = await SharedPreferences.getInstance();
+  await sharedPrefs.setBool(Keys.firstTime, false);
 }

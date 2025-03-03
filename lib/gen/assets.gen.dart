@@ -31,15 +31,48 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/category.svg
+  SvgGenImage get category => const SvgGenImage('assets/icons/category.svg');
+
+  /// File path: assets/icons/home.svg
+  SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
+
+  /// File path: assets/icons/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/icons/logo.svg');
+
   /// File path: assets/icons/mark_icon.svg
   SvgGenImage get markIcon => const SvgGenImage('assets/icons/mark_icon.svg');
 
+  /// File path: assets/icons/messages.svg
+  SvgGenImage get messages => const SvgGenImage('assets/icons/messages.svg');
+
+  /// File path: assets/icons/profile.svg
+  SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
+
+  /// File path: assets/icons/qr.svg
+  SvgGenImage get qr => const SvgGenImage('assets/icons/qr.svg');
+
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [markIcon];
+  List<SvgGenImage> get values => [
+    category,
+    home,
+    logo,
+    markIcon,
+    messages,
+    profile,
+    qr,
+    settings,
+  ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/Logo2.png
+  AssetGenImage get logo2 => const AssetGenImage('assets/images/Logo2.png');
 
   /// File path: assets/images/empty_data.svg
   SvgGenImage get emptyData =>
@@ -77,6 +110,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
+    logo2,
     emptyData,
     imErrorScreen,
     logo,
@@ -105,10 +139,14 @@ class $AssetsTranslationsGen {
 class Assets {
   const Assets._();
 
+  static const String aEnv = '.env';
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
+
+  /// List of all assets
+  static List<String> get values => [aEnv];
 }
 
 class AssetGenImage {

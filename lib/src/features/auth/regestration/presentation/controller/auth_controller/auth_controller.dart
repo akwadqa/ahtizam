@@ -11,16 +11,12 @@ class AuthController extends _$AuthController {
   FutureOr<void> build() => null;
 
   Future<void> _authenticate(
-    Future<(String authToken, String userId)> Function(AuthRepository authRepo)
-        action,
+    Future<void> Function(AuthRepository authRepo) action,
   ) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final authRepo = ref.watch(authRepositoryProvider);
-      final userData = await action(authRepo);
-      await ref
-          .read(userDataProvider.notifier)
-          .setData(userData.$1, int.parse(userData.$2));
+      await action(authRepo);
     });
   }
 
@@ -30,14 +26,11 @@ class AuthController extends _$AuthController {
 
   Future<void> signup(
     String email,
-    String username,
-    String password,
-    String confirmPassword,
+    String name,
     String phone,
   ) async {
     await _authenticate(
-      (authRepo) =>
-          authRepo.signup(email, username, password, confirmPassword, phone),
+      (authRepo) => authRepo.signup(email, name, phone),
     );
   }
 }

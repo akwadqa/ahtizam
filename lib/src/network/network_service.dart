@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../constants/services_urls.dart';
+import '../constants/Api/services_urls.dart';
 
 import '../features/auth/regestration/application/auth_service.dart';
 import '../localization/current_language.dart';
@@ -40,7 +40,7 @@ Dio dio(Ref ref) {
   dio.interceptors.addAll({
     DioAppInterceptors(
       languageCode: languageCode,
-      token: userData?.$1,
+      token: userData,
       onUnauthorized: () {},
     ),
   });

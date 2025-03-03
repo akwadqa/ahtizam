@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import '../theme/app_colors.dart';
+
 class FadeCircleLoadingIndicator extends StatefulWidget {
   const FadeCircleLoadingIndicator({super.key, this.color});
 
@@ -54,7 +56,7 @@ class _FadeCircleLoadingIndicatorState extends State<FadeCircleLoadingIndicator>
             height: _circleSize,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: widget.color ?? Theme.of(context).colorScheme.secondary,
+              color: widget.color ?? AppColors.primary,
             ),
           ),
         ),

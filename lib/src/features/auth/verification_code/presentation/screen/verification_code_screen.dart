@@ -6,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
 import 'package:standard_project/src/features/auth/verification_code/presentation/controller/verification_code_controller.dart';
+import 'package:standard_project/src/routing/app_router.gr.dart';
 import 'package:standard_project/src/shared_widgets/custom_back_arrow_widget.dart';
 import 'package:standard_project/src/theme/app_colors.dart';
 import '../../../../../shared_widgets/app_dialogs.dart';
@@ -71,7 +72,7 @@ class VerificationScreen extends ConsumerWidget {
   Widget _buildOtpInputField(
       VerificationCodeController verificationController, BuildContext context) {
     return Pinput(
-      length: 4,
+      length: 6,
       controller: pinController,
       keyboardType: TextInputType.number,
       defaultPinTheme: PinTheme(
@@ -87,8 +88,11 @@ class VerificationScreen extends ConsumerWidget {
       validator: (value) => value == null || value.isEmpty
           ? context.tr("VerificationCodeValidatorMessage")
           : null,
-      onCompleted: (s) =>
-          verificationController.verifyOtp(pinController.text, context),
+      onCompleted: (s) => verificationController.verifyOtp(
+        pinController.text,
+        inputedPhone,
+        context,
+      ),
     );
   }
 
@@ -153,16 +157,17 @@ class VerificationScreen extends ConsumerWidget {
       BuildContext context, WidgetRef ref, verificationState) {
     return Consumer(
       builder: (context, ref, child) {
-        // ref.listen(verificationCodeControllerProvider, (prev, next) {
-        //   if (next is AsyncData) {
-        //     // context.maybePop().then((_) {
-        //       _showDialog(context, verificationState);
-        //     // });
-        //   } else if (next is AsyncError) {
-        //     showErrorDialog(context, next.error.toString());
-        //   }
-        // });
+        ref.listen(verificationCodeControllerProvider, (prev, next) {
+          if (next is AsyncData && next.value == "Success") {
+            debugPrint("✅ OTP Verification Successful!");
 
+            // ✅ Navigate to Main Screen on success
+            context.router.replaceAll([const MainRoute()]);
+          } else if (next is AsyncError) {
+            // ❌ Show error dialog if OTP verification fails
+            showErrorDialog(context, next.error.toString());
+          }
+        });
         final asyncLogin = ref.watch(verificationCodeControllerProvider);
         final verificationController =
             ref.read(verificationCodeControllerProvider.notifier);
@@ -175,8 +180,14 @@ class VerificationScreen extends ConsumerWidget {
           text: context.tr("sign_in"),
           onTap: () {
             if (_formKey.currentState!.validate()) {
-              verificationController.verifyOtp(pinController.text, context);
-              _showDialog(context, verificationState);
+              verificationController.verifyOtp(
+                pinController.text,
+                inputedPhone,
+                context,
+              );
+              // verificationController.verifyOtp(
+              //     pinController.text, inputedPhone, context);
+              // _showDialog(context, verificationState);
               // showAdaptiveDialog(
               //     context: context,
               //     builder: (context) =>

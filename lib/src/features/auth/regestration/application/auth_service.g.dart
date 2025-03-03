@@ -40,11 +40,31 @@ final isAuthinticatedProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef IsAuthinticatedRef = AutoDisposeProviderRef<bool>;
-String _$userDataHash() => r'44a9648f415cf42d34ba276ad6adb55406affdeb';
+String _$isFirstTimeOpeningAppHash() =>
+    r'23a178abb80b29189c479e4e42c8a67b23782056';
+
+/// **Check if the app is opened for the first time**
+///
+/// Copied from [isFirstTimeOpeningApp].
+@ProviderFor(isFirstTimeOpeningApp)
+final isFirstTimeOpeningAppProvider = AutoDisposeProvider<bool>.internal(
+  isFirstTimeOpeningApp,
+  name: r'isFirstTimeOpeningAppProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$isFirstTimeOpeningAppHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef IsFirstTimeOpeningAppRef = AutoDisposeProviderRef<bool>;
+String _$userDataHash() => r'292255ae3264d09c52aec608831f278b45aa5be6';
 
 /// See also [UserData].
 @ProviderFor(UserData)
-final userDataProvider = NotifierProvider<UserData, (String, int)?>.internal(
+final userDataProvider = NotifierProvider<UserData, String?>.internal(
   UserData.new,
   name: r'userDataProvider',
   debugGetCreateSourceHash:
@@ -53,6 +73,6 @@ final userDataProvider = NotifierProvider<UserData, (String, int)?>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$UserData = Notifier<(String, int)?>;
+typedef _$UserData = Notifier<String?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
