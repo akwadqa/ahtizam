@@ -107,9 +107,8 @@ class _SignupScreenState extends State<SignupScreen> {
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
           ref.listen(authControllerProvider, (prev, next) {
             if (next is AsyncData) {
-              context.maybePop().then((_) {
-                // _showDialog();
-              });
+              context
+                  .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
             } else if (next is AsyncError) {
               showErrorDialog(context, next.error.toString());
             }
@@ -126,9 +125,9 @@ class _SignupScreenState extends State<SignupScreen> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 // Uncomment to enable login functionality
-                // ref.read(authControllerProvider.notifier).login(_phoneNumber!);
-                context
-                    .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
+                ref
+                    .read(authControllerProvider.notifier)
+                    .signup(_email!, _userName!, _phoneNumber!);
               }
             },
             backgroundColor: AppColors.black,

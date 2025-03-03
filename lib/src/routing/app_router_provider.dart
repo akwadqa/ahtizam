@@ -7,5 +7,5 @@ part 'app_router_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 AppRouter appRouter(Ref ref) {
-  return AppRouter();
+  return AppRouter(ref); // Pass ref to allow authentication check
 }

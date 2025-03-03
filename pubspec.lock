@@ -281,6 +281,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  crystal_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: crystal_navigation_bar
+      sha256: c7a0b90bbffbde807ac01819f1ba113a302e86c2b4875cb26a14fd3fc3e91804
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   csslib:
     dependency: transitive
     description:
@@ -369,6 +377,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  dot_navigation_bar:
+    dependency: "direct main"
+    description:
+      name: dot_navigation_bar
+      sha256: "753e1d91644e39beddd0a4ed7e366f37a95e38cafb601c3b7496120ae0532f63"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   dots_indicator:
     dependency: "direct main"
     description:
@@ -446,6 +462,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.4.1"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: b7c7be5cd9f6ef7a78429cabd2774d3c4af50e79cb2b7593e3d5d763ef95c61b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.1"
+  flutter_floating_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_floating_bottom_bar
+      sha256: "5aff247b2015837bd121b6c694fb30107ed5677cd74e3088f6a5a18e369bc0ec"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1+1"
   flutter_gen_core:
     dependency: transitive
     description:

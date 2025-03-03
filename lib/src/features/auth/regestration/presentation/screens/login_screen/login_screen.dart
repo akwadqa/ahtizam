@@ -97,9 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (BuildContext context, WidgetRef ref, Widget? child) {
           ref.listen(authControllerProvider, (prev, next) {
             if (next is AsyncData) {
-              context.maybePop().then((_) {
-                // _showDialog();
-              });
+              // context.maybePop().then((_) {
+              debugPrint("Success check");
+              context
+                  .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
+              // _showDialog();
+              // });
             } else if (next is AsyncError) {
               showErrorDialog(context, next.error.toString());
             }
@@ -115,10 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
             onTap: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // Uncomment to enable login functionality
-                // ref.read(authControllerProvider.notifier).login(_phoneNumber!);
-                context
-                    .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
+                ref.read(authControllerProvider.notifier).login(_phoneNumber!);
               }
             },
             backgroundColor: AppColors.black,

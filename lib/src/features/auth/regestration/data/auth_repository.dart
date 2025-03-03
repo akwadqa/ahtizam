@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../constants/end_points.dart';
+import '../../../../constants/Api/end_points.dart';
 import '../../../../network/network_service.dart';
 
 part 'auth_repository.g.dart';
@@ -15,41 +15,39 @@ class AuthRepository {
 
   AuthRepository(this._networkService);
 
-  Future<(String authToken, String userId)> _handleAuthResponse(
-      Map<String, dynamic> responseData) async {
-    if (responseData.containsKey('complete_auth_***REMOVED***') &&
-        responseData.containsKey('user_id')) {
-      final String authToken = responseData['complete_auth_***REMOVED***'];
-      final String userId = responseData['user_id'];
-      return (authToken, userId);
+  /// Handle API response and only allow access to message and status_code
+  Future<String> _handleAuthResponse(Map<String, dynamic> responseData) async {
+    final int? statusCode = responseData['status_code'];
+    final String? message = responseData['message'];
+
+    if (statusCode == 200) {
+      return message ?? '';
     } else {
-      throw AppException(responseData['message']);
+      throw Exception(message ?? "An unknown error occurred");
     }
   }
 
-  Future<(String authToken, String userId)> login(String phone) async {
+  /// Login API request
+  Future<String> login(String phone) async {
     final response = await _networkService.post(EndPoints.loginApi, {
-      'phone_number': phone,
+      'mobile_no': phone,
     });
 
-    return _handleAuthResponse(response.data);
+    return await _handleAuthResponse(response.data);
   }
 
-  Future<(String authToken, String userId)> signup(
-      String email,
-      String username,
-      String password,
-      String confirmPassword,
-      String phone) async {
-    final response = await _networkService.post(EndPoints.signUpApi, {
+  /// Signup API request
+  Future<String> signup(
+    String email,
+    String name,
+    String phone,
+  ) async {
+    final response = await _networkService.post(EndPoints.registerApi, {
       'email': email,
-      'firstname': username.split(' ').first,
-      'lastname': username.split(' ').last,
-      'password1': password,
-      'password2': confirmPassword,
-      'phone': phone,
+      'name': name,
+      'mobile_no': phone,
     });
 
-    return _handleAuthResponse(response.data);
+    return await _handleAuthResponse(response.data);
   }
 }

@@ -24,6 +24,7 @@
     "VerificationCodeValidatorMessage": "Please enter your activation code",
     "emailValidatorMessage": "Invalid E-mail",
     "nameValidatorMessage": "Type correct name",
+    "mustBeEightDigits": "Must be 8 digits",
     "qatariPhoneNumberValidator": "Qatari phone number must start with 3, 5, 6, or 7",
     "or": "or",
     "donot_have_account": "don`t have an account? ",
@@ -31,6 +32,10 @@
     "already_have_account": "already have account",
     "sign_in": "sign in",
     "user_name": "User name",
+    "home": "Home",
+    "category": "Orders",
+    "messages": "Messages",
+    "profile": "Profile",
     "email": "Email",
     "phone_number": "phone number"
 
