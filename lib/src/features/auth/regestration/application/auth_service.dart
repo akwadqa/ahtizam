@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../constants/keys.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,12 +29,13 @@ class UserData extends _$UserData {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.setString(Keys.token, token);
 
-    state = token;
+    // state = token;
   }
 
   Future<void> removeData() async {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.remove(Keys.token);
+    debugPrint("TOKEN REMOVED SUCCESSFULLY");
     // await sharedPrefs.remove(Keys.userId);
     state = null;
   }

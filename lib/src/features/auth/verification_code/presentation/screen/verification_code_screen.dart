@@ -12,6 +12,7 @@ import 'package:standard_project/src/theme/app_colors.dart';
 import '../../../../../shared_widgets/app_dialogs.dart';
 import '../../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../../shared_widgets/fade_circle_loading_indicator.dart';
+import '../../application/verification_code_service.dart';
 
 @RoutePage()
 class VerificationScreen extends ConsumerWidget {
@@ -26,7 +27,9 @@ class VerificationScreen extends ConsumerWidget {
     final verificationState = ref.watch(verificationCodeControllerProvider);
     final verificationController =
         ref.read(verificationCodeControllerProvider.notifier);
-
+    final countdown = ref.watch(verificationCodeServiceProvider);
+    final countdownController =
+        ref.read(verificationCodeServiceProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.lightPeach,
       resizeToAvoidBottomInset: true,
@@ -49,7 +52,8 @@ class VerificationScreen extends ConsumerWidget {
                       // 16.verticalSpace,
                       // _buildVerificationState(verificationState),
                       16.verticalSpace,
-                      _buildResendOtpSection(ref),
+                      _buildResendOtpSection(
+                          countdown, countdownController, context),
                     ],
                   ),
                 ),
@@ -115,41 +119,31 @@ class VerificationScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildResendOtpSection(WidgetRef ref) {
-    return Consumer(
-      builder: (context, ref, _) {
-        final verificationController =
-            ref.watch(verificationCodeControllerProvider.notifier);
-        return Column(
-          children: [
-            Text(
-              verificationController.countdown > 0
-                  ? "00:${verificationController.countdown.toString().padLeft(2, '0')}"
-                  : "",
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.grey600,
-                  ),
-            ),
-            TextButton(
-              onPressed: verificationController.canResend
-                  ? () => verificationController.resendOtp(inputedPhone)
-                  : null,
-              child: Text(
-                context.tr("resend_code"),
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: verificationController.canResend
-                          ? AppColors.primary
-                          : AppColors.grey600,
-                    ),
+  Widget _buildResendOtpSection(int countdown,
+      VerificationCodeService countdownController, BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          countdown > 0 ? "00:${countdown.toString().padLeft(2, '0')}" : "",
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.grey600,
               ),
-            ),
-          ],
-        );
-      },
+        ),
+        TextButton(
+          onPressed:
+              countdown == 0 ? () => countdownController.resendOtp() : null,
+          child: Text(
+            context.tr("resend_code"),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: countdown == 0 ? AppColors.primary : AppColors.grey600,
+                ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -158,40 +152,33 @@ class VerificationScreen extends ConsumerWidget {
     return Consumer(
       builder: (context, ref, child) {
         ref.listen(verificationCodeControllerProvider, (prev, next) {
-          if (next is AsyncData && next.value == "Success") {
+          if (next is AsyncData) {
             debugPrint("✅ OTP Verification Successful!");
 
-            // ✅ Navigate to Main Screen on success
-            context.router.replaceAll([const MainRoute()]);
+            Future.microtask(() {
+              context.router.replaceAll([const MainRoute()]);
+            });
           } else if (next is AsyncError) {
-            // ❌ Show error dialog if OTP verification fails
             showErrorDialog(context, next.error.toString());
           }
         });
-        final asyncLogin = ref.watch(verificationCodeControllerProvider);
+        final asyncData = ref.watch(verificationCodeControllerProvider);
         final verificationController =
             ref.read(verificationCodeControllerProvider.notifier);
 
-        if (asyncLogin is AsyncLoading) {
+        if (asyncData is AsyncLoading) {
           return const FadeCircleLoadingIndicator();
         }
 
         return CustomButtonWidget(
           text: context.tr("sign_in"),
-          onTap: () {
+          onTap: () async {
             if (_formKey.currentState!.validate()) {
-              verificationController.verifyOtp(
+              await verificationController.verifyOtp(
                 pinController.text,
                 inputedPhone,
                 context,
               );
-              // verificationController.verifyOtp(
-              //     pinController.text, inputedPhone, context);
-              // _showDialog(context, verificationState);
-              // showAdaptiveDialog(
-              //     context: context,
-              //     builder: (context) =>
-              //         _buildVerificationState(verificationState));
             }
           },
           backgroundColor: AppColors.black,

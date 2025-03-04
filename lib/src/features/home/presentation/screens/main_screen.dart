@@ -20,7 +20,6 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     Center(child: Text("Orders Page", style: TextStyle(fontSize: 20))),
     Center(child: Text("Messages Page", style: TextStyle(fontSize: 20))),
-    Center(child: Text("Messages Page", style: TextStyle(fontSize: 20))),
     Center(child: Text("Profile Page", style: TextStyle(fontSize: 20))),
   ];
   int _selectedIndex = 0;
