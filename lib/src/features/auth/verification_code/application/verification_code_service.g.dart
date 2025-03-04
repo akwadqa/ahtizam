@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verification_code_controller.dart';
+part of 'verification_code_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$verificationCodeControllerHash() =>
-    r'1e31b28385b9782a06219629137e80bb08f4d716';
+String _$verificationCodeServiceHash() =>
+    r'5c2fb49e01b36c5e1d50c5bb868bda01dbee930b';
 
-/// See also [VerificationCodeController].
-@ProviderFor(VerificationCodeController)
-final verificationCodeControllerProvider =
-    AutoDisposeAsyncNotifierProvider<VerificationCodeController, void>.internal(
-  VerificationCodeController.new,
-  name: r'verificationCodeControllerProvider',
+/// See also [VerificationCodeService].
+@ProviderFor(VerificationCodeService)
+final verificationCodeServiceProvider =
+    AutoDisposeNotifierProvider<VerificationCodeService, int>.internal(
+  VerificationCodeService.new,
+  name: r'verificationCodeServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$verificationCodeControllerHash,
+      : _$verificationCodeServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$VerificationCodeController = AutoDisposeAsyncNotifier<void>;
+typedef _$VerificationCodeService = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
