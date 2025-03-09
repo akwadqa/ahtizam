@@ -14,20 +14,21 @@ class CustomBottomNavigationBar extends ConsumerWidget {
   final ValueChanged<int> onItemTapped;
 
   const CustomBottomNavigationBar({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onItemTapped,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.5), // Blurred effect
-            borderRadius: BorderRadius.circular(20),
+            color: Colors.white.withOpacity(0.4), // Blurred effect
+            // borderRadius: BorderRadius.circular(20),
           ),
           height: 100,
           child: Row(
