@@ -6,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/gen/assets.gen.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
 import 'package:standard_project/src/features/home/application/map_service.dart';
-import 'package:standard_project/src/features/home/presentation/widgets/google_map_widget.dart';
 import 'package:standard_project/src/theme/app_colors.dart';
 
 class SearchingTruckLoading extends ConsumerWidget {
@@ -31,8 +30,11 @@ class SearchingTruckLoading extends ConsumerWidget {
                     width: double.infinity,
                     height: double.infinity,
                   )
-                : GoogleMapWidget(),
-// Container(color: Colors.blueGrey,),
+                :
+                // GoogleMapWidget(),
+                Container(
+                    color: Colors.blueGrey,
+                  ),
             // **Darker Overlay for Loading Effect**
             Container(
               color: Colors.black.withOpacity(0.3),
