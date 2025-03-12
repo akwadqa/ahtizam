@@ -8,6 +8,7 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
+import '../../application/map_service.dart';
 
 /// **Truck Selection Provider**
 // final selectedTruckProvider = StateProvider<int?>((ref) => null);
@@ -168,7 +169,11 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
 
           CustomButtonWidget(
             text: context.tr("request_truck"),
-            onTap: () {
+            onTap: () async {
+              await ref
+                  .read(mapControllerProvider.notifier)
+                  .captureScreenshot();
+
               showSearchingTruckLoading(context: context);
               // ref.read(requestDetailsFormProvider.notifier).state =
               //     true;

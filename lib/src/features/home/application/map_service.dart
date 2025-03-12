@@ -18,6 +18,7 @@ Future<bool> locationPermission(Ref ref) async {
 @Riverpod(keepAlive: true)
 class MapController extends _$MapController {
   Uint8List? cachedMapScreenshot; // Stores last screenshot
+  GoogleMapController? _mapController;
 
   @override
   FutureOr<LatLng?> build() async {
@@ -53,16 +54,36 @@ class MapController extends _$MapController {
     state = await AsyncValue.guard(() async => await _fetchCurrentLocation());
   }
 
+  void setCurrentLocation(LatLng latLng) {
+    state = AsyncValue.data(latLng);
+    debugPrint("Updated Location: ${latLng.latitude}, ${latLng.longitude}");
+  }
+
+  void setMapController(GoogleMapController controller) {
+    _mapController = controller;
+  }
+
+  /// **Capture Screenshot and Save it**
+  Future<void> captureScreenshot() async {
+    if (_mapController == null) {
+      debugPrint("⏳ Waiting for map controller...");
+      return;
+    }
+
+    final imageBytes = await _mapController!.takeSnapshot();
+    if (imageBytes != null) {
+      cachedMapScreenshot = imageBytes;
+      debugPrint("✅ Screenshot Captured & Saved!");
+    } else {
+      debugPrint("❌ Screenshot Failed: ImageBytes is null");
+    }
+  }
+
   void saveMapScreenshot(Uint8List image) {
     cachedMapScreenshot = image;
   }
 
   Uint8List? getMapScreenshot() {
     return cachedMapScreenshot;
-  }
-
-  void setCurrentLocation(LatLng latLng) {
-    state = AsyncValue.data(latLng);
-    debugPrint("Updated Location: ${latLng.latitude}, ${latLng.longitude}");
   }
 }

@@ -41,13 +41,18 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
     }
   }
 
-  /// **Capture Screenshot**
-  Future<void> _captureScreenshot() async {
+  /// **Capture Screenshot and Save it**
+  Future<void> captureScreenshot() async {
     if (_controller != null) {
       final imageBytes = await _controller?.takeSnapshot();
       if (imageBytes != null) {
         ref.read(mapControllerProvider.notifier).saveMapScreenshot(imageBytes);
+        debugPrint("✅ Screenshot Captured & Saved!");
+      } else {
+        debugPrint("❌ Screenshot Failed: ImageBytes is null");
       }
+    } else {
+      debugPrint("❌ Screenshot Failed: Controller is null");
     }
   }
 
@@ -91,12 +96,17 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           ),
           myLocationEnabled: false,
           onMapCreated: (controller) {
-            _controller = controller;
+            ref
+                .read(mapControllerProvider.notifier)
+                .setMapController(controller);
+            // Future.delayed(Duration(seconds: 1), () {
+            //   captureScreenshot(); // ✅ Capture screenshot after delay
+            // });
           },
         );
       },
       loading: () {
-        _captureScreenshot();
+        // captureScreenshot();
         return const Center(child: FadeCircleLoadingIndicator());
       },
       error: (error, _) => Center(
