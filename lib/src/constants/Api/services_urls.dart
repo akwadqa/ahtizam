@@ -4,8 +4,10 @@ import 'package:standard_project/src/constants/Api/dotenv_keys.dart';
 
 class ServicesUrls {
   static String baseUrl = '';
+  static String mapApiKey = '';
   static init() {
     baseUrl = dotenv.get(DotenvKeys.baseUrl);
+    mapApiKey = dotenv.get(DotenvKeys.mapApiKey);
     debugPrint('mnor $baseUrl');
   }
 

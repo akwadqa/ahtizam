@@ -46,6 +46,13 @@ class $AssetsIconsGen {
   /// File path: assets/icons/messages.svg
   SvgGenImage get messages => const SvgGenImage('assets/icons/messages.svg');
 
+  /// File path: assets/icons/my_marker.png
+  AssetGenImage get myMarker =>
+      const AssetGenImage('assets/icons/my_marker.png');
+
+  /// File path: assets/icons/polyline.svg
+  SvgGenImage get polyline => const SvgGenImage('assets/icons/polyline.svg');
+
   /// File path: assets/icons/profile.svg
   SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
 
@@ -55,16 +62,22 @@ class $AssetsIconsGen {
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
+  /// File path: assets/icons/truck.svg
+  SvgGenImage get truck => const SvgGenImage('assets/icons/truck.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
     category,
     home,
     logo,
     markIcon,
     messages,
+    myMarker,
+    polyline,
     profile,
     qr,
     settings,
+    truck,
   ];
 }
 

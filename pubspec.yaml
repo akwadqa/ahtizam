@@ -43,8 +43,9 @@ dependencies:
   geolocator: ^13.0.2
   geocoding: ^3.0.0
   permission_handler: ^11.4.0
-  # flutter_blur: ^3.0.0
-  # crystal_navigation_bar: ^0.0.2
+  avatar_glow: ^3.0.1
+  map_location_picker: ^1.3.3
+  google_places_autocomplete_text_field: ^1.1.0
 
 
 dev_dependencies:

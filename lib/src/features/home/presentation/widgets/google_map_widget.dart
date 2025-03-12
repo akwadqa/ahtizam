@@ -1,32 +1,114 @@
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:standard_project/src/extenssions/int_extenssion.dart';
+import 'package:standard_project/src/extenssions/widget_extensions.dart';
 import 'package:standard_project/src/features/home/application/map_service.dart';
-import 'package:standard_project/src/shared_widgets/fade_circle_loading_indicator.dart';
 
-class GoogleMapWidget extends ConsumerWidget {
+import '../../../../shared_widgets/fade_circle_loading_indicator.dart';
+import '../../../../theme/app_colors.dart';
+
+class GoogleMapWidget extends ConsumerStatefulWidget {
   const GoogleMapWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final locationAsync = ref.watch(mapProviderProvider);
+  _GoogleMapWidgetState createState() => _GoogleMapWidgetState();
+}
 
-    return locationAsync.when(
+class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
+  GoogleMapController? _controller;
+  BitmapDescriptor? _customMarker;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomMarker();
+  }
+
+  /// **Load and Scale Custom Marker from Asset**
+  Future<void> _loadCustomMarker() async {
+    try {
+      final Uint8List markerIcon =
+          await 'assets/icons/my_marker.png'.toMarkerBytes(targetSize: 30);
+
+      _customMarker = BitmapDescriptor.fromBytes(markerIcon);
+    } catch (e) {
+      debugPrint('Error loading custom marker: $e');
+    }
+  }
+
+  /// **Capture Screenshot**
+  Future<void> _captureScreenshot() async {
+    if (_controller != null) {
+      final imageBytes = await _controller?.takeSnapshot();
+      if (imageBytes != null) {
+        ref.read(mapControllerProvider.notifier).saveMapScreenshot(imageBytes);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mapState = ref.watch(mapControllerProvider);
+
+    return mapState.when(
       data: (currentLocation) {
         if (currentLocation == null) {
-          return const Center(child: Text("Location unavailable"));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.warning, color: AppColors.primary),
+                4.verticalSpace,
+                Text("Location unavailable"),
+              ],
+            ),
+          );
         }
 
         return GoogleMap(
+          mapType: MapType.normal,
+          onTap: (LatLng latLng) {
+            ref.read(mapControllerProvider.notifier).setCurrentLocation(latLng);
+            _controller?.animateCamera(CameraUpdate.newCameraPosition(
+              CameraPosition(target: latLng, zoom: 16),
+            ));
+          },
+          markers: {
+            Marker(
+              markerId: const MarkerId("currentLocation"),
+              position: currentLocation,
+              icon: _customMarker ?? BitmapDescriptor.defaultMarker,
+            ),
+          },
           initialCameraPosition: CameraPosition(
             target: currentLocation,
-            zoom: 15,
+            zoom: 16,
           ),
-          myLocationEnabled: true,
+          myLocationEnabled: false,
+          onMapCreated: (controller) {
+            _controller = controller;
+          },
         );
       },
-      loading: () => const Center(child: FadeCircleLoadingIndicator()),
-      error: (error, _) => Center(child: Text("Error: $error")),
+      loading: () {
+        _captureScreenshot();
+        return const Center(child: FadeCircleLoadingIndicator());
+      },
+      error: (error, _) => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.warning, color: AppColors.primary),
+            4.verticalSpace,
+            Text("Error: $error"),
+          ],
+        ),
+      ),
     );
   }
 }

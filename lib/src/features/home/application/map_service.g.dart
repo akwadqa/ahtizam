@@ -26,22 +26,23 @@ final locationPermissionProvider = AutoDisposeFutureProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LocationPermissionRef = AutoDisposeFutureProviderRef<bool>;
-String _$mapProviderHash() => r'dd5f2589e433d52d24d205bb76cd2cbb94936a65';
+String _$mapControllerHash() => r'bfa6b08bc96b406a24b8d6167a4a6969b7ce3493';
 
 /// **Provide the current location (LatLng)**
 ///
-/// Copied from [MapProvider].
-@ProviderFor(MapProvider)
-final mapProviderProvider =
-    AsyncNotifierProvider<MapProvider, LatLng?>.internal(
-  MapProvider.new,
-  name: r'mapProviderProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$mapProviderHash,
+/// Copied from [MapController].
+@ProviderFor(MapController)
+final mapControllerProvider =
+    AsyncNotifierProvider<MapController, LatLng?>.internal(
+  MapController.new,
+  name: r'mapControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$mapControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$MapProvider = AsyncNotifier<LatLng?>;
+typedef _$MapController = AsyncNotifier<LatLng?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

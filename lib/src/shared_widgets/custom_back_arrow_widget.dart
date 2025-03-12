@@ -3,13 +3,14 @@ import 'package:standard_project/src/extenssions/widget_extensions.dart';
 import 'package:standard_project/src/theme/app_colors.dart';
 
 class CustomBackArrowWidget extends StatelessWidget {
-  const CustomBackArrowWidget({super.key});
+  final VoidCallback? onTap;
+  const CustomBackArrowWidget({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pop(context);
+        onTap ?? Navigator.pop(context);
       },
       child: Container(
           margin: EdgeInsetsDirectional.only(start: 10, bottom: 2),

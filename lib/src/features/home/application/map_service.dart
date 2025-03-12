@@ -16,7 +16,9 @@ Future<bool> locationPermission(Ref ref) async {
 
 /// **Provide the current location (LatLng)**
 @Riverpod(keepAlive: true)
-class MapProvider extends _$MapProvider {
+class MapController extends _$MapController {
+  Uint8List? cachedMapScreenshot; // Stores last screenshot
+
   @override
   FutureOr<LatLng?> build() async {
     final hasPermission = await ref.watch(locationPermissionProvider.future);
@@ -35,6 +37,9 @@ class MapProvider extends _$MapProvider {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
+      debugPrint("LAT location: ${position.latitude}");
+      debugPrint("LONG location: ${position.longitude}");
+
       return LatLng(position.latitude, position.longitude);
     } catch (e) {
       debugPrint("Error fetching location: $e");
@@ -46,5 +51,18 @@ class MapProvider extends _$MapProvider {
   Future<void> updateLocation() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async => await _fetchCurrentLocation());
+  }
+
+  void saveMapScreenshot(Uint8List image) {
+    cachedMapScreenshot = image;
+  }
+
+  Uint8List? getMapScreenshot() {
+    return cachedMapScreenshot;
+  }
+
+  void setCurrentLocation(LatLng latLng) {
+    state = AsyncValue.data(latLng);
+    debugPrint("Updated Location: ${latLng.latitude}, ${latLng.longitude}");
   }
 }

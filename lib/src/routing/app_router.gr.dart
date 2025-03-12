@@ -85,7 +85,7 @@ class MainRoute extends _i8.PageRouteInfo<void> {
   static _i8.PageInfo page = _i8.PageInfo(
     name,
     builder: (data) {
-      return _i4.MainScreen();
+      return const _i4.MainScreen();
     },
   );
 }
