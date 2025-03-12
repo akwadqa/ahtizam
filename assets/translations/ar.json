@@ -4,6 +4,9 @@
     "next": "التالي",
     "get_started": "لنبدأ",
     "lets_go": "لننطلق",
+    "welcome": "أهلا {}",
+
+
     "welcome_msg": "أهلا بك في احتزم",
     "welcome_dsc": "مرحبًا بك في احتزم حيث يمكنك نقل سيارتك المعطلة بسهولة وسلاسة",
 
@@ -34,6 +37,13 @@
     "create_account": "إنشاء حساب جديد",
     "already_have_account": "لديك بالفعل حساب",
     "request_truck": "اطلب سطحة",
+    "request": "طلب",
+    "request_now": "طلب الان",
+    "request_offer": "طلب عرض",
+    "locate_on_map": "تحديد على الخريطة",
+    "application_tax": "ضريبة التطبيق",
+    "select_truck_type": "اختر نوع السطحة",
+    "delivery_fee": "رسوم التوصيل",
     "sign_in": "تسجيل الدخول",
     "home": "الرئيسية",
     "category": "الطلبات",

@@ -2,25 +2,64 @@ import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/gen/assets.gen.dart';
+import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
+import 'package:standard_project/src/features/home/presentation/controller/change_request_order_state_service.dart';
+import 'package:standard_project/src/features/home/presentation/controller/show_order_form_controller.dart';
+import 'package:standard_project/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../widgets/google_map_widget.dart';
+import '../widgets/truck_selection_bottom_sheet.dart';
 
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isSecondWidgetVisible =
+        ref.watch(changeRequestOrderStateServiceProvider);
+    final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
     return Scaffold(
       body: Stack(
         children: [
           const _BackgroundMap(),
           const _TopNavigationBar(),
-          const _BottomActionCard(),
+          (isThirdWidgetVisible)
+              ? const RequestDetailsForm()
+              : isSecondWidgetVisible
+                  ? const _RequestOrderBottomActionCard()
+                  : const _BottomActionCard(),
+          if (isThirdWidgetVisible) _orderButton(context),
         ],
+      ),
+    );
+  }
+
+  Widget _orderButton(BuildContext context) {
+    return Positioned(
+      bottom: 25,
+      right: 15,
+      left: 15,
+      child: CustomButtonWidget(
+        text: context.tr("request"),
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            builder: (context) => const TruckSelectionBottomSheet(),
+          );
+        },
+        backgroundColor: AppColors.black,
+        isFiled: true,
+        height: 55,
+        radius: 15,
+        width: MediaQuery.sizeOf(context).width,
       ),
     );
   }
@@ -80,11 +119,11 @@ class _TopNavigationBar extends StatelessWidget {
 }
 
 /// **Blurred Bottom Action Card with Button**
-class _BottomActionCard extends StatelessWidget {
+class _BottomActionCard extends ConsumerWidget {
   const _BottomActionCard();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -102,20 +141,80 @@ class _BottomActionCard extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    "أهلاً حمد!",
+                  Text(
+                    "welcome".tr(args: ['user']),
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10),
+                  10.verticalSpace,
                   CustomButtonWidget(
                     text: context.tr("request_truck"),
                     onTap: () {
-                      // TODO: Implement navigation
+                      ref
+                          .read(changeRequestOrderStateServiceProvider.notifier)
+                          .toggleWidget();
                     },
                     backgroundColor: AppColors.black,
                     isFiled: true,
                     height: 55,
                     radius: 15,
+                    width: MediaQuery.sizeOf(context).width,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RequestOrderBottomActionCard extends ConsumerWidget {
+  const _RequestOrderBottomActionCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 150.0, left: 20, right: 20),
+        child: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CustomButtonWidget(
+                    text: context.tr("request_now"),
+                    onTap: () {
+                      ref
+                          .read(showOrderFormControllerProvider.notifier)
+                          .toggleVisibility();
+                    },
+                    backgroundColor: AppColors.black,
+                    isFiled: true,
+                    height: 55,
+                    radius: 15,
+                    width: MediaQuery.sizeOf(context).width,
+                  ),
+                  10.verticalSpace,
+                  CustomButtonWidget(
+                    text: context.tr("request_offer"),
+                    onTap: () {
+                      // TODO: Implement navigation
+                    },
+                    // backgroundColor: AppColors.black,
+                    isFiled: false,
+                    height: 55,
+                    radius: 15,
+                    color: AppColors.lightestGray,
                     width: MediaQuery.sizeOf(context).width,
                   ),
                 ],

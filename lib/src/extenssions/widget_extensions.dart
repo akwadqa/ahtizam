@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
+import 'package:flutter/services.dart';
 
 extension WidgetExtension on Widget {
   Widget centered() {
@@ -99,5 +101,26 @@ extension WidgetAlignmentExtension on Widget {
       alignment: Alignment.topRight,
       child: this,
     );
+  }
+}
+
+/// **Extension to Resize Asset Image and Convert to Uint8List**
+extension AssetImageExtensions on String {
+  /// **Resize an Asset Image and Return as Uint8List**
+  /// - `targetSize`: The desired width (and height) of the image.
+  Future<Uint8List> toMarkerBytes({int targetSize = 100}) async {
+    final ByteData data = await rootBundle.load(this);
+    final Uint8List list = data.buffer.asUint8List();
+
+    final ui.Codec codec = await ui.instantiateImageCodec(
+      list,
+      targetWidth: targetSize,
+      // targetHeight: targetSize, // Ensures uniform scaling
+    );
+    final ui.FrameInfo frame = await codec.getNextFrame();
+    final ByteData? byteData =
+        await frame.image.toByteData(format: ui.ImageByteFormat.png);
+
+    return byteData!.buffer.asUint8List();
   }
 }
