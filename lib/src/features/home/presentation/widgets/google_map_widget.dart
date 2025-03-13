@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
@@ -22,6 +23,7 @@ class GoogleMapWidget extends ConsumerStatefulWidget {
 class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
   GoogleMapController? _controller;
   BitmapDescriptor? _customMarker;
+  String locationAddress = "";
 
   @override
   void initState() {
@@ -77,11 +79,22 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
 
         return GoogleMap(
           mapType: MapType.normal,
-          onTap: (LatLng latLng) {
+          onTap: (LatLng latLng) async {
             ref.read(mapControllerProvider.notifier).setCurrentLocation(latLng);
-            _controller?.animateCamera(CameraUpdate.newCameraPosition(
-              CameraPosition(target: latLng, zoom: 16),
-            ));
+            ref
+                .read(mapControllerProvider.notifier)
+                .mapController
+                ?.animateCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(target: latLng, zoom: 17),
+                ));
+            List<Placemark> placemarks = await placemarkFromCoordinates(
+              latLng.latitude,
+              latLng.longitude,
+            );
+            Placemark place = placemarks.first;
+            locationAddress =
+                "${place.street}, ${place.locality}, ${place.country}";
+            debugPrint("📍 Address: $locationAddress");
           },
           markers: {
             Marker(
@@ -92,7 +105,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           },
           initialCameraPosition: CameraPosition(
             target: currentLocation,
-            zoom: 16,
+            zoom: 17,
           ),
           myLocationEnabled: false,
           onMapCreated: (controller) {

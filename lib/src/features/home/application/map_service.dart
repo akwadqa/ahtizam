@@ -18,7 +18,7 @@ Future<bool> locationPermission(Ref ref) async {
 @Riverpod(keepAlive: true)
 class MapController extends _$MapController {
   Uint8List? cachedMapScreenshot; // Stores last screenshot
-  GoogleMapController? _mapController;
+  GoogleMapController? mapController;
 
   @override
   FutureOr<LatLng?> build() async {
@@ -60,17 +60,17 @@ class MapController extends _$MapController {
   }
 
   void setMapController(GoogleMapController controller) {
-    _mapController = controller;
+    mapController = controller;
   }
 
   /// **Capture Screenshot and Save it**
   Future<void> captureScreenshot() async {
-    if (_mapController == null) {
+    if (mapController == null) {
       debugPrint("⏳ Waiting for map controller...");
       return;
     }
 
-    final imageBytes = await _mapController!.takeSnapshot();
+    final imageBytes = await mapController!.takeSnapshot();
     if (imageBytes != null) {
       cachedMapScreenshot = imageBytes;
       debugPrint("✅ Screenshot Captured & Saved!");
