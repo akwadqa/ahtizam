@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../regestration/data/auth_repository.dart';
+
 part 'verification_code_service.g.dart';
 
 @riverpod
@@ -33,11 +35,13 @@ class VerificationCodeService extends _$VerificationCodeService {
     });
   }
 
-  Future<void> resendOtp() async {
+  Future<void> resendOtp(String phone) async {
     if (!canResend) return;
-
-    state = initialCountdown;
-    startCountdown();
+    await AsyncValue.guard(() async {
+      await ref.watch(authRepositoryProvider).login(phone);
+      state = initialCountdown;
+      startCountdown();
+    });
   }
 
   void stopCountdown() {

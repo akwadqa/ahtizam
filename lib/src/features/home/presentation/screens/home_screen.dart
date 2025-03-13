@@ -7,6 +7,8 @@ import 'package:standard_project/gen/assets.gen.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/extenssions/widget_extensions.dart';
 import 'package:standard_project/src/features/home/presentation/controller/change_request_order_state_service.dart';
+import 'package:standard_project/src/features/home/presentation/controller/select_location_from_map_controller.dart';
+import 'package:standard_project/src/features/home/presentation/controller/select_truck_controller.dart';
 import 'package:standard_project/src/features/home/presentation/controller/show_order_form_controller.dart';
 import 'package:standard_project/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
@@ -33,13 +35,13 @@ class HomeScreen extends ConsumerWidget {
               : isSecondWidgetVisible
                   ? const _RequestOrderBottomActionCard()
                   : const _BottomActionCard(),
-          if (isThirdWidgetVisible) _orderButton(context),
+          if (isThirdWidgetVisible) _orderButton(context, ref),
         ],
       ),
     );
   }
 
-  Widget _orderButton(BuildContext context) {
+  Widget _orderButton(BuildContext context, WidgetRef ref) {
     return Positioned(
       bottom: 25,
       right: 15,
@@ -47,13 +49,9 @@ class HomeScreen extends ConsumerWidget {
       child: CustomButtonWidget(
         text: context.tr("request"),
         onTap: () {
-          showModalBottomSheet(
-            context: context,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            builder: (context) => const TruckSelectionBottomSheet(),
-          );
+          ref
+              .read(selectTruckControllerProvider.notifier)
+              .getTrucksDataInformation(context);
         },
         backgroundColor: AppColors.black,
         isFiled: true,

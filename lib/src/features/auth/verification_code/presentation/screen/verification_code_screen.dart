@@ -32,42 +32,37 @@ class VerificationScreen extends ConsumerWidget {
         ref.read(verificationCodeServiceProvider.notifier);
     return Scaffold(
       backgroundColor: AppColors.lightPeach,
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: true,
       appBar: _buildAppBar(context),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                physics: ClampingScrollPhysics(),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      150.verticalSpace,
-                      _buildHeader(context, inputedPhone),
-                      32.verticalSpace,
-                      _buildOtpInputField(verificationController, context),
-                      // 16.verticalSpace,
-                      // _buildVerificationState(verificationState),
-                      16.verticalSpace,
-                      _buildResendOtpSection(
-                          countdown, countdownController, context),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Column(
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Form(
+            key: _formKey,
+            child: Column(
               children: [
-                _buildConfirmSignInButton(context, ref, verificationState),
+                150.verticalSpace,
+                _buildHeader(context, inputedPhone),
+                32.verticalSpace,
+                _buildOtpInputField(verificationController, context),
                 16.verticalSpace,
-                _buildPrivacyAndPolicyCondition(context),
-                50.verticalSpace,
+                _buildResendOtpSection(countdown, countdownController, context),
+                SizedBox(
+                  height: MediaQuery.sizeOf(context).height / 4,
+                ),
+                // Spacer(),
+                Column(
+                  children: [
+                    _buildConfirmSignInButton(context, ref, verificationState),
+                    16.verticalSpace,
+                    _buildPrivacyAndPolicyCondition(context),
+                    50.verticalSpace,
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ).symmetricPadding(horizontal: 18),
       ),
     );
@@ -100,25 +95,6 @@ class VerificationScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildVerificationState(AsyncValue verificationState) {
-    return verificationState.when(
-      loading: () => const CircularProgressIndicator(),
-      error: (error, _) => Text(
-        "خطأ: $error",
-        style: const TextStyle(color: Colors.red),
-      ),
-      data: (result) => result == "Success"
-          ? const Text(
-              "تم التحقق بنجاح",
-              style: TextStyle(color: Colors.green),
-            )
-          : Text(
-              "خطأ",
-              style: const TextStyle(color: Colors.red),
-            ),
-    );
-  }
-
   Widget _buildResendOtpSection(int countdown,
       VerificationCodeService countdownController, BuildContext context) {
     return Column(
@@ -132,8 +108,9 @@ class VerificationScreen extends ConsumerWidget {
               ),
         ),
         TextButton(
-          onPressed:
-              countdown == 0 ? () => countdownController.resendOtp() : null,
+          onPressed: countdown == 0
+              ? () => countdownController.resendOtp(inputedPhone)
+              : null,
           child: Text(
             context.tr("resend_code"),
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -194,7 +171,8 @@ class VerificationScreen extends ConsumerWidget {
   _buildAppBar(BuildContext context) => AppBar(
         backgroundColor: AppColors.white,
         centerTitle: true,
-        leadingWidth: 65,
+        // leadingWidth: 65,
+        automaticallyImplyLeading: false,
         title: Text(
           context.tr("activation_code"),
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -225,14 +203,6 @@ class VerificationScreen extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  void _showDialog(context, verificationState) {
-    showCustomDialog(
-      context: context,
-      title: _buildVerificationState(verificationState),
-      // icon: Assets.icons.markIcon.svg(),
     );
   }
 

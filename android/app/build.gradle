@@ -14,7 +14,7 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace = "com.example.ahtizam"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

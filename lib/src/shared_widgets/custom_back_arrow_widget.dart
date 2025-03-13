@@ -12,7 +12,7 @@ class CustomBackArrowWidget extends StatelessWidget {
         onTap ?? Navigator.pop(context);
       },
       child: Container(
-          margin: EdgeInsetsDirectional.only(start: 10, bottom: 2),
+          margin: EdgeInsetsDirectional.only(start: 10, bottom: 5, top: 5),
           padding: EdgeInsetsDirectional.only(start: 5),
           decoration: BoxDecoration(
             color: AppColors.primary,
