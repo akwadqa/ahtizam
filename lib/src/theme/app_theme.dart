@@ -26,6 +26,11 @@ abstract class AppTheme {
 
   static ThemeData lightTheme() {
     return ThemeData(
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: AppColors.primary,
+        selectionColor: AppColors.primary,
+        selectionHandleColor: AppColors.primarySwatch,
+      ),
       colorScheme:
           ColorScheme.fromSwatch(primarySwatch: AppColors.primarySwatch),
       fontFamily: FontFamily.cairo,

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/gen/assets.gen.dart';
@@ -38,7 +39,7 @@ class SearchingTruckLoading extends ConsumerWidget {
             //   ),
             // **Darker Overlay for Loading Effect**
             Container(
-              color: Colors.black.withOpacity(0.3),
+              color: AppColors.black.withOpacity(0.3),
             ),
             BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -62,13 +63,13 @@ class SearchingTruckLoading extends ConsumerWidget {
             ),
 
             // **Loading Text**
-            const Positioned(
+            Positioned(
               bottom: 80,
               left: 0,
               right: 0,
               child: Center(
                 child: Text(
-                  "البحث عن سطحة",
+                  context.tr("search_for_truck"),
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
