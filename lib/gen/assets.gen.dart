@@ -34,6 +34,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/category.svg
   SvgGenImage get category => const SvgGenImage('assets/icons/category.svg');
 
+  /// File path: assets/icons/coupon.svg
+  SvgGenImage get coupon => const SvgGenImage('assets/icons/coupon.svg');
+
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
 
@@ -68,6 +71,7 @@ class $AssetsIconsGen {
   /// List of all assets
   List<dynamic> get values => [
     category,
+    coupon,
     home,
     logo,
     markIcon,

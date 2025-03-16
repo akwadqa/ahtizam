@@ -11,6 +11,7 @@ import 'package:standard_project/src/features/home/presentation/controller/selec
 import 'package:standard_project/src/features/home/presentation/controller/select_truck_controller.dart';
 import 'package:standard_project/src/features/home/presentation/controller/show_order_form_controller.dart';
 import 'package:standard_project/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
+import '../../../../localization/current_language.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../widgets/google_map_widget.dart';
@@ -78,11 +79,13 @@ class _BackgroundMap extends StatelessWidget {
 }
 
 /// **Blurred Top Navigation Bar with Icons**
-class _TopNavigationBar extends StatelessWidget {
+class _TopNavigationBar extends ConsumerWidget {
   const _TopNavigationBar();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final currentLanguage = ref.watch(currentLanguageProvider);
+
     return Positioned(
       top: 0,
       left: 0,
@@ -102,7 +105,15 @@ class _TopNavigationBar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Assets.icons.settings.svg(height: 30, width: 30),
+                GestureDetector(
+                    onTap: () {
+                      final currentLanguageNotifier =
+                          ref.read(currentLanguageProvider.notifier);
+
+                      currentLanguageNotifier.changeLanguage(
+                          context, currentLanguage == 'ar' ? 'en' : 'ar');
+                    },
+                    child: Assets.icons.settings.svg(height: 30, width: 30)),
                 Assets.icons.logo
                     .svg(fit: BoxFit.scaleDown)
                     .onlyPadding(top: 5),
@@ -212,7 +223,7 @@ class _RequestOrderBottomActionCard extends ConsumerWidget {
                     isFiled: false,
                     height: 55,
                     radius: 15,
-                    color: AppColors.lightestGray,
+                    borderColor: AppColors.lightestGray,
                     width: MediaQuery.sizeOf(context).width,
                   ),
                 ],

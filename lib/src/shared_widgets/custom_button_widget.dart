@@ -8,6 +8,7 @@ class CustomButtonWidget extends StatelessWidget {
   final String text;
   final Color? backgroundColor;
   final Color? color;
+  final Color? borderColor;
   final VoidCallback onTap;
   final bool isFiled;
   final double height;
@@ -18,6 +19,7 @@ class CustomButtonWidget extends StatelessWidget {
     super.key,
     required this.text,
     this.backgroundColor,
+    this.borderColor,
     this.color,
     required this.onTap,
     required this.isFiled,
@@ -31,26 +33,30 @@ class CustomButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.zero,
-          backgroundColor: backgroundColor ?? Colors.transparent,
-          foregroundColor: AppColors.black900,
-          fixedSize: Size(
-            width,
-            height,
-          ),
-          shape: RoundedRectangleBorder(
-              side: BorderSide(
-                  color: color ?? backgroundColor ?? Colors.transparent),
-              borderRadius: BorderRadius.circular(radius ?? 25))),
+        padding: EdgeInsets.zero,
+        backgroundColor: backgroundColor ?? Colors.transparent,
+        foregroundColor: AppColors.black900,
+        fixedSize: Size(
+          width,
+          height,
+        ),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: borderColor ?? backgroundColor ?? Colors.transparent),
+          borderRadius: BorderRadius.circular(radius ?? 25),
+        ),
+      ),
       onPressed: () {
         onTap();
       },
-      child: Text(context.tr(text),
-              style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                  fontSize: 16,
-                  color: isFiled ? Colors.white : Colors.black,
-                  fontWeight: FontWeight.w500))
-          .centered(),
+      child: Text(
+        context.tr(text),
+        style: Theme.of(context).textTheme.displaySmall!.copyWith(
+              fontSize: 16,
+              color: color ?? (isFiled ? Colors.white : Colors.black),
+              fontWeight: FontWeight.w500,
+            ),
+      ).centered(),
     ).onlyPadding(top: topPading ?? 0);
   }
 }

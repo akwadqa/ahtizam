@@ -38,6 +38,7 @@
     "locate_on_map": "Locate on map",
     "application_tax": "Application tax",
     "select_truck_type": "Select flatbed truck type",
+    "search_for_truck": "Search for a flatbed truck",
     "delivery_fee": "Delivery fee",
 
     "sign_in": "sign in",
@@ -47,6 +48,25 @@
     "messages": "Messages",
     "profile": "Profile",
     "email": "Email",
-    "phone_number": "phone number"
+    "phone_number": "phone number",
+
+    "send_a_message": "Send a message",
+    "call_by": "call by {}",
+    "with_currency": "{} QAR",
+    "pay": "pay",
+    "cancel": "cancel",
+    "yes": "yes",
+    "no": "no",
+    "vehicle_capacity": "Vehicle Capacity",
+    "vehicle_size": "Vehicle Size",
+    "otp_number": "otp number: {}",
+    "active": "active ",
+    "final_cost": "Final cost",
+    "duration_and_distance": "Duration and distance",
+    "enter_coupon_number": "Enter coupon number",
+    "cancel_order_msg": "Do you want to cancel your flatbed truck order?",
+    "cancel_order_dsc": "If you cancel now, you will lose a\n 20 QAR late cancellation fee."
+
+
 
 }

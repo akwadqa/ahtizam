@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:standard_project/src/extenssions/int_extenssion.dart';
 import 'package:standard_project/src/features/home/presentation/controller/select_truck_controller.dart';
+import 'package:standard_project/src/features/home/presentation/widgets/driver_details_bottom_sheet.dart';
 import 'package:standard_project/src/shared_widgets/fade_circle_loading_indicator.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
@@ -30,10 +31,6 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodyMedium),
         ),
         data: (state) {
-          if (state.trucks.isEmpty) {
-            return const Center(child: Text("🚛 No trucks available."));
-          }
-
           final selectedTruck = state.selectedTruck;
 
           return Column(
@@ -91,6 +88,37 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                               ],
                             ),
                           ),
+                          if (isSelected)
+                            PositionedDirectional(
+                                end: 0,
+                                top: -5,
+                                child: IconButton(
+                                    onPressed: () {
+                                      showTruckDetailsDialog(
+                                        context: context,
+                                        weight: "1200",
+                                        scales: "8ft x 4.5ft x 5.5ft",
+                                      );
+                                    },
+                                    icon: ClipOval(
+                                      child: Container(
+                                        height: 18,
+                                        width: 18,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          // color: Colors.grey.shade300,
+                                          border: Border.all(
+                                            color: Colors.black,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.more_vert,
+                                          size: 15,
+                                        ),
+                                      ),
+                                    )))
                         ],
                       ),
                     );
@@ -113,7 +141,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                             .bodySmall!
                             .copyWith(fontSize: 14)),
                     Spacer(),
-                    Text("100 ر.ق",
+                    Text("with_currency".tr(args: ['100']),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -132,7 +160,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                             .bodySmall!
                             .copyWith(fontSize: 14)),
                     Spacer(),
-                    Text("100 ر.ق",
+                    Text("with_currency".tr(args: ['100']),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -148,7 +176,13 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                   await ref
                       .read(mapControllerProvider.notifier)
                       .captureScreenshot();
+
                   showSearchingTruckLoading(context: context);
+                  Future.delayed(Duration(seconds: 5), () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    showDriverDetailsBottomSheet(context);
+                  });
                 },
                 backgroundColor:
                     selectedTruck == null ? AppColors.gray : AppColors.black,

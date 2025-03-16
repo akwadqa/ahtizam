@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -30,8 +31,7 @@ class SelectTruckController extends _$SelectTruckController {
         debugPrint("📍 Address Lat: ${currentLocation.value?.latitude}");
         debugPrint("📍 Address Lng: ${currentLocation.value?.longitude}");
       }
-      Future.microtask(() => showTruckSelectionBottomSheet(context));
-      await Future.delayed(const Duration(seconds: 2));
+      await Future.microtask(() => showTruckSelectionBottomSheet(context));
 
       // Simulating API call with a delay
 
@@ -40,22 +40,23 @@ class SelectTruckController extends _$SelectTruckController {
         Truck(
             id: 1,
             name: "سطحة",
-            price: "10 ر.ق",
+            price: "with_currency".tr(args: ['10']),
             image: "assets/icons/truck.svg"),
         Truck(
             id: 2,
             name: "ونش",
-            price: "12 ر.ق",
+            price: "with_currency".tr(args: ['12']),
             image: "assets/icons/truck.svg"),
         Truck(
             id: 3,
             name: "قاطرة",
-            price: "20 ر.ق",
+            price: "with_currency".tr(args: ['20']),
             image: "assets/icons/truck.svg"),
       ];
 
       // ✅ Debugging Log
       debugPrint("✅ Trucks Loaded: ${trucks.length}");
+      await Future.delayed(const Duration(seconds: 2));
 
       // ✅ Set state with truck list
       state = AsyncData(TruckState(trucks: trucks, selectedTruck: null));
