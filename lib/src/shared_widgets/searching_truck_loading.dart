@@ -4,10 +4,10 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:standard_project/gen/assets.gen.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/home/application/map_service.dart';
-import 'package:standard_project/src/theme/app_colors.dart';
+import 'package:ahtizam/gen/assets.gen.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 
 import '../features/home/presentation/widgets/google_map_widget.dart';
 
@@ -56,7 +56,7 @@ class SearchingTruckLoading extends ConsumerWidget {
                           padding: EdgeInsets.all(20),
                           width: min(225, 225) / 2,
                           height: min(225, 225) / 2,
-                          color: AppColors.white,
+                          color: AppColors.white.withOpacity(0.5),
                           child: Assets.icons.truck.svg().allPadding(50)),
                     )),
               ),

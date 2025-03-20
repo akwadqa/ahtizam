@@ -61,6 +61,7 @@
     "cancel": "إلغاء",
     "yes": "نعم",
     "no": "لا",
+    "enter_location": "الرجاء ادخال الموقع",
     "vehicle_capacity": "سعة المركية",
     "vehicle_size": "حجم المركبة",
     "otp_number": "رقم المعرف :{}",

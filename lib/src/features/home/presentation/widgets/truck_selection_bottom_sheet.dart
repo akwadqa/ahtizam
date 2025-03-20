@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/features/home/presentation/controller/select_truck_controller.dart';
-import 'package:standard_project/src/features/home/presentation/widgets/driver_details_bottom_sheet.dart';
-import 'package:standard_project/src/shared_widgets/fade_circle_loading_indicator.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_bottom_sheet.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
@@ -43,7 +43,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+                    .copyWith(fontWeight: FontWeight.bold, fontSize: 14),
               ),
 
               20.verticalSpace,
@@ -61,9 +61,9 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                       child: Stack(
                         children: [
                           Container(
-                            width: 120,
+                            width: 110,
                             margin: const EdgeInsets.symmetric(horizontal: 8),
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color:
                                   isSelected ? AppColors.primary : Colors.white,

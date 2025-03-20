@@ -30,11 +30,12 @@ class AppRouter extends RootStackRouter {
       ),
       AutoRoute(page: SignupRoute.page, path: "/signup"),
       AutoRoute(page: VerificationRoute.page, path: "/verify"),
+      AutoRoute(page: HomeRoute.page, path: "/home"),
       AutoRoute(
-        page: MainRoute.page,
-        path: "/main",
-        initial: !isFirstTime && isAuthenticated,
-      ),
+          page: MainRoute.page,
+          path: "/main",
+          initial: !isFirstTime && isAuthenticated,
+          children: []),
     ];
   }
 

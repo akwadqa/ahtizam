@@ -1,6 +1,9 @@
+import 'package:ahtizam/src/features/app/domain/model/user_information.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../constants/Api/api_response.dart';
 import '../../../../constants/Api/end_points.dart';
 import '../../../../network/network_service.dart';
 
@@ -15,12 +18,18 @@ class VerificatonCodeRepository {
 
   VerificatonCodeRepository(this._networkService);
 
-  Future<String> _handleAuthResponse(Map<String, dynamic> responseData) async {
+  /// **✅ Corrected Response Handling**
+  Future<ApiResponse<UserInformation>> _handleResponse(
+      Map<String, dynamic> responseData) async {
     if (responseData.containsKey('status_code') &&
         responseData['status_code'] == 200) {
-      if (responseData.containsKey('data') &&
-          responseData['data'].containsKey('token')) {
-        return responseData['data']['token'];
+      if (responseData.containsKey('data')) {
+        // ✅ Convert responseData['data'] to UserInformation
+        final userData = UserInformation.fromJson(responseData['data']);
+
+        return ApiResponse.success(
+            message: "OTP verification successful",
+            data: userData); // ✅ Return wrapped ApiResponse
       } else {
         throw Exception("Token missing in response");
       }
@@ -29,7 +38,8 @@ class VerificatonCodeRepository {
     }
   }
 
-  Future<String> verificatonCode(
+  /// **✅ Fixed Response Type**
+  Future<ApiResponse<UserInformation>> verificatonCode(
     String otp,
     String phone,
   ) async {
@@ -39,6 +49,10 @@ class VerificatonCodeRepository {
       'mobile_no': phone,
     });
 
-    return await _handleAuthResponse(response.data);
+    debugPrint("response.data.toString()");
+    debugPrint(response.data.toString());
+    debugPrint("******************");
+
+    return await _handleResponse(response.data); // ✅ Ensure correct return type
   }
 }

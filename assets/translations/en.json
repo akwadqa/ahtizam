@@ -57,6 +57,7 @@
     "cancel": "cancel",
     "yes": "yes",
     "no": "no",
+    "enter_location": "Please enter a location",
     "vehicle_capacity": "Vehicle Capacity",
     "vehicle_size": "Vehicle Size",
     "otp_number": "otp number: {}",

@@ -3,8 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:standard_project/src/features/auth/verification_code/data/verification_code_repository.dart';
-import 'package:standard_project/src/routing/app_router.gr.dart';
+import 'package:ahtizam/src/features/auth/verification_code/data/verification_code_repository.dart';
+import 'package:ahtizam/src/routing/app_router.gr.dart';
 
 import '../../../../../shared_widgets/app_dialogs.dart';
 import '../../../regestration/application/auth_service.dart';
@@ -24,7 +24,8 @@ class VerificationCodeController extends _$VerificationCodeController {
 
       final userData = await verificationCode.verificatonCode(otp, phone);
 
-      await ref.read(userDataProvider.notifier).setData(userData);
+      await ref.read(userDataProvider.notifier).setData(userData.data!.token);
+      await ref.read(userDataProvider.notifier).saveUserInfo(userData.data!);
       ref.read(verificationCodeServiceProvider.notifier).stopCountdown();
 
       (err) => AsyncError(err.toString(), StackTrace.current);
