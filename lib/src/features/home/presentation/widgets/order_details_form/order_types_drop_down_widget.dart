@@ -30,7 +30,7 @@ class OrdersTypeDropDownWidget extends StatelessWidget {
           items: items.map((e) {
             return DropdownMenuItem(
               value: e,
-              child: Text(e.tr(), style: const TextStyle(fontSize: 16)),
+              child: Text(e.tr(), style: const TextStyle(fontSize: 14)),
             );
           }).toList(),
         );

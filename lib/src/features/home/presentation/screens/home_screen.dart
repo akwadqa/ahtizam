@@ -3,17 +3,19 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:standard_project/gen/assets.gen.dart';
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/home/presentation/controller/change_request_order_state_service.dart';
-import 'package:standard_project/src/features/home/presentation/controller/select_location_from_map_controller.dart';
-import 'package:standard_project/src/features/home/presentation/controller/select_truck_controller.dart';
-import 'package:standard_project/src/features/home/presentation/controller/show_order_form_controller.dart';
-import 'package:standard_project/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
+import 'package:ahtizam/gen/assets.gen.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/change_request_order_state_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/select_location_from_map_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
 import '../../../../localization/current_language.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
+import '../../../auth/regestration/application/auth_service.dart';
+import '../controller/location_search_controller.dart';
 import '../widgets/google_map_widget.dart';
 import '../widgets/truck_selection_bottom_sheet.dart';
 
@@ -26,7 +28,10 @@ class HomeScreen extends ConsumerWidget {
     final isSecondWidgetVisible =
         ref.watch(changeRequestOrderStateServiceProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      // extendBody: true,
       body: Stack(
         children: [
           const _BackgroundMap(),
@@ -43,6 +48,8 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _orderButton(BuildContext context, WidgetRef ref) {
+    final formKey = ref.read(locationSearchControllerProvider.notifier).formKey;
+
     return Positioned(
       bottom: 25,
       right: 15,
@@ -50,9 +57,12 @@ class HomeScreen extends ConsumerWidget {
       child: CustomButtonWidget(
         text: context.tr("request"),
         onTap: () {
-          ref
-              .read(selectTruckControllerProvider.notifier)
-              .getTrucksDataInformation(context);
+          if (formKey.currentState!.validate()) {
+            formKey.currentState!.save();
+            ref
+                .read(selectTruckControllerProvider.notifier)
+                .getTrucksDataInformation(context);
+          }
         },
         backgroundColor: AppColors.black,
         isFiled: true,
@@ -133,6 +143,8 @@ class _BottomActionCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.read(userDataProvider.notifier).userinformation;
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
@@ -151,8 +163,8 @@ class _BottomActionCard extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "welcome".tr(args: ['user']),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "welcome".tr(args: [user.fullName]),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   10.verticalSpace,
                   CustomButtonWidget(

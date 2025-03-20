@@ -60,7 +60,7 @@ final isFirstTimeOpeningAppProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef IsFirstTimeOpeningAppRef = AutoDisposeProviderRef<bool>;
-String _$userDataHash() => r'c73dbf64a61036df422dd193ff6fbd897e0fb0a9';
+String _$userDataHash() => r'52a6e5292002f77c825f657c226d6ae74afab43e';
 
 /// See also [UserData].
 @ProviderFor(UserData)

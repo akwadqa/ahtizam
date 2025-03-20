@@ -2,11 +2,11 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:standard_project/gen/assets.gen.dart';
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/home/presentation/controller/show_order_form_controller.dart';
-import 'package:standard_project/src/theme/app_colors.dart';
+import 'package:ahtizam/gen/assets.gen.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/show_order_form_controller.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 
 import '../../../auth/regestration/application/auth_service.dart';
 
@@ -71,7 +71,7 @@ class CustomBottomNavigationBar extends ConsumerWidget {
           Text(
             context.tr(title),
             style:
-                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 14),
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
           )
         ],
       ),

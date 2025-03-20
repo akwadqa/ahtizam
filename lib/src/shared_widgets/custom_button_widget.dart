@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 
 import '../theme/app_colors.dart';
 
@@ -52,7 +52,7 @@ class CustomButtonWidget extends StatelessWidget {
       child: Text(
         context.tr(text),
         style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 16,
+              fontSize: 15,
               color: color ?? (isFiled ? Colors.white : Colors.black),
               fontWeight: FontWeight.w500,
             ),

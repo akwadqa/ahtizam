@@ -70,19 +70,19 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<dynamic> get values => [
-    category,
-    coupon,
-    home,
-    logo,
-    markIcon,
-    messages,
-    myMarker,
-    polyline,
-    profile,
-    qr,
-    settings,
-    truck,
-  ];
+        category,
+        coupon,
+        home,
+        logo,
+        markIcon,
+        messages,
+        myMarker,
+        polyline,
+        profile,
+        qr,
+        settings,
+        truck
+      ];
 }
 
 class $AssetsImagesGen {
@@ -127,17 +127,17 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values => [
-    logo2,
-    emptyData,
-    imErrorScreen,
-    logo,
-    logoIm,
-    onboarding1Im,
-    onboarding2Im,
-    onboarding2layerIm,
-    qatarCountry,
-    qatarFlagImage,
-  ];
+        logo2,
+        emptyData,
+        imErrorScreen,
+        logo,
+        logoIm,
+        onboarding1Im,
+        onboarding2Im,
+        onboarding2layerIm,
+        qatarCountry,
+        qatarFlagImage
+      ];
 }
 
 class $AssetsTranslationsGen {
@@ -167,7 +167,11 @@ class Assets {
 }
 
 class AssetGenImage {
-  const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
+  const AssetGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  });
 
   final String _assetName;
 
@@ -227,8 +231,15 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   String get path => _assetName;
@@ -237,11 +248,17 @@ class AssetGenImage {
 }
 
 class SvgGenImage {
-  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = false;
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
 
-  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
-    : _isVecFormat = true;
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -295,8 +312,7 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter:
-          colorFilter ??
+      colorFilter: colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

@@ -7,7 +7,7 @@ part of 'select_truck_controller.dart';
 // **************************************************************************
 
 String _$selectTruckControllerHash() =>
-    r'6aa12dcb4bdfd4bd62fef0b9cd160d99817a04f6';
+    r'421e80f6f093e439966bb665ac861442077e6918';
 
 /// See also [SelectTruckController].
 @ProviderFor(SelectTruckController)

@@ -6,7 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../auth/verification_code/domain/model/truck_model.dart';
 import '../widgets/truck_selection_bottom_sheet.dart';
 import 'select_location_from_map_controller.dart';
-import 'package:standard_project/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
 
 part 'select_truck_controller.g.dart';
 
@@ -31,9 +31,10 @@ class SelectTruckController extends _$SelectTruckController {
         debugPrint("📍 Address Lat: ${currentLocation.value?.latitude}");
         debugPrint("📍 Address Lng: ${currentLocation.value?.longitude}");
       }
-      await Future.microtask(() => showTruckSelectionBottomSheet(context));
 
-      // Simulating API call with a delay
+      // Simulating API call
+      showTruckSelectionBottomSheet(context);
+      await Future.delayed(const Duration(seconds: 2)); // Simulate delay
 
       // Sample trucks from API
       final List<Truck> trucks = [
@@ -54,14 +55,13 @@ class SelectTruckController extends _$SelectTruckController {
             image: "assets/icons/truck.svg"),
       ];
 
-      // ✅ Debugging Log
       debugPrint("✅ Trucks Loaded: ${trucks.length}");
-      await Future.delayed(const Duration(seconds: 2));
 
-      // ✅ Set state with truck list
+      // ✅ Update the state first
       state = AsyncData(TruckState(trucks: trucks, selectedTruck: null));
 
-      // ✅ Ensure Bottom Sheet Opens **AFTER** Data is Ready
+      // ✅ THEN show the bottom sheet after state update
+      await Future.delayed(const Duration(milliseconds: 200)); // Small delay
     } catch (e) {
       debugPrint("❌ Error fetching trucks: $e");
       state = AsyncError(e, StackTrace.current);

@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/home/presentation/controller/payment_controller/payment_coupon_controller.dart';
-import 'package:standard_project/src/shared_widgets/custom_button_widget.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/presentation/controller/payment_controller/payment_coupon_controller.dart';
+import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
 
 import '../../gen/assets.gen.dart';
 import '../theme/app_colors.dart';
@@ -253,14 +253,17 @@ Future<void> showPaymentDialog(
           final paymentController =
               ref.read(paymentCouponControllerProvider(totalCost).notifier);
 
-          return Dialog(
-            insetPadding: EdgeInsets.symmetric(horizontal: 20),
-            backgroundColor: Colors.white.withOpacity(0.8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context)
+                  .requestFocus(FocusNode()); // Dismiss keyboard
+            },
+            child: Dialog(
+              insetPadding: EdgeInsets.symmetric(horizontal: 20),
+              backgroundColor: Colors.white.withOpacity(0.8),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
               child: Stack(
                 children: [
                   Padding(
@@ -377,7 +380,7 @@ Future<void> showPaymentDialog(
                                         .textTheme
                                         .labelSmall!
                                         .copyWith(
-                                            fontSize: 14,
+                                            fontSize: 11,
                                             color: AppColors.grey600),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(14),

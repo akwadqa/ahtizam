@@ -3,9 +3,9 @@ import 'package:easy_localization/easy_localization.dart' as local;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/extenssions/widget_extensions.dart';
-import 'package:standard_project/src/features/auth/regestration/presentation/widgets/text_form_fields/user_name_form_field.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/auth/regestration/presentation/widgets/text_form_fields/user_name_form_field.dart';
 
 import '../../../../../../../gen/assets.gen.dart';
 import '../../../../../../routing/app_router.gr.dart';

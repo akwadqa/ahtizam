@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:standard_project/src/theme/app_colors.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 
 class CustomBackArrowWidget extends StatelessWidget {
   final VoidCallback? onTap;

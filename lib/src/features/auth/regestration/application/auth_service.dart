@@ -1,8 +1,12 @@
+import 'package:ahtizam/src/configs/hive_configs/hive_boxes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../constants/keys.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../app/domain/model/user_information.dart';
 
 part 'auth_service.g.dart';
 
@@ -16,15 +20,19 @@ class UserData extends _$UserData {
   String? build() {
     final sharedPrefs = ref.watch(sharedPreferencesProvider).requireValue;
     final ***REMOVED*** = sharedPrefs.getString(Keys.***REMOVED***);
-    // final userId = sharedPrefs.getInt(Keys.userId);
     if (***REMOVED*** != null) {
-      return sharedPrefs.getString(Keys.***REMOVED***)!
-          // sharedPrefs.getInt(Keys.userId)!
-          ;
+      return sharedPrefs.getString(Keys.***REMOVED***)!;
     }
     return null;
   }
 
+  static const String _userInfo = HiveBoxesName.userInfoBox;
+  static UserInformation _defualtUserinfo = UserInformation.empty();
+
+  Box<UserInformation> get _userinfoBox => Hive.box<UserInformation>(_userInfo);
+
+  UserInformation get userinformation =>
+      _userinfoBox.get(0) ?? _defualtUserinfo;
   Future<void> setData(String ***REMOVED***) async {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.setString(Keys.***REMOVED***, ***REMOVED***);
@@ -36,8 +44,17 @@ class UserData extends _$UserData {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.remove(Keys.***REMOVED***);
     debugPrint("TOKEN REMOVED SUCCESSFULLY");
-    // await sharedPrefs.remove(Keys.userId);
     state = null;
+  }
+
+  Future<void> saveUserInfo(UserInformation info) async {
+    _defualtUserinfo = info;
+    await _userinfoBox.put(0, info);
+  }
+
+  UserData? getUserData() {
+    final box = Hive.box<UserData>(HiveBoxesName.userInfoBox);
+    return box.get(HiveBoxesName.userInfoBox); // Retrieve stored object
   }
 }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:standard_project/src/constants/Api/dotenv_keys.dart';
+import 'package:ahtizam/src/constants/Api/dotenv_keys.dart';
 
 class ServicesUrls {
   static String baseUrl = '';

@@ -1,4 +1,4 @@
-name: standard_project
+name: ahtizam
 description: "This is A standard project to start all projects from here."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -21,7 +21,7 @@ dependencies:
   json_annotation: ^4.9.0
   dio: ^5.7.0
   cached_network_image: ^3.4.1
-  dots_indicator: ^3.0.0
+  dots_indicator: ^4.0.1
   carousel_slider: ^5.0.0
   easy_localization: ^3.0.7
   pull_to_***REMOVED***: ^2.0.0
@@ -45,7 +45,11 @@ dependencies:
   permission_handler: ^11.4.0
   avatar_glow: ^3.0.1
   map_location_picker: ^1.3.3
-  google_places_autocomplete_text_field: ^1.1.0
+  flutter_polyline_points_plus: ^3.0.0
+  flutter_google_places_hoc081098: ^2.0.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
 
 
 dev_dependencies:
@@ -61,6 +65,7 @@ dev_dependencies:
   flutter_gen_runner: ^5.8.0
   freezed: ^2.5.7
   json_serializable: ^6.8.0
+  hive_generator: ^2.0.0
 
 flutter:
   uses-material-design: true

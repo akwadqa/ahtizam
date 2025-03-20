@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:standard_project/src/features/home/presentation/screens/home_screen.dart';
+import 'package:ahtizam/src/features/home/presentation/screens/home_screen.dart';
 
 import '../widgets/bottom_navigation_bar.dart';
 
@@ -31,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
+      resizeToAvoidBottomInset: false,
       body: _pages[_selectedIndex],
       bottomNavigationBar: CustomBottomNavigationBar(
         selectedIndex: _selectedIndex,

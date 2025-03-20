@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:standard_project/src/extenssions/int_extenssion.dart';
-import 'package:standard_project/src/theme/app_colors.dart';
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 
 class LanguageSelectableWidget extends StatelessWidget {
   final String currentLanguage;

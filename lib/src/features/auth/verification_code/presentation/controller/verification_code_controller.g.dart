@@ -7,7 +7,7 @@ part of 'verification_code_controller.dart';
 // **************************************************************************
 
 String _$verificationCodeControllerHash() =>
-    r'507fddd0df9cb774b012dfc15bc78df1e5cb6a05';
+    r'c47a1b00caeeb52a05efce90084cf66608603693';
 
 /// See also [VerificationCodeController].
 @ProviderFor(VerificationCodeController)

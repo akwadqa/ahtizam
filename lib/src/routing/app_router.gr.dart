@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -9,28 +8,31 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:ahtizam/src/features/auth/regestration/presentation/screens/login_screen/login_screen.dart'
+    as _i3;
+import 'package:ahtizam/src/features/auth/regestration/presentation/screens/signup_screen/signup_screen.dart'
+    as _i6;
+import 'package:ahtizam/src/features/auth/verification_code/presentation/screen/verification_code_screen.dart'
+    as _i7;
+import 'package:ahtizam/src/features/home/presentation/screens/home_screen.dart'
+    as _i2;
+import 'package:ahtizam/src/features/home/presentation/screens/main_screen.dart'
+    as _i4;
+import 'package:ahtizam/src/features/onBoarding/presentations/screens/choose_language_screen.dart'
+    as _i1;
+import 'package:ahtizam/src/features/onBoarding/presentations/screens/on_boarding_screen.dart'
+    as _i5;
 import 'package:auto_route/auto_route.dart' as _i8;
 import 'package:flutter/material.dart' as _i9;
-import 'package:standard_project/src/features/auth/regestration/presentation/screens/login_screen/login_screen.dart'
-    as _i3;
-import 'package:standard_project/src/features/auth/regestration/presentation/screens/signup_screen/signup_screen.dart'
-    as _i6;
-import 'package:standard_project/src/features/auth/verification_code/presentation/screen/verification_code_screen.dart'
-    as _i7;
-import 'package:standard_project/src/features/home/presentation/screens/home_screen.dart'
-    as _i2;
-import 'package:standard_project/src/features/home/presentation/screens/main_screen.dart'
-    as _i4;
-import 'package:standard_project/src/features/onBoarding/presentations/screens/choose_language_screen.dart'
-    as _i1;
-import 'package:standard_project/src/features/onBoarding/presentations/screens/on_boarding_screen.dart'
-    as _i5;
 
 /// generated route for
 /// [_i1.ChooseLanguageScreen]
 class ChooseLanguageRoute extends _i8.PageRouteInfo<void> {
   const ChooseLanguageRoute({List<_i8.PageRouteInfo>? children})
-    : super(ChooseLanguageRoute.name, initialChildren: children);
+      : super(
+          ChooseLanguageRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'ChooseLanguageRoute';
 
@@ -46,7 +48,10 @@ class ChooseLanguageRoute extends _i8.PageRouteInfo<void> {
 /// [_i2.HomeScreen]
 class HomeRoute extends _i8.PageRouteInfo<void> {
   const HomeRoute({List<_i8.PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+      : super(
+          HomeRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'HomeRoute';
 
@@ -62,7 +67,10 @@ class HomeRoute extends _i8.PageRouteInfo<void> {
 /// [_i3.LoginScreen]
 class LoginRoute extends _i8.PageRouteInfo<void> {
   const LoginRoute({List<_i8.PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'LoginRoute';
 
@@ -78,7 +86,10 @@ class LoginRoute extends _i8.PageRouteInfo<void> {
 /// [_i4.MainScreen]
 class MainRoute extends _i8.PageRouteInfo<void> {
   const MainRoute({List<_i8.PageRouteInfo>? children})
-    : super(MainRoute.name, initialChildren: children);
+      : super(
+          MainRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'MainRoute';
 
@@ -94,7 +105,10 @@ class MainRoute extends _i8.PageRouteInfo<void> {
 /// [_i5.OnBoardingScreen]
 class OnBoardingRoute extends _i8.PageRouteInfo<void> {
   const OnBoardingRoute({List<_i8.PageRouteInfo>? children})
-    : super(OnBoardingRoute.name, initialChildren: children);
+      : super(
+          OnBoardingRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'OnBoardingRoute';
 
@@ -110,7 +124,10 @@ class OnBoardingRoute extends _i8.PageRouteInfo<void> {
 /// [_i6.SignupScreen]
 class SignupRoute extends _i8.PageRouteInfo<void> {
   const SignupRoute({List<_i8.PageRouteInfo>? children})
-    : super(SignupRoute.name, initialChildren: children);
+      : super(
+          SignupRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'SignupRoute';
 
@@ -130,10 +147,13 @@ class VerificationRoute extends _i8.PageRouteInfo<VerificationRouteArgs> {
     required String inputedPhone,
     List<_i8.PageRouteInfo>? children,
   }) : super(
-         VerificationRoute.name,
-         args: VerificationRouteArgs(key: key, inputedPhone: inputedPhone),
-         initialChildren: children,
-       );
+          VerificationRoute.name,
+          args: VerificationRouteArgs(
+            key: key,
+            inputedPhone: inputedPhone,
+          ),
+          initialChildren: children,
+        );
 
   static const String name = 'VerificationRoute';
 
@@ -150,7 +170,10 @@ class VerificationRoute extends _i8.PageRouteInfo<VerificationRouteArgs> {
 }
 
 class VerificationRouteArgs {
-  const VerificationRouteArgs({this.key, required this.inputedPhone});
+  const VerificationRouteArgs({
+    this.key,
+    required this.inputedPhone,
+  });
 
   final _i9.Key? key;
 
