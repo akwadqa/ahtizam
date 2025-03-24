@@ -6,6 +6,7 @@ import 'package:ahtizam/src/features/home/presentation/controller/show_order_for
 import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_types_drop_down_widget.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import '../../../application/map_service.dart';
 import 'location_search_fields.dart';
 import 'select_location_button.dart';
 
@@ -53,7 +54,7 @@ class RequestDetailsForm extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _restorerBackArrow(ref),
+                    _restorerBackArrow(ref, isSelectLocationFromMap),
                     const OrdersTypeDropDownWidget().onlyPadding(start: 35),
                     10.verticalSpace,
                     const LocationSearchFields(),
@@ -70,13 +71,19 @@ class RequestDetailsForm extends ConsumerWidget {
     );
   }
 
-  _restorerBackArrow(WidgetRef ref) {
+  _restorerBackArrow(WidgetRef ref, bool isSelectLocationFromMap) {
     return InkWell(
       onTap: () {
         ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
-        ref
-            .read(selectLocationFromMapControllerProvider.notifier)
-            .toggleSelection();
+
+        if (isSelectLocationFromMap) {
+          ref
+              .read(selectLocationFromMapControllerProvider.notifier)
+              .toggleSelection();
+        }
+        ref.read(mapControllerProvider.notifier)
+          ..resetPoints()
+          ..updateLocation();
       },
       child: Icon(
         Icons.arrow_back_ios,
