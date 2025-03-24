@@ -45,8 +45,10 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           await 'assets/icons/my_marker.png'.toMarkerBytes(targetSize: 30);
 
       _customMarker = BitmapDescriptor.fromBytes(markerIcon);
+      setState(() {}); // Trigger rebuild when marker is loaded
     } catch (e) {
       debugPrint('Error loading custom marker: $e');
+      _customMarker = BitmapDescriptor.defaultMarker; // Fallback to default marker
     }
   }
 
@@ -91,7 +93,6 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
                 }
               : null,
           markers: {
-            // if (mapController.firstPoint != null)
             Marker(
               markerId: const MarkerId("firstPoint"),
               position: mapController.firstPoint ?? currentLocation,
@@ -123,6 +124,10 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           myLocationEnabled: false,
           onMapCreated: (controller) {
             mapController.setMapController(controller);
+            // Reload custom marker if it's null
+            if (_customMarker == null) {
+              _loadCustomMarker();
+            }
           },
         );
       },

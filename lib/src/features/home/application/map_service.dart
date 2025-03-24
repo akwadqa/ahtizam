@@ -53,7 +53,14 @@ class MapController extends _$MapController {
       debugPrint("LAT location: ${position.latitude}");
       debugPrint("LONG location: ${position.longitude}");
 
-      return LatLng(position.latitude, position.longitude);
+      LatLng latLng = LatLng(position.latitude, position.longitude);
+      await mapController?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: latLng,
+          zoom: 17,
+        ),
+      ));
+      return latLng;
     } catch (e) {
       debugPrint("Error fetching location: $e");
       return null;
