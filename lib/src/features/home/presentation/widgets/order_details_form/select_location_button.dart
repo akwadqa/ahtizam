@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ahtizam/src/features/home/presentation/controller/select_location_from_map_controller.dart';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
 
 /// **Select Location from Map Button**
 class SelectLocationButton extends ConsumerWidget {
@@ -11,6 +12,8 @@ class SelectLocationButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        // Reset points when starting new selection
+        ref.read(mapControllerProvider.notifier).resetPoints();
         ref
             .read(selectLocationFromMapControllerProvider.notifier)
             .toggleSelection();
