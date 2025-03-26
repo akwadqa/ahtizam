@@ -31,11 +31,25 @@ class $AssetsFontsGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/apple_ic.svg
+  SvgGenImage get appleIc => const SvgGenImage('assets/icons/apple_ic.svg');
+
   /// File path: assets/icons/category.svg
   SvgGenImage get category => const SvgGenImage('assets/icons/category.svg');
 
   /// File path: assets/icons/coupon.svg
   SvgGenImage get coupon => const SvgGenImage('assets/icons/coupon.svg');
+
+  /// File path: assets/icons/credit_card_ic.svg
+  SvgGenImage get creditCardIc =>
+      const SvgGenImage('assets/icons/credit_card_ic.svg');
+
+  /// File path: assets/icons/credit_card_icn.svg
+  SvgGenImage get creditCardIcn =>
+      const SvgGenImage('assets/icons/credit_card_icn.svg');
+
+  /// File path: assets/icons/google_ic.svg
+  SvgGenImage get googleIc => const SvgGenImage('assets/icons/google_ic.svg');
 
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
@@ -68,10 +82,17 @@ class $AssetsIconsGen {
   /// File path: assets/icons/truck.svg
   SvgGenImage get truck => const SvgGenImage('assets/icons/truck.svg');
 
+  /// File path: assets/icons/wallet_ic.svg
+  SvgGenImage get walletIc => const SvgGenImage('assets/icons/wallet_ic.svg');
+
   /// List of all assets
   List<dynamic> get values => [
+        appleIc,
         category,
         coupon,
+        creditCardIc,
+        creditCardIcn,
+        googleIc,
         home,
         logo,
         markIcon,
@@ -81,7 +102,8 @@ class $AssetsIconsGen {
         profile,
         qr,
         settings,
-        truck
+        truck,
+        walletIc
       ];
 }
 
@@ -90,6 +112,13 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/Logo2.png
   AssetGenImage get logo2 => const AssetGenImage('assets/images/Logo2.png');
+
+  /// File path: assets/images/card_im.png
+  AssetGenImage get cardIm => const AssetGenImage('assets/images/card_im.png');
+
+  /// File path: assets/images/card_image.png
+  AssetGenImage get cardImage =>
+      const AssetGenImage('assets/images/card_image.png');
 
   /// File path: assets/images/empty_data.svg
   SvgGenImage get emptyData =>
@@ -128,6 +157,8 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
         logo2,
+        cardIm,
+        cardImage,
         emptyData,
         imErrorScreen,
         logo,

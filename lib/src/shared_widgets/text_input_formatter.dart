@@ -22,3 +22,32 @@ class CardNumberInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+class ExpiryDateInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) return newValue;
+
+    // Remove any non-digit characters
+    final digits = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
+
+    if (digits.length <= 2) {
+      return TextEditingValue(
+        text: digits,
+        selection: TextSelection.collapsed(offset: digits.length),
+      );
+    }
+
+    // Add separator after first two digits
+    final month = digits.substring(0, 2);
+    final year = digits.substring(2);
+
+    return TextEditingValue(
+      text: '$month/$year',
+      selection: TextSelection.collapsed(offset: '$month/$year'.length),
+    );
+  }
+}

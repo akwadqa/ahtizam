@@ -1,3 +1,5 @@
+import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -450,7 +452,9 @@ Future<void> showPaymentDialog(
                         // **Pay Button**
                         CustomButtonWidget(
                           text: context.tr("pay"),
-                          onTap: () {},
+                          onTap: () {
+                            context.navigateTo(PaymentMethodRoute());
+                          },
                           backgroundColor: AppColors.black,
                           isFiled: true,
                           height: 52,

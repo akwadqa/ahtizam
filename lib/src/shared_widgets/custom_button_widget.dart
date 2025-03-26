@@ -9,12 +9,13 @@ class CustomButtonWidget extends StatelessWidget {
   final Color? backgroundColor;
   final Color? color;
   final Color? borderColor;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isFiled;
   final double height;
   final double width;
   final double? radius;
   final double? topPading;
+  final bool isDisabled;
   const CustomButtonWidget({
     super.key,
     required this.text,
@@ -27,12 +28,16 @@ class CustomButtonWidget extends StatelessWidget {
     required this.width,
     this.radius,
     this.topPading,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        disabledForegroundColor: Colors.transparent,
+        shadowColor: isDisabled ? Colors.transparent : null,
+        overlayColor: isDisabled ? Colors.transparent : null,
         padding: EdgeInsets.zero,
         backgroundColor: backgroundColor ?? Colors.transparent,
         foregroundColor: AppColors.black900,
@@ -46,9 +51,7 @@ class CustomButtonWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius ?? 25),
         ),
       ),
-      onPressed: () {
-        onTap();
-      },
+      onPressed: onTap,
       child: Text(
         context.tr(text),
         style: Theme.of(context).textTheme.displaySmall!.copyWith(
