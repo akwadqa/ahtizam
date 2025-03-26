@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/utils/helper_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 
@@ -8,8 +9,8 @@ class CustomBackArrowWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        onTap ?? Navigator.pop(context);
+      onTap: () async {
+        await safelyPop(context);
       },
       child: Container(
           margin: EdgeInsetsDirectional.only(start: 10, bottom: 5, top: 5),

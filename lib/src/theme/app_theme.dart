@@ -50,6 +50,17 @@ abstract class AppTheme {
           padding: _buttonPadding,
         ),
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          iconColor: AppColors.orange,
+          textStyle: _baseTextStyle.copyWith(
+            fontSize: 14,
+            color: AppColors.black900,
+          ),
+          side: BorderSide(color: AppColors.border),
+          padding: _buttonPadding,
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         enabledBorder: _outlineBorder(AppColors.grayBorder),
         border: _outlineBorder(AppColors.grayBorder),

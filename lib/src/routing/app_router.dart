@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../features/auth/regestration/application/auth_service.dart';
@@ -26,15 +25,21 @@ class AppRouter extends RootStackRouter {
       AutoRoute(
         page: LoginRoute.page,
         path: "/login",
-        initial: !isFirstTime && !isAuthenticated,
+        // initial: !isFirstTime && !isAuthenticated,
       ),
       AutoRoute(page: SignupRoute.page, path: "/signup"),
       AutoRoute(page: VerificationRoute.page, path: "/verify"),
       AutoRoute(page: HomeRoute.page, path: "/home"),
       AutoRoute(
+        page: PaymentMethodRoute.page,
+        path: "/payment",
+        initial: true,
+      ),
+      AutoRoute(page: AddCardRoute.page, path: "/addCard"),
+      AutoRoute(
           page: MainRoute.page,
           path: "/main",
-          initial: !isFirstTime && isAuthenticated,
+          // initial: !isFirstTime && isAuthenticated,
           children: []),
     ];
   }
