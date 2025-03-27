@@ -36,6 +36,7 @@ class AppRouter extends RootStackRouter {
         initial: true,
       ),
       AutoRoute(page: AddCardRoute.page, path: "/addCard"),
+      AutoRoute(page: RateRoute.page, path: "/addCard"),
       AutoRoute(
           page: MainRoute.page,
           path: "/main",

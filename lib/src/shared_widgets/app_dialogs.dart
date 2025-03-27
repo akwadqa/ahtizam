@@ -9,6 +9,7 @@ import 'package:ahtizam/src/features/home/presentation/controller/payment_contro
 import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
 
 import '../../gen/assets.gen.dart';
+import '../features/payment/presentation/widgets/success_payment.dart';
 import '../theme/app_colors.dart';
 import 'searching_truck_loading.dart';
 
@@ -233,6 +234,18 @@ Future<void> showSearchingTruckLoading({
     useSafeArea: false,
     builder: (BuildContext context) {
       return SearchingTruckLoading();
+    },
+  );
+}
+
+Future<void> showSuccessPayment({
+  required BuildContext context,
+}) {
+  return showDialog(
+    context: context,
+    useSafeArea: false,
+    builder: (BuildContext context) {
+      return SuccessPayment();
     },
   );
 }

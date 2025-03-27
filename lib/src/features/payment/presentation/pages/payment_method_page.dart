@@ -1,6 +1,4 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/extenssions/widget_extensions.dart';
-import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
 import 'package:auto_route/auto_route.dart';
@@ -25,36 +23,46 @@ class PaymentMethodPage extends ConsumerWidget {
         preferredSize: const Size(double.infinity, 65),
         child: CustomAppbar(title: "payment_information"),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          PaymentMethodsList(
-            paymentMethods: paymentState.paymentMethods,
-            selectedMethod: paymentState.selectedMethod,
-            onMethodSelected: (method) {
-              paymentController.selectPaymentMethod(method);
-            },
-          ),
-          40.verticalSpace,
-          if (paymentState.selectedMethod?.id == 'credit_card')
-            EmptyCardsSection(
-              onAddCard: () {
-                context.pushRoute(const AddCardRoute());
-              },
-            ),
-          const Spacer(),
-          PaymentBottomSection(
-            totalAmount: paymentState.totalAmount,
-            selectedMethod: paymentState.selectedMethod?.id,
-            onPay: () {
-              if (paymentState.selectedMethod != null) {
-                paymentController.processPayment();
-              }
-            },
-          ),
-        ],
+      body: paymentState.when(
+        data: (state) =>
+            _buildPaymentContent(context, ref, state, paymentController),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Error: $e')),
       ),
+    );
+  }
+
+  Widget _buildPaymentContent(BuildContext context, WidgetRef ref,
+      PaymentState state, PaymentController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        PaymentMethodsList(
+          paymentMethods: state.paymentMethods,
+          selectedMethod: state.selectedMethod,
+          onMethodSelected: (method) {
+            controller.selectPaymentMethod(method);
+          },
+        ),
+        40.verticalSpace,
+        if (state.selectedMethod?.id == 'credit_card')
+          EmptyCardsSection(
+            onAddCard: () {
+              context.pushRoute(const AddCardRoute());
+            },
+          ),
+        const Spacer(),
+        PaymentBottomSection(
+          totalAmount: state.totalAmount,
+          selectedMethod: state.selectedMethod?.id,
+          onPay: () {
+            if (state.selectedMethod != null) {
+              controller.processPayment(context);
+            }
+          },
+        ),
+      ],
     );
   }
 }

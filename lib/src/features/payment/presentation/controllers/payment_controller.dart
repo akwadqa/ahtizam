@@ -1,13 +1,17 @@
 import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:ahtizam/src/routing/app_router.gr.dart';
 
 part 'payment_controller.g.dart';
 
 @riverpod
 class PaymentController extends _$PaymentController {
   @override
-  PaymentState build() {
-    return const PaymentState(
+  Future<PaymentState> build() async {
+    return PaymentState(
       selectedMethod: null,
       totalAmount: 35.0,
       paymentMethods: [
@@ -36,18 +40,27 @@ class PaymentController extends _$PaymentController {
   }
 
   void selectPaymentMethod(PaymentMethod method) {
-    state = state.copyWith(selectedMethod: method);
+    state = AsyncData(state.requireValue.copyWith(selectedMethod: method));
   }
 
   void clearSelectedMethod() {
-    state = state.copyWith(selectedMethod: null);
+    state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
   }
 
-  Future<void> processPayment() async {
-    if (state.selectedMethod == null) return;
-    
-    // TODO: Implement payment processing logic
+  Future<void> processPayment(BuildContext context) async {
+    if (state.requireValue.selectedMethod == null) return;
+
+    // Show loading state
+    state = const AsyncLoading();
+
     await Future.delayed(const Duration(seconds: 2)); // Simulate API call
+    state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
+    // Navigate to success page
+    showSuccessPayment(context: context);
+    Future.delayed(Duration(seconds: 5), () {
+      // Navigator.pop(context);s
+      // Navigator.pop(context);
+    });
   }
 }
 
@@ -73,4 +86,4 @@ class PaymentState {
       paymentMethods: paymentMethods ?? this.paymentMethods,
     );
   }
-} 
+}
