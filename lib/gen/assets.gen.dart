@@ -120,6 +120,14 @@ class $AssetsImagesGen {
   AssetGenImage get cardImage =>
       const AssetGenImage('assets/images/card_image.png');
 
+  /// File path: assets/images/check_done.svg
+  SvgGenImage get checkDone =>
+      const SvgGenImage('assets/images/check_done.svg');
+
+  /// File path: assets/images/check_done_image.png
+  AssetGenImage get checkDoneImage =>
+      const AssetGenImage('assets/images/check_done_image.png');
+
   /// File path: assets/images/empty_data.svg
   SvgGenImage get emptyData =>
       const SvgGenImage('assets/images/empty_data.svg');
@@ -159,6 +167,8 @@ class $AssetsImagesGen {
         logo2,
         cardIm,
         cardImage,
+        checkDone,
+        checkDoneImage,
         emptyData,
         imErrorScreen,
         logo,
