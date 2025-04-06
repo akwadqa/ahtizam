@@ -35,8 +35,10 @@ class LocationAutoCompleteField extends ConsumerWidget {
       apiHeaders: await const GoogleApiHeaders().getHeaders(),
     );
 
-    final result = await places.autocomplete(input,
-        language: 'en', components: [const Component(Component.country, 'QA')]);
+    final result = await places.autocomplete(
+      input,
+      language: 'en',
+    );
 
     if (result.status == "OK") {
       ref
