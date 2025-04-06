@@ -58,8 +58,9 @@ class PaymentController extends _$PaymentController {
     // Navigate to success page
     showSuccessPayment(context: context);
     Future.delayed(Duration(seconds: 5), () {
-      // Navigator.pop(context);s
-      // Navigator.pop(context);
+      Navigator.pop(context);
+      Navigator.pop(context);
+      showRateDriverDialog(context);
     });
   }
 }

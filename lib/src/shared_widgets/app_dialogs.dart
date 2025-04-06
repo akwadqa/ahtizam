@@ -55,6 +55,101 @@ Future<void> showCustomDialog({
   );
 }
 
+Future<void> showYesNowChoicesDialog(
+  BuildContext context, {
+  required String title,
+  required String dsc,
+  required VoidCallback yesButton,
+  VoidCallback? noButton,
+}) {
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+          insetPadding: EdgeInsets.symmetric(horizontal: 20),
+          backgroundColor: Colors.white.withOpacity(0.8),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                40.verticalSpace,
+
+                Text(
+                  title.tr(),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        // color: Colors.grey,
+                      ),
+                ),
+
+                40.verticalSpace,
+
+                Text(
+                  dsc.tr(),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontSize: 14,
+                      color: AppColors.darkerGray,
+                      fontWeight: FontWeight.w500),
+                ),
+
+                40.verticalSpace,
+
+                // **Pay Button**
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: CustomButtonWidget(
+                        text: context.tr("yes"),
+                        onTap: yesButton,
+                        backgroundColor: AppColors.black,
+                        isFiled: true,
+                        height: 52,
+                        radius: 12,
+                        width: MediaQuery.sizeOf(context).width,
+                      ),
+                    ),
+                    20.horizontalSpace,
+                    Flexible(
+                      child: CustomButtonWidget(
+                        text: context.tr("no"),
+                        onTap: noButton ??
+                            () {
+                              Navigator.pop(context);
+                            },
+                        color: AppColors.black,
+                        isFiled: false,
+                        borderColor: AppColors.darkGray,
+                        height: 52,
+                        radius: 12,
+                        width: MediaQuery.sizeOf(context).width,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ).allPadding(20),
+          ));
+    },
+  );
+}
+
+Future<void> showRateDriverDialog(
+  BuildContext context,
+) {
+  return showYesNowChoicesDialog(context,
+      title: "do_you_need_rate_driver",
+      dsc: "you_could_rate_driver_by_yes_button", yesButton: () {
+    context.pushRoute(RateRoute());
+  });
+}
+
 Future<void> showAcceptCancelOrder(
   BuildContext context,
 ) {

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../utils/helper_methods.dart';
-import '../controllers/add_card_controller.dart';
+import '../controller/add_card_controller.dart';
 import '../widgets/card_input_form.dart';
 
 @RoutePage()

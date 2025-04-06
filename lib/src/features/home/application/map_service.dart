@@ -29,6 +29,7 @@ class MapController extends _$MapController {
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
   final geocoding = GoogleGeocodingApi(ServicesUrls.mapApiKey);
+  String? currentAddress;
   String? firstPointAddress;
   String? secondPointAddress;
 
@@ -40,8 +41,9 @@ class MapController extends _$MapController {
       debugPrint("Location permission denied.");
       return null;
     }
+    final latLng = await _fetchCurrentLocation();
 
-    return await _fetchCurrentLocation();
+    return latLng;
   }
 
   /// **Fetch current location**
@@ -60,6 +62,8 @@ class MapController extends _$MapController {
           zoom: 17,
         ),
       ));
+      firstPointAddress = await _getAddressFromLatLng(latLng);
+
       return latLng;
     } catch (e) {
       debugPrint("Error fetching location: $e");
@@ -105,7 +109,7 @@ class MapController extends _$MapController {
       secondPointAddress = await _getAddressFromLatLng(latLng);
       state = AsyncValue.data(latLng);
       debugPrint("Second point address: $secondPointAddress");
-      await _getPolylinePoints();
+      await getPolylinePoints();
     }
     debugPrint("Updated Location: ${latLng.latitude}, ${latLng.longitude}");
   }
@@ -123,7 +127,7 @@ class MapController extends _$MapController {
     secondPointAddress = null;
   }
 
-  Future<void> _getPolylinePoints() async {
+  Future<void> getPolylinePoints() async {
     if (firstPoint == null || secondPoint == null) return;
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(

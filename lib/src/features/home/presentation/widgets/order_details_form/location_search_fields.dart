@@ -39,6 +39,10 @@ class LocationSearchFields extends ConsumerWidget {
 
                       onSelected: (place) {
                         myLocationController.text = place;
+                        ref
+                            .read(locationSearchControllerProvider.notifier)
+                            .onMyLocationChanged(place);
+
                         debugPrint("Selected Location: ${place}");
                       },
                     ),
@@ -50,7 +54,9 @@ class LocationSearchFields extends ConsumerWidget {
 
                       onSelected: (place) {
                         workShopLocationController.text = place;
-
+                        ref
+                            .read(locationSearchControllerProvider.notifier)
+                            .onWorkshopLocationChanged(place);
                         debugPrint("Selected Location: ${place}");
                       },
                     ),
