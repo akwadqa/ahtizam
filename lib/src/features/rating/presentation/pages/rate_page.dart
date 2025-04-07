@@ -1,3 +1,5 @@
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -19,85 +21,67 @@ class RatePage extends ConsumerWidget {
     final rateController = ref.read(rateControllerProvider.notifier);
 
     return Scaffold(
+      backgroundColor: AppColors.offWhite,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
-        child: CustomAppbar(title: "التقييم"),
+        child: CustomAppbar(title: "rating"),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            75.verticalSpace,
             Text(
-              'كيف كانت الخدمة',
+              "how_was_service".tr(),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 24),
-            ...RatingOption.values.map((option) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: RatingOptionItem(
-                    option: option,
-                    isSelected: rateState.selectedRating == option,
-                    onTap: () => rateController.selectRating(option),
-                  ),
+                  fontSize: 25,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.black),
+            ).centered(),
+            75.verticalSpace,
+            Container(
+                // padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    ...RatingOption.values.map((option) => RatingOptionItem(
+                          option: option,
+                          isSelected: rateState.selectedRating == option,
+                          onTap: () => rateController.selectRating(option),
+                        )),
+                  ],
                 )),
-            const SizedBox(height: 24),
-            Text(
-              'أخرى',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              maxLines: 4,
+            12.verticalSpace,
+            TextFormField(
+              maxLines: 6,
               decoration: InputDecoration(
-                hintText: 'اكتب تعليقك هنا...',
+                // fillColor: Colors.brown,
+                filled: true,
+                hintText: "other".tr(),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .copyWith(fontSize: 14, color: AppColors.grayBorder),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: Colors.grey.shade300,
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.transparent)),
               ),
               onChanged: rateController.updateComment,
             ),
-            if (rateState.error != null) ...[
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.red[50],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.error_outline, color: Colors.red[700]),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        rateState.error!,
-                        style: TextStyle(color: Colors.red[700]),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: rateController.clearError,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            const SizedBox(height: 24),
+            24.verticalSpace,
             SizedBox(
               width: double.infinity,
               child: rateState.isLoading
                   ? const FadeCircleLoadingIndicator()
                   : CustomButtonWidget(
-                      text: "تقييم",
+                      text: "rate".tr(),
                       onTap: rateState.isLoading
                           ? null
                           : () async {
@@ -109,6 +93,7 @@ class RatePage extends ConsumerWidget {
                             },
                       backgroundColor: AppColors.black,
                       isFiled: true,
+                      isDisabled: rateState.selectedRating == null,
                       height: 52,
                       width: double.infinity,
                       radius: 12,

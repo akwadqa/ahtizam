@@ -1,15 +1,18 @@
+import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/select_truck_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_bottom_sheet.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../../application/map_service.dart';
+import '../controllers/toggle_layers_controllers/show_order_form_controller.dart';
 
 /// **Bottom Sheet for Truck Selection**
 class TruckSelectionBottomSheet extends ConsumerWidget {
@@ -181,7 +184,12 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                   Future.delayed(Duration(seconds: 5), () {
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    showDriverDetailsBottomSheet(context);
+                    ref
+                                .read(showOrderFormControllerProvider.notifier)
+                                .initiallValue ==
+                            "request_offer"
+                        ? context.pushRoute(PricesOfferRoute())
+                        : showDriverDetailsBottomSheet(context);
                   });
                 },
                 backgroundColor:

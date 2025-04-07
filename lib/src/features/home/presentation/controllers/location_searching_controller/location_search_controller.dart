@@ -4,7 +4,7 @@ import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.da
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../application/map_service.dart';
+import '../../../application/map_service.dart';
 
 part 'location_search_controller.g.dart';
 
@@ -84,8 +84,15 @@ class LocationSearchController extends _$LocationSearchController {
       myLocationController.text = mapController.firstPointAddress!;
 
       // إعادة رسم المسار إن وُجدت النقطة الثانية
-      await mapController.getPolylinePoints();
 
+      await mapController.getPolylinePoints();
+      await mapController.mapController
+          ?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: latLng,
+          zoom: 17,
+        ),
+      ));
       debugPrint("📍 Updated First Point: ${mapController.firstPointAddress}");
     }
   }
@@ -108,6 +115,13 @@ class LocationSearchController extends _$LocationSearchController {
       workShopLocationController.text = mapController.secondPointAddress!;
 
       // إعادة رسم المسار إن وُجدت النقطة الأولى
+      await mapController.mapController
+          ?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: latLng,
+          zoom: 17,
+        ),
+      ));
       await mapController.getPolylinePoints();
 
       debugPrint(

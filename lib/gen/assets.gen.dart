@@ -54,6 +54,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
 
+  /// File path: assets/icons/location_ic.svg
+  SvgGenImage get locationIc =>
+      const SvgGenImage('assets/icons/location_ic.svg');
+
   /// File path: assets/icons/logo.svg
   SvgGenImage get logo => const SvgGenImage('assets/icons/logo.svg');
 
@@ -67,6 +71,9 @@ class $AssetsIconsGen {
   AssetGenImage get myMarker =>
       const AssetGenImage('assets/icons/my_marker.png');
 
+  /// File path: assets/icons/phone_ic.svg
+  SvgGenImage get phoneIc => const SvgGenImage('assets/icons/phone_ic.svg');
+
   /// File path: assets/icons/polyline.svg
   SvgGenImage get polyline => const SvgGenImage('assets/icons/polyline.svg');
 
@@ -79,8 +86,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
+  /// File path: assets/icons/time_ic.svg
+  SvgGenImage get timeIc => const SvgGenImage('assets/icons/time_ic.svg');
+
   /// File path: assets/icons/truck.svg
   SvgGenImage get truck => const SvgGenImage('assets/icons/truck.svg');
+
+  /// File path: assets/icons/verifiedCheck_ic.svg
+  SvgGenImage get verifiedCheckIc =>
+      const SvgGenImage('assets/icons/verifiedCheck_ic.svg');
 
   /// File path: assets/icons/wallet_ic.svg
   SvgGenImage get walletIc => const SvgGenImage('assets/icons/wallet_ic.svg');
@@ -94,15 +108,19 @@ class $AssetsIconsGen {
         creditCardIcn,
         googleIc,
         home,
+        locationIc,
         logo,
         markIcon,
         messages,
         myMarker,
+        phoneIc,
         polyline,
         profile,
         qr,
         settings,
+        timeIc,
         truck,
+        verifiedCheckIc,
         walletIc
       ];
 }

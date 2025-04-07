@@ -62,6 +62,7 @@ class MapController extends _$MapController {
           zoom: 17,
         ),
       ));
+      firstPoint = latLng;
       firstPointAddress = await _getAddressFromLatLng(latLng);
 
       return latLng;
@@ -128,7 +129,9 @@ class MapController extends _$MapController {
   }
 
   Future<void> getPolylinePoints() async {
-    if (firstPoint == null || secondPoint == null) return;
+    // if (firstPoint == null || secondPoint == null) return;
+    debugPrint("❌ First polyline: ${firstPoint?.latitude ?? "nukk"}");
+    debugPrint("❌ second polyline: ${secondPoint?.latitude ?? "nukki"}");
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       ServicesUrls.mapApiKey,

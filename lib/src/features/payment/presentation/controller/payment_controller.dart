@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/features/home/application/home_service.dart';
 import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +17,9 @@ class PaymentController extends _$PaymentController {
       totalAmount: 35.0,
       paymentMethods: [
         PaymentMethod(
-          id: 'google_pay',
-          icon: 'assets/icons/google_ic.svg',
-          title: 'Google Pay',
+          id: 'apple_pay',
+          icon: 'assets/icons/apple_ic.svg',
+          title: 'Apple Pay',
         ),
         PaymentMethod(
           id: 'credit_card',
@@ -31,9 +32,9 @@ class PaymentController extends _$PaymentController {
           title: 'Wallet',
         ),
         PaymentMethod(
-          id: 'apple_pay',
-          icon: 'assets/icons/apple_ic.svg',
-          title: 'Apple Pay',
+          id: 'google_pay',
+          icon: 'assets/icons/google_ic.svg',
+          title: 'Google Pay',
         ),
       ],
     );
@@ -57,8 +58,8 @@ class PaymentController extends _$PaymentController {
     state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
     // Navigate to success page
     showSuccessPayment(context: context);
-    Future.delayed(Duration(seconds: 5), () {
-      Navigator.pop(context);
+    Future.delayed(Duration(seconds: 3), () {
+      ref.read(homeServiceProvider.notifier).resetLayers(context);
       Navigator.pop(context);
       showRateDriverDialog(context);
     });

@@ -57,6 +57,8 @@
     "cancel": "cancel",
     "yes": "yes",
     "no": "no",
+    "success_payment": "Payment done by successfully",
+
     "enter_location": "Please enter a location",
     "vehicle_capacity": "Vehicle Capacity",
     "vehicle_size": "Vehicle Size",
@@ -98,6 +100,22 @@
     "add_card_description": "You can add a main card and save it for later",
     "complete_order": "Complete Order",
     "add": "Add",
+    "trip_is_over": "The trip is over",
+    "rate_drive": "Rate the driver",
+    "rate": "Rate",
+    "rating": "Rating",
+    "how_was_service": "How was the service",
+    "excellent": "Excellent",
+    "good": "Good",
+    "normal": "Normal",
+    "bad": "Bad",
+    "other": "Other",
+    "prices_offer": "Prices offers",
+    "filter_by": "Filter by",
+    "all_orders": "All orders",
+    "lowestPrice": "Lowest prices",
+    "nearestToMe": "Nearest to me",
+    "order": "Order({})",
 
     "currency": "QAR"
 }

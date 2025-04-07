@@ -1,3 +1,5 @@
+import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../controllers/rate_controller.dart';
 
@@ -22,35 +24,34 @@ class RatingOptionItem extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? Colors.amber : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
+            color: isSelected ? Colors.amber : Colors.transparent,
+            width: isSelected ? 1 : 0,
           ),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Row(
-                children: List.generate(5, (index) {
-                  final isFilled = index < option.value;
-                  return Icon(
-                    isFilled ? Icons.star : Icons.star_border,
-                    color: Colors.amber,
-                    size: 24,
-                  );
-                }),
-              ),
-            ),
-            const SizedBox(width: 16),
             Text(
-              option.label,
+              option.label.tr(),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: isSelected ? FontWeight.bold : null,
                   ),
+            ),
+            // Spacer(),
+            Row(
+              children: List.generate(5, (index) {
+                final isFilled = index < option.value;
+                return Icon(
+                  isFilled ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: isSelected ? 26 : 24,
+                );
+              }).reversed.toList(),
             ),
           ],
         ),
       ),
     );
   }
-} 
+}

@@ -1,4 +1,4 @@
-import 'package:ahtizam/src/features/home/presentation/controller/location_search_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/location_search_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/shared_widgets/location_auto_complete_widget.dart';

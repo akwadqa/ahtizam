@@ -12,13 +12,15 @@ class CustomAppbar extends StatelessWidget {
     return AppBar(
       backgroundColor: AppColors.white,
       centerTitle: true,
+      elevation: 0,
       // leadingWidth: 65,
       automaticallyImplyLeading: false,
       title: Text(
         context.tr(title),
         style: Theme.of(context).textTheme.labelMedium!.copyWith(
-              fontSize: 20,
-            ),
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black800),
       ),
       leading: CustomBackArrowWidget(),
       bottom: PreferredSize(

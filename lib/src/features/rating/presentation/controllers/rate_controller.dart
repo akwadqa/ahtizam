@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'rate_controller.g.dart';
 
 enum RatingOption {
-  excellent(5, 'ممتازة'),
-  good(3, 'جيدة'),
-  normal(2, 'عادية'),
-  bad(1, 'سيئة');
+  excellent(5, "excellent"),
+  good(3, "good"),
+  normal(2, "normal"),
+  bad(1, "bad");
 
   final int value;
   final String label;

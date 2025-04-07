@@ -25,22 +25,22 @@ class AppRouter extends RootStackRouter {
       AutoRoute(
         page: LoginRoute.page,
         path: "/login",
-        initial: !isFirstTime && !isAuthenticated,
+        // initial: !isFirstTime && !isAuthenticated,
       ),
       AutoRoute(page: SignupRoute.page, path: "/signup"),
       AutoRoute(page: VerificationRoute.page, path: "/verify"),
       AutoRoute(page: HomeRoute.page, path: "/home"),
-      AutoRoute(
-        page: PaymentMethodRoute.page,
-        path: "/payment",
-        // initial: true,
-      ),
+      AutoRoute(page: NotificationsRoute.page, path: "/notifications"),
+      AutoRoute(page: PaymentMethodRoute.page, path: "/payment"),
       AutoRoute(page: AddCardRoute.page, path: "/addCard"),
+      AutoRoute(page: PricesOfferRoute.page, path: "/pricesOffer"),
       AutoRoute(page: RateRoute.page, path: "/rate"),
       AutoRoute(
           page: MainRoute.page,
           path: "/main",
-          initial: !isFirstTime && isAuthenticated,
+          initial: true,
+
+          // initial: !isFirstTime && isAuthenticated,
           children: []),
     ];
   }

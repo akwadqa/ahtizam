@@ -6,7 +6,7 @@ import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.da
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/location_search_controller.dart'; // Import the controller
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/location_search_controller.dart'; // Import the controller
 
 class LocationAutoCompleteField extends ConsumerWidget {
   final TextEditingController controller;
