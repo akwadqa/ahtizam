@@ -35,9 +35,8 @@ class CustomButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        disabledBackgroundColor: AppColors.gray,
         disabledForegroundColor: Colors.transparent,
-        shadowColor: isDisabled ? Colors.transparent : null,
-        overlayColor: isDisabled ? Colors.transparent : null,
         padding: EdgeInsets.zero,
         backgroundColor: backgroundColor ?? Colors.transparent,
         foregroundColor: AppColors.black900,
@@ -47,11 +46,13 @@ class CustomButtonWidget extends StatelessWidget {
         ),
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: borderColor ?? backgroundColor ?? Colors.transparent),
+              color: isDisabled
+                  ? Colors.transparent
+                  : borderColor ?? backgroundColor ?? Colors.transparent),
           borderRadius: BorderRadius.circular(radius ?? 25),
         ),
       ),
-      onPressed: onTap,
+      onPressed: isDisabled ? null : onTap,
       child: Text(
         context.tr(text),
         style: Theme.of(context).textTheme.displaySmall!.copyWith(

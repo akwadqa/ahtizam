@@ -9,7 +9,7 @@ import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 
-import '../features/home/presentation/widgets/google_map_widget.dart';
+import '../features/home/presentation/widgets/map/google_map_widget.dart';
 
 class SearchingTruckLoading extends ConsumerWidget {
   const SearchingTruckLoading({super.key});

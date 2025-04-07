@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'payment_controller.dart';
+part of 'prices_filter_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$paymentControllerHash() => r'41cfc39ec891b056974433265b84d495520f0eab';
+String _$pricesFilterControllerHash() =>
+    r'95435b9fec46117baadac95f07e891dec58589b3';
 
-/// See also [PaymentController].
-@ProviderFor(PaymentController)
-final paymentControllerProvider =
-    AutoDisposeAsyncNotifierProvider<PaymentController, PaymentState>.internal(
-  PaymentController.new,
-  name: r'paymentControllerProvider',
+/// See also [PricesFilterController].
+@ProviderFor(PricesFilterController)
+final pricesFilterControllerProvider = AutoDisposeNotifierProvider<
+    PricesFilterController, PriceFilterType>.internal(
+  PricesFilterController.new,
+  name: r'pricesFilterControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$paymentControllerHash,
+      : _$pricesFilterControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PaymentController = AutoDisposeAsyncNotifier<PaymentState>;
+typedef _$PricesFilterController = AutoDisposeNotifier<PriceFilterType>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

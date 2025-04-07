@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/select_location_from_map_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_types_drop_down_widget.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
@@ -37,8 +37,7 @@ class RequestDetailsForm extends ConsumerWidget {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: GestureDetector(
             onTap: () {
-              FocusScope.of(context)
-                  .requestFocus(FocusNode()); // Dismiss keyboard
+              FocusScope.of(context).requestFocus(FocusNode());
             },
             child: SingleChildScrollView(
               child: Container(

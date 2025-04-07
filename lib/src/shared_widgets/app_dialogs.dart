@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/payment_controller/payment_coupon_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/payment_controller/payment_coupon_controller.dart';
 import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
 
 import '../../gen/assets.gen.dart';
@@ -71,86 +71,74 @@ Future<void> showYesNowChoicesDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                40.verticalSpace,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              40.verticalSpace,
 
-                Text(
-                  title.tr(),
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        // color: Colors.grey,
-                      ),
-                ),
-
-                40.verticalSpace,
-
-                Text(
-                  dsc.tr(),
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontSize: 14,
-                      color: AppColors.darkerGray,
-                      fontWeight: FontWeight.w500),
-                ),
-
-                40.verticalSpace,
-
-                // **Pay Button**
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: CustomButtonWidget(
-                        text: context.tr("yes"),
-                        onTap: yesButton,
-                        backgroundColor: AppColors.black,
-                        isFiled: true,
-                        height: 52,
-                        radius: 12,
-                        width: MediaQuery.sizeOf(context).width,
-                      ),
+              Text(
+                title.tr(),
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      // color: Colors.grey,
                     ),
-                    20.horizontalSpace,
-                    Flexible(
-                      child: CustomButtonWidget(
-                        text: context.tr("no"),
-                        onTap: noButton ??
-                            () {
-                              Navigator.pop(context);
-                            },
-                        color: AppColors.black,
-                        isFiled: false,
-                        borderColor: AppColors.darkGray,
-                        height: 52,
-                        radius: 12,
-                        width: MediaQuery.sizeOf(context).width,
-                      ),
+              ).centered(),
+
+              40.verticalSpace,
+
+              Text(
+                dsc.tr(),
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 14,
+                    color: AppColors.darkerGray,
+                    fontWeight: FontWeight.w500),
+              ),
+
+              40.verticalSpace,
+
+              // **Pay Button**
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: CustomButtonWidget(
+                      text: context.tr("yes"),
+                      onTap: yesButton,
+                      backgroundColor: AppColors.black,
+                      isFiled: true,
+                      height: 45,
+                      radius: 12,
+                      width: MediaQuery.sizeOf(context).width,
                     ),
-                  ],
-                )
-              ],
-            ).allPadding(20),
-          ));
+                  ),
+                  20.horizontalSpace,
+                  Flexible(
+                    child: CustomButtonWidget(
+                      text: context.tr("no"),
+                      onTap: noButton ??
+                          () {
+                            Navigator.pop(context);
+                          },
+                      color: AppColors.black,
+                      isFiled: false,
+                      borderColor: AppColors.darkGray,
+                      height: 45,
+                      radius: 12,
+                      width: MediaQuery.sizeOf(context).width,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ).symmetricPadding(horizontal: 20, vertical: 25));
     },
   );
 }
 
 Future<void> showRateDriverDialog(
-  BuildContext context,
-) {
-  return showYesNowChoicesDialog(context,
-      title: "do_you_need_rate_driver",
-      dsc: "you_could_rate_driver_by_yes_button", yesButton: () {
-    context.pushRoute(RateRoute());
-  });
-}
-
-Future<void> showAcceptCancelOrder(
   BuildContext context,
 ) {
   return showDialog(
@@ -160,77 +148,152 @@ Future<void> showAcceptCancelOrder(
           insetPadding: EdgeInsets.symmetric(horizontal: 20),
           backgroundColor: Colors.white.withOpacity(0.8),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(20),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                40.verticalSpace,
+          child: Stack(
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  20.verticalSpace,
 
-                Text(
-                  "cancel_order_msg".tr(),
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        // color: Colors.grey,
-                      ),
+                  Assets.images.checkDoneImage.image(width: 150, height: 100),
+                  20.verticalSpace,
+                  Text(
+                    "trip_is_over".tr(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          // color: Colors.grey,
+                        ),
+                  ),
+
+                  20.verticalSpace,
+
+                  // **Pay Button**
+                  CustomButtonWidget(
+                    text: context.tr("rate_drive"),
+                    onTap: () async {
+                      Navigator.pop(context);
+                      // await Future.delayed(Duration(milliseconds: 1000));
+                      context.pushRoute(RateRoute());
+                    },
+                    backgroundColor: AppColors.black,
+                    isFiled: true,
+                    height: 45,
+                    radius: 12,
+                    width: MediaQuery.sizeOf(context).width,
+                  ),
+                ],
+              ).symmetricPadding(horizontal: 20, vertical: 15),
+              PositionedDirectional(
+                start: 15,
+                top: 15,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.close,
+                    size: 22,
+                  ),
+                  splashColor: AppColors.black,
+                  padding: EdgeInsets.zero,
+                  alignment: AlignmentDirectional.topStart,
+                  onPressed: () => Navigator.pop(context),
                 ),
-
-                40.verticalSpace,
-
-                Text(
-                  "cancel_order_dsc".tr(),
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      fontSize: 14,
-                      color: AppColors.darkerGray,
-                      fontWeight: FontWeight.w500),
-                ),
-
-                40.verticalSpace,
-
-                // **Pay Button**
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: CustomButtonWidget(
-                        text: context.tr("yes"),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                        },
-                        backgroundColor: AppColors.black,
-                        isFiled: true,
-                        height: 52,
-                        radius: 12,
-                        width: MediaQuery.sizeOf(context).width,
-                      ),
-                    ),
-                    20.horizontalSpace,
-                    Flexible(
-                      child: CustomButtonWidget(
-                        text: context.tr("no"),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        color: AppColors.black,
-                        isFiled: false,
-                        borderColor: AppColors.darkGray,
-                        height: 52,
-                        radius: 12,
-                        width: MediaQuery.sizeOf(context).width,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ).allPadding(20),
+              ),
+            ],
           ));
     },
   );
+}
+
+Future<void> showAcceptCancelOrder(
+  BuildContext context,
+) {
+  return showYesNowChoicesDialog(context,
+      title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: () {
+    Navigator.pop(context);
+    Navigator.pop(context);
+  });
+
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return Dialog(
+  //         insetPadding: EdgeInsets.symmetric(horizontal: 20),
+  //         backgroundColor: Colors.white.withOpacity(0.8),
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(16),
+  //         ),
+  //         child: Padding(
+  //           padding: const EdgeInsets.all(25.0),
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               40.verticalSpace,
+
+  //               Text(
+  //                 "cancel_order_msg".tr(),
+  //                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.bold,
+  //                       // color: Colors.grey,
+  //                     ),
+  //               ),
+
+  //               40.verticalSpace,
+
+  //               Text(
+  //                 "cancel_order_dsc".tr(),
+  //                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
+  //                     fontSize: 14,
+  //                     color: AppColors.darkerGray,
+  //                     fontWeight: FontWeight.w500),
+  //               ),
+
+  //               40.verticalSpace,
+
+  //               // **Pay Button**
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   Flexible(
+  //                     child: CustomButtonWidget(
+  //                       text: context.tr("yes"),
+  //                       onTap: () {
+  //                         Navigator.pop(context);
+  //                         Navigator.pop(context);
+  //                       },
+  //                       backgroundColor: AppColors.black,
+  //                       isFiled: true,
+  //                       height: 52,
+  //                       radius: 12,
+  //                       width: MediaQuery.sizeOf(context).width,
+  //                     ),
+  //                   ),
+  //                   20.horizontalSpace,
+  //                   Flexible(
+  //                     child: CustomButtonWidget(
+  //                       text: context.tr("no"),
+  //                       onTap: () {
+  //                         Navigator.pop(context);
+  //                       },
+  //                       color: AppColors.black,
+  //                       isFiled: false,
+  //                       borderColor: AppColors.darkGray,
+  //                       height: 52,
+  //                       radius: 12,
+  //                       width: MediaQuery.sizeOf(context).width,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               )
+  //             ],
+  //           ).allPadding(20),
+  //         ));
+  //   },
+  // );
 }
 
 showErrorDialog(BuildContext context, String message) {
@@ -302,11 +365,11 @@ _truckRow(BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Assets.icons.truck.svg(),
       Text(
         "سطحة",
         style: Theme.of(context).textTheme.bodyMedium,
       ),
+      Assets.icons.truck.svg(),
     ],
   ).onlyPadding(bottom: 16);
 }
@@ -315,8 +378,8 @@ Widget _infoRow(BuildContext context, String label, String value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(value, style: Theme.of(context).textTheme.bodyMedium),
       Text(label, style: Theme.of(context).textTheme.bodyMedium),
+      Text(value, style: Theme.of(context).textTheme.bodyMedium),
     ],
   ).symmetricPadding(vertical: 16);
 }

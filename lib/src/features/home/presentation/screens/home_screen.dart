@@ -6,16 +6,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/change_request_order_state_service.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/select_truck_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
 import '../../../../localization/current_language.dart';
+import '../../../../routing/app_router.gr.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../auth/regestration/application/auth_service.dart';
-import '../controller/location_search_controller.dart';
-import '../widgets/google_map_widget.dart';
+import '../controllers/location_searching_controller/location_search_controller.dart';
+import '../widgets/map/google_map_widget.dart';
 
 @RoutePage()
 class HomeScreen extends ConsumerWidget {
@@ -125,7 +126,10 @@ class _TopNavigationBar extends ConsumerWidget {
                 Assets.icons.logo
                     .svg(fit: BoxFit.scaleDown)
                     .onlyPadding(top: 5),
-                const Icon(Icons.notifications, size: 28),
+                GestureDetector(
+                  onTap: () => context.pushRoute(NotificationsRoute()),
+                  child: const Icon(Icons.notifications, size: 28),
+                ),
               ],
             ),
           ),
@@ -216,6 +220,9 @@ class _RequestOrderBottomActionCard extends ConsumerWidget {
                       ref
                           .read(showOrderFormControllerProvider.notifier)
                           .toggleVisibility();
+                      ref
+                          .read(showOrderFormControllerProvider.notifier)
+                          .intialValueToOrder("request_now");
                     },
                     backgroundColor: AppColors.black,
                     isFiled: true,
@@ -227,7 +234,12 @@ class _RequestOrderBottomActionCard extends ConsumerWidget {
                   CustomButtonWidget(
                     text: context.tr("request_offer"),
                     onTap: () {
-                      // TODO: Implement navigation
+                      ref
+                          .read(showOrderFormControllerProvider.notifier)
+                          .toggleVisibility();
+                      ref
+                          .read(showOrderFormControllerProvider.notifier)
+                          .intialValueToOrder("request_offer");
                     },
                     // backgroundColor: AppColors.black,
                     isFiled: false,

@@ -26,7 +26,7 @@ final locationPermissionProvider = AutoDisposeFutureProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LocationPermissionRef = AutoDisposeFutureProviderRef<bool>;
-String _$mapControllerHash() => r'eccc29c8a7774b3fcb17742628e24543947a2c93';
+String _$mapControllerHash() => r'cc8014799422aaa0b98f3a77cd672040efa9b143';
 
 /// **Provide the current location (LatLng)**
 ///

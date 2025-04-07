@@ -12,11 +12,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
-import 'package:ahtizam/src/features/home/presentation/controller/select_location_from_map_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
 
-import '../../../../shared_widgets/fade_circle_loading_indicator.dart';
-import '../../../../theme/app_colors.dart';
-import '../controller/location_search_controller.dart';
+import '../../../../../shared_widgets/fade_circle_loading_indicator.dart';
+import '../../../../../theme/app_colors.dart';
+import '../../controllers/location_searching_controller/location_search_controller.dart';
 
 class GoogleMapWidget extends ConsumerStatefulWidget {
   const GoogleMapWidget({super.key});
@@ -48,7 +48,8 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
       setState(() {}); // Trigger rebuild when marker is loaded
     } catch (e) {
       debugPrint('Error loading custom marker: $e');
-      _customMarker = BitmapDescriptor.defaultMarker; // Fallback to default marker
+      _customMarker =
+          BitmapDescriptor.defaultMarker; // Fallback to default marker
     }
   }
 

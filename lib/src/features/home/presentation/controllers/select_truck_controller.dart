@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../auth/verification_code/domain/model/truck_model.dart';
 import '../widgets/truck_selection_bottom_sheet.dart';
-import 'select_location_from_map_controller.dart';
+import 'location_searching_controller/select_location_from_map_controller.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 
 part 'select_truck_controller.g.dart';
