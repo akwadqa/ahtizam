@@ -28,6 +28,9 @@ mixin _$UserInformation {
   @HiveField(2)
   @JsonKey(name: "mobile_no")
   String get mobileNumber => throw _privateConstructorUsedError;
+  @HiveField(3)
+  @JsonKey(name: "email")
+  String get email => throw _privateConstructorUsedError;
 
   /// Serializes this UserInformation to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,7 +51,8 @@ abstract class $UserInformationCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String token,
       @HiveField(1) @JsonKey(name: "full_name") String fullName,
-      @HiveField(2) @JsonKey(name: "mobile_no") String mobileNumber});
+      @HiveField(2) @JsonKey(name: "mobile_no") String mobileNumber,
+      @HiveField(3) @JsonKey(name: "email") String email});
 }
 
 /// @nodoc
@@ -69,6 +73,7 @@ class _$UserInformationCopyWithImpl<$Res, $Val extends UserInformation>
     Object? token = null,
     Object? fullName = null,
     Object? mobileNumber = null,
+    Object? email = null,
   }) {
     return _then(_value.copyWith(
       token: null == token
@@ -82,6 +87,10 @@ class _$UserInformationCopyWithImpl<$Res, $Val extends UserInformation>
       mobileNumber: null == mobileNumber
           ? _value.mobileNumber
           : mobileNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -98,7 +107,8 @@ abstract class _$$UserInformationImplCopyWith<$Res>
   $Res call(
       {@HiveField(0) String token,
       @HiveField(1) @JsonKey(name: "full_name") String fullName,
-      @HiveField(2) @JsonKey(name: "mobile_no") String mobileNumber});
+      @HiveField(2) @JsonKey(name: "mobile_no") String mobileNumber,
+      @HiveField(3) @JsonKey(name: "email") String email});
 }
 
 /// @nodoc
@@ -117,6 +127,7 @@ class __$$UserInformationImplCopyWithImpl<$Res>
     Object? token = null,
     Object? fullName = null,
     Object? mobileNumber = null,
+    Object? email = null,
   }) {
     return _then(_$UserInformationImpl(
       token: null == token
@@ -131,6 +142,10 @@ class __$$UserInformationImplCopyWithImpl<$Res>
           ? _value.mobileNumber
           : mobileNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -141,7 +156,8 @@ class _$UserInformationImpl implements _UserInformation {
   _$UserInformationImpl(
       {@HiveField(0) required this.token,
       @HiveField(1) @JsonKey(name: "full_name") required this.fullName,
-      @HiveField(2) @JsonKey(name: "mobile_no") required this.mobileNumber});
+      @HiveField(2) @JsonKey(name: "mobile_no") required this.mobileNumber,
+      @HiveField(3) @JsonKey(name: "email") required this.email});
 
   factory _$UserInformationImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserInformationImplFromJson(json);
@@ -157,10 +173,14 @@ class _$UserInformationImpl implements _UserInformation {
   @HiveField(2)
   @JsonKey(name: "mobile_no")
   final String mobileNumber;
+  @override
+  @HiveField(3)
+  @JsonKey(name: "email")
+  final String email;
 
   @override
   String toString() {
-    return 'UserInformation(token: $token, fullName: $fullName, mobileNumber: $mobileNumber)';
+    return 'UserInformation(token: $token, fullName: $fullName, mobileNumber: $mobileNumber, email: $email)';
   }
 
   @override
@@ -172,12 +192,14 @@ class _$UserInformationImpl implements _UserInformation {
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
             (identical(other.mobileNumber, mobileNumber) ||
-                other.mobileNumber == mobileNumber));
+                other.mobileNumber == mobileNumber) &&
+            (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, token, fullName, mobileNumber);
+  int get hashCode =>
+      Object.hash(runtimeType, token, fullName, mobileNumber, email);
 
   /// Create a copy of UserInformation
   /// with the given fields replaced by the non-null parameter values.
@@ -202,7 +224,10 @@ abstract class _UserInformation implements UserInformation {
       @HiveField(1) @JsonKey(name: "full_name") required final String fullName,
       @HiveField(2)
       @JsonKey(name: "mobile_no")
-      required final String mobileNumber}) = _$UserInformationImpl;
+      required final String mobileNumber,
+      @HiveField(3)
+      @JsonKey(name: "email")
+      required final String email}) = _$UserInformationImpl;
 
   factory _UserInformation.fromJson(Map<String, dynamic> json) =
       _$UserInformationImpl.fromJson;
@@ -218,6 +243,10 @@ abstract class _UserInformation implements UserInformation {
   @HiveField(2)
   @JsonKey(name: "mobile_no")
   String get mobileNumber;
+  @override
+  @HiveField(3)
+  @JsonKey(name: "email")
+  String get email;
 
   /// Create a copy of UserInformation
   /// with the given fields replaced by the non-null parameter values.

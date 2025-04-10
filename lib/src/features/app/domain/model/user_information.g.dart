@@ -20,19 +20,22 @@ class UserInformationAdapter extends TypeAdapter<UserInformation> {
       token: fields[0] as String,
       fullName: fields[1] as String,
       mobileNumber: fields[2] as String,
+      email: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserInformation obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.token)
       ..writeByte(1)
       ..write(obj.fullName)
       ..writeByte(2)
-      ..write(obj.mobileNumber);
+      ..write(obj.mobileNumber)
+      ..writeByte(3)
+      ..write(obj.email);
   }
 
   @override
@@ -56,6 +59,7 @@ _$UserInformationImpl _$$UserInformationImplFromJson(
       token: json['token'] as String,
       fullName: json['full_name'] as String,
       mobileNumber: json['mobile_no'] as String,
+      email: json['email'] as String,
     );
 
 Map<String, dynamic> _$$UserInformationImplToJson(
@@ -64,4 +68,5 @@ Map<String, dynamic> _$$UserInformationImplToJson(
       'token': instance.token,
       'full_name': instance.fullName,
       'mobile_no': instance.mobileNumber,
+      'email': instance.email,
     };

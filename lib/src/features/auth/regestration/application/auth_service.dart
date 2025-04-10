@@ -52,9 +52,36 @@ class UserData extends _$UserData {
     await _userinfoBox.put(0, info);
   }
 
-  UserData? getUserData() {
-    final box = Hive.box<UserData>(HiveBoxesName.userInfoBox);
-    return box.get(HiveBoxesName.userInfoBox); // Retrieve stored object
+  UserInformation getUserData() {
+    final box = Hive.box<UserInformation>(HiveBoxesName.userInfoBox);
+    return box.get(0) ?? UserInformation.empty();
+  }
+
+  Future<void> updateBasicUserFields({
+    String? fullName,
+    String? email,
+    String? phoneNumber,
+  }) async {
+    try {
+      final box = Hive.box<UserInformation>(HiveBoxesName.userInfoBox);
+      final currentUser = box.get(0);
+
+      if (currentUser == null) return;
+
+      final updatedUser = UserInformation(
+        token: currentUser.token,
+        fullName: fullName ?? currentUser.fullName,
+        email: email ?? currentUser.email,
+        mobileNumber: phoneNumber ?? currentUser.mobileNumber,
+        // include any other fields your constructor requires here
+      );
+
+      await box.put(0, updatedUser);
+      _defualtUserinfo = updatedUser;
+    } catch (e) {
+      debugPrint('Error updating basic user fields: $e');
+      rethrow;
+    }
   }
 }
 

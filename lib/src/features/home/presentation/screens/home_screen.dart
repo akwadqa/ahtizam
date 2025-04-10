@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/chat/presentation/screens/chat_screens.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -121,6 +122,8 @@ class _TopNavigationBar extends ConsumerWidget {
 
                       currentLanguageNotifier.changeLanguage(
                           context, currentLanguage == 'ar' ? 'en' : 'ar');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ChatScreen()));
                     },
                     child: Assets.icons.settings.svg(height: 30, width: 30)),
                 Assets.icons.logo
@@ -139,7 +142,7 @@ class _TopNavigationBar extends ConsumerWidget {
   }
 }
 
-/// **Blurred Bottom Action Card with Button**
+// **Blurred Bottom Action Card with Button**
 class _BottomActionCard extends ConsumerWidget {
   const _BottomActionCard();
 

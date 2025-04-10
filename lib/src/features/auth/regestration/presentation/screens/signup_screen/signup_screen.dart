@@ -16,7 +16,7 @@ import '../../../../../../theme/app_colors.dart';
 import '../../controller/auth_controller/auth_controller.dart';
 import '../../widgets/auth_text/auth_text.dart';
 import '../../widgets/text_form_fields/email_text_form_field.dart';
-import '../../widgets/phone_number_field/phone_number_field.dart';
+import '../../widgets/text_form_fields/phone_number_field.dart';
 
 @RoutePage()
 class SignupScreen extends StatefulWidget {

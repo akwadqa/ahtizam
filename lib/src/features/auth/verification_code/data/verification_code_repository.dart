@@ -18,18 +18,15 @@ class VerificatonCodeRepository {
 
   VerificatonCodeRepository(this._networkService);
 
-  /// **✅ Corrected Response Handling**
   Future<ApiResponse<UserInformation>> _handleResponse(
       Map<String, dynamic> responseData) async {
     if (responseData.containsKey('status_code') &&
         responseData['status_code'] == 200) {
       if (responseData.containsKey('data')) {
-        // ✅ Convert responseData['data'] to UserInformation
         final userData = UserInformation.fromJson(responseData['data']);
 
         return ApiResponse.success(
-            message: "OTP verification successful",
-            data: userData); // ✅ Return wrapped ApiResponse
+            message: "OTP verification successful", data: userData); //
       } else {
         throw Exception("Token missing in response");
       }
@@ -38,7 +35,6 @@ class VerificatonCodeRepository {
     }
   }
 
-  /// **✅ Fixed Response Type**
   Future<ApiResponse<UserInformation>> verificatonCode(
     String otp,
     String phone,
@@ -53,6 +49,6 @@ class VerificatonCodeRepository {
     debugPrint(response.data.toString());
     debugPrint("******************");
 
-    return await _handleResponse(response.data); // ✅ Ensure correct return type
+    return await _handleResponse(response.data);
   }
 }

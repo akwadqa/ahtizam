@@ -7,7 +7,7 @@ part of 'prices_order_data_controller.dart';
 // **************************************************************************
 
 String _$pricesOfferDataControllerHash() =>
-    r'f12a6caafed39f17c97e023595833f5d2184ff4e';
+    r'a9537bf0c32639d49f58a0fc6a2d226e67e82630';
 
 /// See also [PricesOfferDataController].
 @ProviderFor(PricesOfferDataController)

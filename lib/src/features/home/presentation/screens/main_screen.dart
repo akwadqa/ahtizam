@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:ahtizam/src/features/home/presentation/screens/home_screen.dart';
@@ -17,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     Center(child: Text("Orders Page", style: TextStyle(fontSize: 20))),
     Center(child: Text("Messages Page", style: TextStyle(fontSize: 20))),
-    Center(child: Text("Profile Page", style: TextStyle(fontSize: 20))),
+    ProfileScreen(),
   ];
   int _selectedIndex = 0;
 

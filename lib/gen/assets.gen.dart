@@ -96,6 +96,10 @@ class $AssetsIconsGen {
   SvgGenImage get verifiedCheckIc =>
       const SvgGenImage('assets/icons/verifiedCheck_ic.svg');
 
+  /// File path: assets/icons/verifiedCheck_icq.svg
+  SvgGenImage get verifiedCheckIcq =>
+      const SvgGenImage('assets/icons/verifiedCheck_icq.svg');
+
   /// File path: assets/icons/wallet_ic.svg
   SvgGenImage get walletIc => const SvgGenImage('assets/icons/wallet_ic.svg');
 
@@ -121,6 +125,7 @@ class $AssetsIconsGen {
         timeIc,
         truck,
         verifiedCheckIc,
+        verifiedCheckIcq,
         walletIc
       ];
 }
