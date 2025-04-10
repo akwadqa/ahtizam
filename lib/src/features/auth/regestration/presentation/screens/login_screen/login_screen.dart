@@ -1,20 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart' as local;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:queen_validators/queen_validators.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
-import 'package:ahtizam/src/features/auth/regestration/presentation/widgets/phone_number_field/phone_number_field.dart';
+import 'package:ahtizam/src/features/auth/regestration/presentation/widgets/text_form_fields/phone_number_field.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
 import '../../../../../../../gen/assets.gen.dart';
 import '../../../../../../shared_widgets/app_dialogs.dart';
 import '../../../../../../shared_widgets/fade_circle_loading_indicator.dart';
 import '../../../../../../theme/app_colors.dart';
-import '../../../../../../utils/arabic_number_input_formatter.dart';
 import '../../controller/auth_controller/auth_controller.dart';
 import '../../widgets/auth_text/auth_text.dart';
 

@@ -8,33 +8,35 @@ import 'package:path_provider/path_provider.dart';
 abstract class HiveInitializer {
   static Future<void> initialize() async {
     debugPrint('Initializing Hive...');
+    // await Hive.deleteFromDisk();
 
     try {
       // Initialize Hive with correct directory for non-web platforms
       if (!kIsWeb) {
         var documentsDirectory = await getApplicationDocumentsDirectory();
         await Hive.initFlutter(documentsDirectory.path);
-      } else {
-        await Hive.initFlutter();
       }
+      await Hive.initFlutter();
 
-      // Helper method to check adapter registration
-      bool isNotRegistered(int typeId) {
-        return !Hive.isAdapterRegistered(typeId);
-      }
+      _registerAdapters();
 
-      // Register Adapters
-      if (isNotRegistered(HiveTypeIds.userInfoTypId)) {
-        Hive.registerAdapter(
-            UserInformationAdapter()); // ✅ Corrected Registration
-      }
-
-      // Open Boxes
-      await Hive.openBox<UserInformation>(HiveBoxesName.userInfoBox);
+      await _openBoxes();
 
       debugPrint('✅ Hive Initialized Successfully');
     } catch (e) {
       debugPrint('❌ HiveInitializer Error: $e');
     }
+  }
+
+  static void _registerAdapters() {
+    if (!Hive.isAdapterRegistered(HiveTypeIds.userInfoTypId)) {
+      Hive.registerAdapter(UserInformationAdapter());
+    }
+  }
+
+  static Future<void> _openBoxes() async {
+    await Future.wait([
+      Hive.openBox<UserInformation>(HiveBoxesName.userInfoBox),
+    ]);
   }
 }
