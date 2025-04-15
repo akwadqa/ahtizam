@@ -29,7 +29,7 @@ class ProfileDetailsScreen extends ConsumerWidget {
       resizeToAvoidBottomInset: false,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
-        child: CustomAppbar(title: "profile"),
+        child: CustomAppbar(title: context.tr('profile_details')),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -44,7 +44,7 @@ class ProfileDetailsScreen extends ConsumerWidget {
                 _buildForm(context, controller),
                 const Spacer(),
                 CustomButtonWidget(
-                  text: 'save'.tr(),
+                  text: context.tr('save_changes'),
                   onTap: () async {
                     final success = await controller.updateProfile();
                     if (success) {
@@ -72,7 +72,7 @@ class ProfileDetailsScreen extends ConsumerWidget {
       children: [
         CircleImageWidget(
           imageUrl:
-              "ttps://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
+              "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
           height: 225,
           width: 225,
           circleWidth: 5,

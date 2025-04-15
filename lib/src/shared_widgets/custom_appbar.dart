@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 
 class CustomAppbar extends StatelessWidget {
   final String title;
-  const CustomAppbar({super.key, required this.title});
+  final bool? withBackButton;
+  const CustomAppbar({
+    super.key,
+    required this.title,
+    this.withBackButton,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +27,11 @@ class CustomAppbar extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: AppColors.black800),
       ),
-      leading: CustomBackArrowWidget(),
+      leading: withBackButton == null ? CustomBackArrowWidget() : null,
       bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1),
           child: Divider(
             height: 1,
-
-            // width: double.infinity,
             color: AppColors.lightGray,
           )),
     );

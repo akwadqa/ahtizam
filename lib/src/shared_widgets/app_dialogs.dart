@@ -215,85 +215,14 @@ Future<void> showAcceptCancelOrder(
     Navigator.pop(context);
     Navigator.pop(context);
   });
+}
 
-  // showDialog(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return Dialog(
-  //         insetPadding: EdgeInsets.symmetric(horizontal: 20),
-  //         backgroundColor: Colors.white.withOpacity(0.8),
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(16),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(25.0),
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               40.verticalSpace,
-
-  //               Text(
-  //                 "cancel_order_msg".tr(),
-  //                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-  //                       fontSize: 18,
-  //                       fontWeight: FontWeight.bold,
-  //                       // color: Colors.grey,
-  //                     ),
-  //               ),
-
-  //               40.verticalSpace,
-
-  //               Text(
-  //                 "cancel_order_dsc".tr(),
-  //                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-  //                     fontSize: 14,
-  //                     color: AppColors.darkerGray,
-  //                     fontWeight: FontWeight.w500),
-  //               ),
-
-  //               40.verticalSpace,
-
-  //               // **Pay Button**
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   Flexible(
-  //                     child: CustomButtonWidget(
-  //                       text: context.tr("yes"),
-  //                       onTap: () {
-  //                         Navigator.pop(context);
-  //                         Navigator.pop(context);
-  //                       },
-  //                       backgroundColor: AppColors.black,
-  //                       isFiled: true,
-  //                       height: 52,
-  //                       radius: 12,
-  //                       width: MediaQuery.sizeOf(context).width,
-  //                     ),
-  //                   ),
-  //                   20.horizontalSpace,
-  //                   Flexible(
-  //                     child: CustomButtonWidget(
-  //                       text: context.tr("no"),
-  //                       onTap: () {
-  //                         Navigator.pop(context);
-  //                       },
-  //                       color: AppColors.black,
-  //                       isFiled: false,
-  //                       borderColor: AppColors.darkGray,
-  //                       height: 52,
-  //                       radius: 12,
-  //                       width: MediaQuery.sizeOf(context).width,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               )
-  //             ],
-  //           ).allPadding(20),
-  //         ));
-  //   },
-  // );
+void showLogoutDialog(BuildContext context) {
+  showYesNowChoicesDialog(context,
+      title: "Logout", dsc: "Are you sure want logout?", yesButton: () {
+    Navigator.pop(context);
+    // Navigator.pop(context);
+  });
 }
 
 showErrorDialog(BuildContext context, String message) {

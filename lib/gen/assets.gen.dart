@@ -67,9 +67,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/messages.svg
   SvgGenImage get messages => const SvgGenImage('assets/icons/messages.svg');
 
+  /// File path: assets/icons/mobile_ic.svg
+  SvgGenImage get mobileIc => const SvgGenImage('assets/icons/mobile_ic.svg');
+
   /// File path: assets/icons/my_marker.png
   AssetGenImage get myMarker =>
       const AssetGenImage('assets/icons/my_marker.png');
+
+  /// File path: assets/icons/order_ic.svg
+  SvgGenImage get orderIc => const SvgGenImage('assets/icons/order_ic.svg');
 
   /// File path: assets/icons/phone_ic.svg
   SvgGenImage get phoneIc => const SvgGenImage('assets/icons/phone_ic.svg');
@@ -116,7 +122,9 @@ class $AssetsIconsGen {
         logo,
         markIcon,
         messages,
+        mobileIc,
         myMarker,
+        orderIc,
         phoneIc,
         polyline,
         profile,

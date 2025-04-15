@@ -13,7 +13,7 @@ class SelectLocationButton extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         // Reset points when starting new selection
-        ref.read(mapControllerProvider.notifier).resetPoints();
+        // ref.read(mapControllerProvider.notifier).resetPoints();
         ref
             .read(selectLocationFromMapControllerProvider.notifier)
             .toggleSelection();

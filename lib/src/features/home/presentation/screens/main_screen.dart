@@ -3,6 +3,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:ahtizam/src/features/home/presentation/screens/home_screen.dart';
 
+import '../../../messages/presentation/screens/messages_screen.dart';
+import '../../../my_orders/presentation/screens/my_orders.dart';
 import '../widgets/bottom_navigation_bar.dart';
 
 @RoutePage()
@@ -16,8 +18,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _pages = [
     HomeScreen(),
-    Center(child: Text("Orders Page", style: TextStyle(fontSize: 20))),
-    Center(child: Text("Messages Page", style: TextStyle(fontSize: 20))),
+    OrdersScreen(),
+    MessagesScreen(),
     ProfileScreen(),
   ];
   int _selectedIndex = 0;

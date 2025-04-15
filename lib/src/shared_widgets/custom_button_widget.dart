@@ -15,6 +15,8 @@ class CustomButtonWidget extends StatelessWidget {
   final double width;
   final double? radius;
   final double? topPading;
+  final double? fontSize;
+  final Widget? child;
   final bool isDisabled;
   const CustomButtonWidget({
     super.key,
@@ -28,6 +30,8 @@ class CustomButtonWidget extends StatelessWidget {
     required this.width,
     this.radius,
     this.topPading,
+    this.fontSize,
+    this.child,
     this.isDisabled = false,
   });
 
@@ -53,14 +57,15 @@ class CustomButtonWidget extends StatelessWidget {
         ),
       ),
       onPressed: isDisabled ? null : onTap,
-      child: Text(
-        context.tr(text),
-        style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 15,
-              color: color ?? (isFiled ? Colors.white : Colors.black),
-              fontWeight: FontWeight.w500,
-            ),
-      ).centered(),
+      child: child ??
+          Text(
+            context.tr(text),
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: fontSize ?? 15,
+                  color: color ?? (isFiled ? Colors.white : Colors.black),
+                  fontWeight: FontWeight.w500,
+                ),
+          ).centered(),
     ).onlyPadding(top: topPading ?? 0);
   }
 }
