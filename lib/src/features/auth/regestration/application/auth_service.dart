@@ -103,3 +103,126 @@ Future<void> markAppOpened(WidgetRef ref) async {
   final sharedPrefs = await SharedPreferences.getInstance();
   await sharedPrefs.setBool(Keys.firstTime, false);
 }
+
+//////////////////////////////////////////////////////////////
+
+// // Secure storage setup
+// const _secureStorage = FlutterSecureStorage();
+// const _***REMOVED***Key = 'secure_auth_***REMOVED***';
+
+// @Riverpod(keepAlive: true)
+// class AuthService extends _$AuthService {
+//   late Box<UserInformation> _userBox;
+//   late FlutterSecureStorage _secureStorage;
+
+//   @override
+//   Future<UserInformation?> build() async {
+//     _userBox = Hive.box<UserInformation>(HiveBoxesName.userInfoBox);
+//     _secureStorage = const FlutterSecureStorage();
+//     return _loadUserData();
+//   }
+
+//   Future<UserInformation?> _loadUserData() async {
+//     try {
+//       // Check secure storage first
+//       final ***REMOVED*** = await _secureStorage.read(key: _***REMOVED***Key);
+//       if (***REMOVED*** == null) return null;
+
+//       // Get user info from Hive
+//       final user = _userBox.get(0);
+//       if (user?.***REMOVED*** == ***REMOVED***) return user;
+
+//       // Token mismatch - clear invalid data
+//       await _secureStorage.delete(key: _***REMOVED***Key);
+//       await _userBox.clear();
+//       return null;
+//     } catch (e) {
+//       debugPrint('Error loading user data: $e');
+//       return null;
+//     }
+//   }
+
+//   Future<void> saveAuthData({
+//     required String ***REMOVED***,
+//     required UserInformation userInfo,
+//   }) async {
+//     try {
+//       // Secure storage for ***REMOVED***
+//       await _secureStorage.write(key: _***REMOVED***Key, value: ***REMOVED***);
+      
+//       // Hive for user information
+//       await _userBox.put(0, userInfo.copyWith(***REMOVED***: ***REMOVED***));
+//       state = AsyncData(userInfo);
+//     } catch (e) {
+//       state = AsyncError(e, StackTrace.current);
+//       rethrow;
+//     }
+//   }
+
+//   Future<void> clearAuthData() async {
+//     try {
+//       await _secureStorage.delete(key: _***REMOVED***Key);
+//       await _userBox.clear();
+//       state = AsyncData(null);
+//     } catch (e) {
+//       state = AsyncError(e, StackTrace.current);
+//       rethrow;
+//     }
+//   }
+
+//   Future<void> updateFirstTimeStatus(bool isFirstTime) async {
+//     final sharedPrefs = await SharedPreferences.getInstance();
+//     await sharedPrefs.setBool(Keys.firstTime, isFirstTime);
+//   }
+
+//   Future<bool> checkFirstTimeOpening() async {
+//     final sharedPrefs = await SharedPreferences.getInstance();
+//     return sharedPrefs.getBool(Keys.firstTime) ?? true;
+//   }
+
+//   Future<void> handleFirstTimeFlow() async {
+//     final isFirstTime = await checkFirstTimeOpening();
+//     if (isFirstTime) {
+//       // Perform first-time setup
+//       await updateFirstTimeStatus(false);
+//     }
+//   }
+
+//   Future<void> updateUserInfo({
+//     String? fullName,
+//     String? email,
+//     String? phoneNumber,
+//   }) async {
+//     final currentUser = state.value;
+//     if (currentUser == null) return;
+
+//     final updatedUser = currentUser.copyWith(
+//       fullName: fullName,
+//       email: email,
+//       mobileNumber: phoneNumber,
+//     );
+
+//     await _userBox.put(0, updatedUser);
+//     state = AsyncData(updatedUser);
+//   }
+// }
+
+// // Add to UserInformation model
+// @HiveType(typeId: HiveTypeIds.userInfoTypId)
+// class UserInformation {
+//   // ... existing fields ...
+
+//   UserInformation copyWith({
+//     String? ***REMOVED***,
+//     String? fullName,
+//     String? email,
+//     String? mobileNumber,
+//   }) {
+//     return UserInformation(
+//       ***REMOVED***: ***REMOVED*** ?? this.***REMOVED***,
+//       fullName: fullName ?? this.fullName,
+//       email: email ?? this.email,
+//       mobileNumber: mobileNumber ?? this.mobileNumber,
+//     );
+//   }
+// }

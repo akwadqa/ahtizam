@@ -17,7 +17,6 @@ abstract class AppInitializer {
     await HiveInitializer.initialize();
     //-- Load base URL's  --
     ServicesUrls.init();
-    await EasyLocalization.ensureInitialized();
     FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
     //-- Localization init  --

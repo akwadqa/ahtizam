@@ -12,7 +12,7 @@ abstract class AppTheme {
   static const TextStyle _baseTextStyle = TextStyle(
     color: AppColors.black900,
     fontFamily: FontFamily.cairo,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w600,
   );
 
   static const EdgeInsets _buttonPadding = EdgeInsets.all(16);

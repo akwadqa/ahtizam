@@ -1,13 +1,16 @@
+import 'package:ahtizam/src/features/privacy_policy/presentation/screens/privacy_policy_screen.dart';
+import 'package:ahtizam/src/features/recomended_question/presentation/screens/recomended_question_page.dart';
+import 'package:ahtizam/src/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/circle_image_widget.dart';
+import '../../../withdraw_requests/presentation/screens/withdraw_requests_screen.dart';
 import '../controllers/profile_controller.dart';
 
 @RoutePage()
@@ -25,7 +28,7 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             20.verticalSpace,
             Text(
-              'my_profile'.tr(),
+              context.tr('profile_details'),
               style: Theme.of(context).textTheme.labelMedium!.copyWith(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -51,7 +54,6 @@ class ProfileScreen extends ConsumerWidget {
     return GestureDetector(
       onTap: () => context.pushRoute(ProfileDetailsRoute()),
       child: Stack(
-        // alignment: Alignment.center,
         children: [
           CircleImageWidget(
             imageUrl:
@@ -68,7 +70,6 @@ class ProfileScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(230, 187, 59, 1),
                 shape: BoxShape.circle,
-                // border: Border.all(color: Colors.white, width: 2),
               ),
               child: const Icon(
                 Icons.edit,
@@ -89,45 +90,57 @@ class ProfileScreen extends ConsumerWidget {
         children: [
           _buildMenuItem(
             context,
-            'personal_profile'.tr(),
+            context.tr('personal_info'),
             onTap: () {
               context.pushRoute(ProfileDetailsRoute());
             },
           ),
           _buildMenuItem(
             context,
-            'wallet'.tr(),
+            context.tr('wallet'),
+            onTap: () {
+              context.pushRoute(WalletRoute());
+            },
+          ),
+          _buildMenuItem(
+            context,
+            context.tr('recommended_questions'),
+            onTap: () {
+              context.pushRoute(RecomendedQuestionRoute());
+            },
+          ),
+          _buildMenuItem(
+            context,
+            context.tr('privacy_policy'),
+            onTap: () {
+              context.pushRoute(PrivacyPolicyRoute());
+            },
+          ),
+          _buildMenuItem(
+            context,
+            context.tr('withdraw_requests'),
+            onTap: () {
+              context.pushRoute(WithdrawRequestsRoute());
+            },
+          ),
+          _buildMenuItem(
+            context,
+            context.tr('help_center'),
             onTap: () {},
           ),
           _buildMenuItem(
             context,
-            'complaines_list'.tr(),
-            onTap: () {},
+            context.tr('notifications'),
+            onTap: () {
+              context.pushRoute(NotificationsRoute());
+            },
           ),
           _buildMenuItem(
             context,
-            'privacy_policy'.tr(),
-            onTap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'withdraws_requests',
-            onTap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'how_could_work_in_ahtezam'.tr(),
-            onTap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'notifications'.tr(),
-            onTap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            'logOut'.tr(),
-            onTap: () {},
+            context.tr('logout'),
+            onTap: () {
+              showLogoutDialog(context);
+            },
             showDivider: false,
           ),
         ],
@@ -145,7 +158,6 @@ class ProfileScreen extends ConsumerWidget {
       children: [
         ListTile(
           contentPadding: EdgeInsets.zero,
-          // leading: Icon(icon, color: AppColors.black),
           title: Text(
             title,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -155,7 +167,6 @@ class ProfileScreen extends ConsumerWidget {
           trailing: const Icon(Icons.arrow_forward_ios, size: 20),
           onTap: onTap,
         ),
-        // if (showDivider)
         const Divider(
           height: 1,
           color: AppColors.lightGray,

@@ -1,8 +1,10 @@
+// lib/routing/app_router.dart
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../features/auth/regestration/application/auth_service.dart';
 import 'app_router.gr.dart';
+import 'app_routes.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
@@ -18,64 +20,45 @@ class AppRouter extends RootStackRouter {
     return [
       AutoRoute(
         page: ChooseLanguageRoute.page,
-        path: "/choose-language",
-        initial: isFirstTime,
+        path: AppRoutes.chooseLanguage,
+        initial: _isInitialChooseLanguage(isFirstTime),
       ),
-      AutoRoute(page: OnBoardingRoute.page, path: "/onboarding"),
+      AutoRoute(page: OnBoardingRoute.page, path: AppRoutes.onboarding),
       AutoRoute(
         page: LoginRoute.page,
-        path: "/login",
-        initial: !isFirstTime && !isAuthenticated,
+        path: AppRoutes.login,
+        initial: _isInitialLogin(isFirstTime, isAuthenticated),
       ),
-      AutoRoute(page: SignupRoute.page, path: "/signup"),
-      AutoRoute(page: VerificationRoute.page, path: "/verify"),
-      AutoRoute(page: HomeRoute.page, path: "/home"),
-      AutoRoute(page: NotificationsRoute.page, path: "/notifications"),
-      AutoRoute(page: PaymentMethodRoute.page, path: "/payment"),
-      AutoRoute(page: AddCardRoute.page, path: "/addCard"),
-      AutoRoute(page: PricesOfferRoute.page, path: "/pricesOffer"),
-      AutoRoute(page: RateRoute.page, path: "/rate"),
-      AutoRoute(page: ProfileDetailsRoute.page, path: "/ProfileDetails"),
       AutoRoute(
-          page: MainRoute.page,
-          path: "/main",
-          // initial: true,
-
-          initial: !isFirstTime && isAuthenticated,
-          children: []),
+        page: MainRoute.page,
+        path: AppRoutes.main,
+        initial: _isInitialMain(isFirstTime, isAuthenticated),
+        children: [],
+      ),
+      AutoRoute(page: SignupRoute.page, path: AppRoutes.signup),
+      AutoRoute(page: VerificationRoute.page, path: AppRoutes.verify),
+      AutoRoute(page: HomeRoute.page, path: AppRoutes.home),
+      AutoRoute(page: NotificationsRoute.page, path: AppRoutes.notifications),
+      AutoRoute(page: PaymentMethodRoute.page, path: AppRoutes.payment),
+      AutoRoute(page: AddCardRoute.page, path: AppRoutes.addCard),
+      AutoRoute(page: PricesOfferRoute.page, path: AppRoutes.pricesOffer),
+      AutoRoute(page: RateRoute.page, path: AppRoutes.rate),
+      AutoRoute(page: ProfileDetailsRoute.page, path: AppRoutes.profileDetails),
+      AutoRoute(page: WalletRoute.page, path: AppRoutes.wallet),
+      AutoRoute(
+          page: RecomendedQuestionRoute.page,
+          path: AppRoutes.recommendedQuestions),
+      AutoRoute(page: PrivacyPolicyRoute.page, path: AppRoutes.privacyPolicy),
+      AutoRoute(
+          page: WithdrawRequestsRoute.page, path: AppRoutes.withdrawRequests),
     ];
   }
 
-  /// **Manually determine the initial route**
-  // PageRouteInfo<void>  getInitialRoute() {
-  //   final isFirstTime = ref.read(isFirstTimeOpeningAppProvider);
-  //   final isAuthenticated = ref.read(isAuthinticatedProvider);
+  bool _isInitialChooseLanguage(bool isFirstTime) => isFirstTime;
 
-  //   if (isFirstTime) {
-  //     return const ChooseLanguageRoute();
-  //   } else if (isAuthenticated) {
-  //     return const MainRoute();
-  //   } else {
-  //     return const LoginRoute();
-  //   }
-  // }
+  bool _isInitialLogin(bool isFirstTime, bool isAuthenticated) =>
+      !isFirstTime && !isAuthenticated;
 
-//   @override
-//   RouteType get defaultRouteType => const RouteType.material();
-
-//   // ✅ First-time open? → Go to ChooseLanguageRoute
-// // ✅ Returning user with ***REMOVED***? → Go to MainRoute
-// // ✅ Returning user without ***REMOVED***? → Go to LoginRoute
-  // Future<String?> onNavigation(String? routeName, StackRouter router) async {
-  //   final isFirstTime = ref.read(isFirstTimeOpeningAppProvider);
-  //   final isAuthenticated = ref.read(isAuthinticatedProvider);
-
-  //   if (isFirstTime) {
-  //     return ChooseLanguageRoute.name; // ✅ Ensure this route exists
-  //   } else if (isAuthenticated) {
-  //     return MainRoute.name; // ✅ Ensure this route exists
-  //   } else {
-  //     return LoginRoute.name; //
-  //   }
-  // }
+  bool _isInitialMain(bool isFirstTime, bool isAuthenticated) =>
+      !isFirstTime && isAuthenticated;
 }

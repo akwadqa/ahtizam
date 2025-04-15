@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 
 import '../../../constants/Api/services_urls.dart';
+import '../presentation/controllers/location_searching_controller/location_search_controller.dart';
 
 part 'map_service.g.dart';
 
@@ -63,6 +64,8 @@ class MapController extends _$MapController {
         ),
       ));
       firstPoint = latLng;
+      debugPrint("📍 First point : $firstPoint");
+
       firstPointAddress = await _getAddressFromLatLng(latLng);
 
       return latLng;
@@ -99,12 +102,15 @@ class MapController extends _$MapController {
   }
 
   Future<void> setCurrentLocation(LatLng latLng) async {
-    if (!isFirstPointSelected) {
+    final mySearchontroller = ref
+        .read(locationSearchControllerProvider.notifier)
+        .myLocationController;
+    if (mySearchontroller.text.isEmpty) {
       firstPoint = latLng;
       isFirstPointSelected = true;
       firstPointAddress = await _getAddressFromLatLng(latLng);
       state = AsyncValue.data(latLng);
-      debugPrint("First point address: $firstPointAddress");
+      debugPrint("📍 First point (from search): $firstPointAddress");
     } else {
       secondPoint = latLng;
       secondPointAddress = await _getAddressFromLatLng(latLng);
@@ -112,7 +118,7 @@ class MapController extends _$MapController {
       debugPrint("Second point address: $secondPointAddress");
       await getPolylinePoints();
     }
-    debugPrint("Updated Location: ${latLng.latitude}, ${latLng.longitude}");
+    debugPrint("📌 Selected location: ${latLng.latitude}, ${latLng.longitude}");
   }
 
   void setMapController(GoogleMapController controller) {

@@ -126,7 +126,12 @@ class DriverDetailsBottomSheet extends StatelessWidget {
                       filled: true,
                       fillColor: Colors.white,
                       focusColor: Colors.white,
-                      suffixIcon: Icon(Icons.chat, color: Colors.black54),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 8),
+                        child: Assets.icons.messages
+                            .svg(color: Colors.black, height: 10, width: 10),
+                      ),
                       hintText: "send_a_message".tr(),
                       hintStyle: Theme.of(context)
                           .textTheme
@@ -173,6 +178,24 @@ class DriverDetailsBottomSheet extends StatelessWidget {
                     height: 52,
                     radius: 12,
                     width: MediaQuery.sizeOf(context).width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Assets.icons.phoneIc.svg(),
+                        10.horizontalSpace,
+                        Text(
+                          context.tr("call_by", args: ["user"]),
+                          style: Theme.of(context)
+                              .textTheme
+                              .displaySmall!
+                              .copyWith(
+                                fontSize: 15,
+                                color: (Colors.white),
+                                fontWeight: FontWeight.w500,
+                              ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 8.horizontalSpace,
