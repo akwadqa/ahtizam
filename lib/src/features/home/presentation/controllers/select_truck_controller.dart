@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,29 +15,26 @@ part 'select_truck_controller.g.dart';
 class SelectTruckController extends _$SelectTruckController {
   @override
   Future<TruckState> build() async {
-    return TruckState(
-        trucks: [], selectedTruck: null); // ✅ Correctly typed state
+    return TruckState(trucks: [], selectedTruck: null);
   }
 
   Future<void> getTrucksDataInformation(BuildContext context) async {
-    state = const AsyncLoading(); // ✅ Set loading state
+    state = const AsyncLoading();
 
-    debugPrint("🚀 Fetching trucks...");
+    debugPrint("🚚 Fetching trucks...");
 
     try {
       final isFromMap = ref.watch(selectLocationFromMapControllerProvider);
       final currentLocation = ref.watch(mapControllerProvider);
 
       if (isFromMap) {
-        debugPrint("📍 Address Lat: ${currentLocation.value?.latitude}");
-        debugPrint("📍 Address Lng: ${currentLocation.value?.longitude}");
+        debugPrint(
+            "📍 Location: ${currentLocation.value?.latitude}, ${currentLocation.value?.longitude}");
       }
 
-      // Simulating API call
-      showTruckSelectionBottomSheet(context);
-      await Future.delayed(const Duration(seconds: 2)); // Simulate delay
+      // Simulate API or Firebase call
+      // await Future.delayed(const Duration(seconds: 2));
 
-      // Sample trucks from API
       final List<Truck> trucks = [
         Truck(
             id: 1,
@@ -55,26 +53,27 @@ class SelectTruckController extends _$SelectTruckController {
             image: "assets/icons/truck.svg"),
       ];
 
-      debugPrint("✅ Trucks Loaded: ${trucks.length}");
-
-      // ✅ Update the state first
       state = AsyncData(TruckState(trucks: trucks, selectedTruck: null));
 
-      // ✅ THEN show the bottom sheet after state update
-      await Future.delayed(const Duration(milliseconds: 200)); // Small delay
+      await Future.delayed(const Duration(milliseconds: 300));
+      showTruckSelectionBottomSheet(
+        context: context,
+        pickupLocation: GeoPoint(
+            currentLocation.value!.latitude, currentLocation.value!.longitude),
+        workshopLocation: GeoPoint(currentLocation.value!.latitude + 0.01,
+            currentLocation.value!.longitude + 0.01), // Example
+      );
     } catch (e) {
-      debugPrint("❌ Error fetching trucks: $e");
+      debugPrint("❌ Error loading trucks: $e");
       state = AsyncError(e, StackTrace.current);
     }
   }
 
-  /// **Select a Truck**
   void selectTruck(Truck selectedTruck) {
     state = state.whenData(
         (truckState) => truckState.copyWith(selectedTruck: selectedTruck));
   }
 
-  /// **Clear Selection**
   void clearSelection() {
     state = state
         .whenData((truckState) => truckState.copyWith(selectedTruck: null));

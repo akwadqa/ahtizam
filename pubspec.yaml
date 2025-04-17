@@ -50,6 +50,11 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   chatview: ^2.3.0
+  firebase_core: ^3.13.0
+  cloud_firestore: ^5.6.6
+  geoflutterfire_plus: ^0.0.32
+  firebase_messaging: any
+  flutter_local_notifications: ^19.1.0
 
 
 

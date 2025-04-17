@@ -1,27 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'select_truck_controller.dart';
+part of 'notification_service.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$selectTruckControllerHash() =>
-    r'126072cd1722a34e5062b9c8bff76d57401222e6';
+String _$notificationServiceHash() =>
+    r'9f9764eb3ab01cd5f87ef5201dde2f7bddb4fcf1';
 
-/// See also [SelectTruckController].
-@ProviderFor(SelectTruckController)
-final selectTruckControllerProvider =
-    AsyncNotifierProvider<SelectTruckController, TruckState>.internal(
-  SelectTruckController.new,
-  name: r'selectTruckControllerProvider',
+/// See also [notificationService].
+@ProviderFor(notificationService)
+final notificationServiceProvider =
+    AutoDisposeProvider<NotificationService>.internal(
+  notificationService,
+  name: r'notificationServiceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$selectTruckControllerHash,
+      : _$notificationServiceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectTruckController = AsyncNotifier<TruckState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef NotificationServiceRef = AutoDisposeProviderRef<NotificationService>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
