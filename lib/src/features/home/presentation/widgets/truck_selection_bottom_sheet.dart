@@ -1,5 +1,6 @@
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,14 +14,24 @@ import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../../application/map_service.dart';
 import '../controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import '../controllers/order_controller.dart';
 
 /// **Bottom Sheet for Truck Selection**
 class TruckSelectionBottomSheet extends ConsumerWidget {
-  const TruckSelectionBottomSheet({super.key});
+  final GeoPoint pickupLocation;
+  final GeoPoint workshopLocation;
+
+  const TruckSelectionBottomSheet({
+    super.key,
+    required this.pickupLocation,
+    required this.workshopLocation,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final truckState = ref.watch(selectTruckControllerProvider);
+    final orderState = ref.watch(orderControllerProvider);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
       decoration: BoxDecoration(
@@ -175,23 +186,63 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
 
               CustomButtonWidget(
                 text: context.tr("request_truck"),
-                onTap: () async {
-                  await ref
-                      .read(mapControllerProvider.notifier)
-                      .captureScreenshot();
+                onTap: selectedTruck == null
+                    ? null
+                    : () async {
+                        try {
+                          await ref
+                              .read(mapControllerProvider.notifier)
+                              .captureScreenshot();
 
-                  showSearchingTruckLoading(context: context);
-                  Future.delayed(Duration(seconds: 5), () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    ref
-                                .read(showOrderFormControllerProvider.notifier)
-                                .initiallValue ==
-                            "request_offer"
-                        ? context.pushRoute(PricesOfferRoute())
-                        : showDriverDetailsBottomSheet(context);
-                  });
-                },
+                          showSearchingTruckLoading(context: context);
+                          final parsedPrice = double.tryParse(
+                                selectedTruck.price
+                                    .replaceAll(RegExp(r'[^\d.]'), ''),
+                              ) ??
+                              0;
+                          // Create order
+                          await ref
+                              .read(orderControllerProvider.notifier)
+                              .createOrder(
+                                pickupLat: pickupLocation.latitude,
+                                pickupLng: pickupLocation.longitude,
+                                workshopLat: workshopLocation.latitude,
+                                workshopLng: workshopLocation.longitude,
+                                truckType: selectedTruck.id.toString(),
+                                price: parsedPrice,
+                              );
+
+                          // Listen to order state changes
+                          ref.listen(orderControllerProvider, (previous, next) {
+                            next.whenData((order) {
+                              if (order != null) {
+                                switch (order.status) {
+                                  case 'accepted':
+                                    Navigator.pop(context); // Close loading
+                                    Navigator.pop(
+                                        context); // Close bottom sheet
+                                    showDriverDetailsBottomSheet(context);
+                                    break;
+                                  case 'rejected':
+                                    // Order was rejected, system will automatically try next driver
+                                    break;
+                                  case 'completed':
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    break;
+                                }
+                              }
+                            });
+                          });
+                        } catch (e) {
+                          Navigator.pop(context); // Close any open sheet/dialog
+                          // shows(context, "❌ ${"order_failed".tr()}: $e");
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(e.toString()),
+                            backgroundColor: Colors.redAccent,
+                          ));
+                        }
+                      },
                 backgroundColor:
                     selectedTruck == null ? AppColors.gray : AppColors.black,
                 isFiled: true,
@@ -207,12 +258,19 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
   }
 }
 
-Future<void> showTruckSelectionBottomSheet(BuildContext context) {
+Future<void> showTruckSelectionBottomSheet({
+  required BuildContext context,
+  required GeoPoint pickupLocation,
+  required GeoPoint workshopLocation,
+}) {
   return showModalBottomSheet(
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    builder: (context) => const TruckSelectionBottomSheet(),
+    builder: (context) => TruckSelectionBottomSheet(
+      pickupLocation: pickupLocation,
+      workshopLocation: workshopLocation,
+    ),
   );
 }

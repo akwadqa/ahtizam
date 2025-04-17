@@ -1,5 +1,8 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
@@ -36,6 +39,7 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
        
+       
         manifestPlaceholders["MAPS_API_KEY"] = project.hasProperty('MAPS_API_KEY') ? MAPS_API_KEY : ""
 
     }
@@ -52,3 +56,15 @@ android {
 flutter {
     source = "../.."
 }
+// dependencies {
+//   // Import the Firebase BoM
+//   implementation platform('com.google.firebase:firebase-bom:33.12.0')
+//   implementation 'com.google.android.gms:play-services-tasks:18.1.0'
+//   implementation 'com.google.firebase:firebase-analytics'
+//   implementation 'com.google.firebase:firebase-firestore' // If using Firestore
+//   implementation 'com.google.firebase:firebase-messaging' // For FCM
+//   implementation 'com.google.android.gms:play-services-location:21.2.0' // For geolocation
+//   implementation 'androidx.multidex:multidex:2.0.1'
+
+
+// }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "438670902644",
+    "project_id": "ahtezam-akwad",
+    "storage_bucket": "ahtezam-akwad.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438670902644:android:fbc2c6245d27f601dcd821",
+        "android_client_info": {
+          "package_name": "com.example.ahtizam"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaPxbOILQsJnhmc-4qtUbt0sEVSYwS1iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
