@@ -1,27 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'verification_code_controller.dart';
+part of 'auth_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$verificationCodeControllerHash() =>
-    r'fd94e51d6c8ec6200d777311171560627d159ada';
+String _$authRepositoryHash() => r'7b4c6ace93407b183a3899f93cf3fc67e47a745b';
 
-/// See also [VerificationCodeController].
-@ProviderFor(VerificationCodeController)
-final verificationCodeControllerProvider =
-    AutoDisposeAsyncNotifierProvider<VerificationCodeController, void>.internal(
-  VerificationCodeController.new,
-  name: r'verificationCodeControllerProvider',
+/// See also [authRepository].
+@ProviderFor(authRepository)
+final authRepositoryProvider = Provider<AuthRepository>.internal(
+  authRepository,
+  name: r'authRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$verificationCodeControllerHash,
+      : _$authRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$VerificationCodeController = AutoDisposeAsyncNotifier<void>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AuthRepositoryRef = ProviderRef<AuthRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

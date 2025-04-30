@@ -38,14 +38,8 @@ Future<void> showCustomDialog({
                 icon ?? SizedBox(),
                 28.verticalSpace,
                 title
-                // Text(
-                //   title,
-                //   textAlign: TextAlign.center,
-                //   style: Theme.of(context)
-                //       .textTheme
-                //       .displayLarge!
-                //       .copyWith(fontSize: 22),
-                // ),
+            
+            
               ],
             ),
           ),

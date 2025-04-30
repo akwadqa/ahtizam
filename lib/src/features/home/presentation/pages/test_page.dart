@@ -67,7 +67,7 @@ class TestPage extends ConsumerWidget {
                   // );
 
                   // Create test driver
-                  await createCollection();
+                  await createTestDriver();
 
                   if (!context.mounted) return;
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -98,10 +98,10 @@ class TestPage extends ConsumerWidget {
 
                   final controller = ref.read(orderControllerProvider.notifier);
                   await controller.createOrder(
-                    pickupLat: 33.61143678366949,
-                    pickupLng: 36.31667420268059,
-                    workshopLat: 33.62143678366949,
-                    workshopLng: 36.32667420268059,
+                    pickupLat: 37.4219983,
+                    pickupLng: -122.084,
+                    workshopLat: 37.421105912917845,
+                    workshopLng:  -122.0846013352275,
                     truckType: 'standard',
                     price: 100.0,
                   );

@@ -61,8 +61,9 @@ Future<void> createTestDriver() async {
 
     // Create a proper GeoPoint
     final GeoPoint driverLocation =
-        GeoPoint(33.61143678366949, 36.31667420268059);
-
+        GeoPoint(37.421105912917845, -122.0846013352275);
+        // GeoPoint(33.61143678366949, 36.31667420268059);
+// 
     // Try to create the driver document with offline support
     final DocumentReference driverRef =
         firestore.collection('drivers').doc('test_driver');

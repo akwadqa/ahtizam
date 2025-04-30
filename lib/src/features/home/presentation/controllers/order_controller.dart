@@ -31,12 +31,12 @@ class OrderController extends _$OrderController {
       state = const AsyncValue.loading();
 
       // Check Firestore connection first
-      try {
-        await FirebaseFirestore.instance.terminate();
-        await FirebaseFirestore.instance.enableNetwork();
-      } catch (e) {
-        print('Error resetting Firestore connection: $e');
-      }
+      // try {
+      //   await FirebaseFirestore.instance.terminate();
+      //   await FirebaseFirestore.instance.enableNetwork();
+      // } catch (e) {
+      //   print('Error resetting Firestore connection: $e');
+      // }
 
       // Validate coordinates
       if (!isValidCoordinate(pickupLat, pickupLng) ||
@@ -50,7 +50,7 @@ class OrderController extends _$OrderController {
       // First verify we can read from Firestore
       try {
         final testRead = await FirebaseFirestore.instance
-            .collection('drivers')
+            .collection('drivers').doc("test_driver").parent
             .limit(1)
             .get();
         print('Test read successful. Found ${testRead.docs.length} documents');

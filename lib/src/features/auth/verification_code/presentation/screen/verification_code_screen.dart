@@ -12,7 +12,6 @@ import 'package:ahtizam/src/theme/app_colors.dart';
 import '../../../../../shared_widgets/app_dialogs.dart';
 import '../../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../../shared_widgets/fade_circle_loading_indicator.dart';
-import '../../application/verification_code_service.dart';
 
 @RoutePage()
 class VerificationScreen extends ConsumerWidget {
@@ -24,12 +23,9 @@ class VerificationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verificationState = ref.watch(verificationCodeControllerProvider);
-    final verificationController =
-        ref.read(verificationCodeControllerProvider.notifier);
-    final countdown = ref.watch(verificationCodeServiceProvider);
-    final countdownController =
-        ref.read(verificationCodeServiceProvider.notifier);
+final verificationController = ref.read(verificationCodeControllerProvider.notifier);
+final verificationState = ref.watch(verificationCodeControllerProvider);
+final countdown = verificationController.countdown;
     return Scaffold(
       backgroundColor: AppColors.lightPeach,
       // resizeToAvoidBottomInset: true,
@@ -47,7 +43,7 @@ class VerificationScreen extends ConsumerWidget {
                 32.verticalSpace,
                 _buildOtpInputField(verificationController, context),
                 16.verticalSpace,
-                _buildResendOtpSection(countdown, countdownController, context),
+                _buildResendOtpSection(countdown, verificationController, context),
                 SizedBox(
                   height: MediaQuery.sizeOf(context).height / 4,
                 ),
@@ -96,7 +92,7 @@ class VerificationScreen extends ConsumerWidget {
   }
 
   Widget _buildResendOtpSection(int countdown,
-      VerificationCodeService countdownController, BuildContext context) {
+      VerificationCodeController countdownController, BuildContext context) {
     return Column(
       children: [
         Text(
