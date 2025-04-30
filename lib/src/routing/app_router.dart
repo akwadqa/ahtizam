@@ -27,12 +27,13 @@ class AppRouter extends RootStackRouter {
       AutoRoute(
         page: LoginRoute.page,
         path: AppRoutes.login,
-        initial: _isInitialLogin(isFirstTime, isAuthenticated),
+        // initial: _isInitialLogin(isFirstTime, isAuthenticated),
       ),
       AutoRoute(
         page: MainRoute.page,
         path: AppRoutes.main,
-        initial: _isInitialMain(isFirstTime, isAuthenticated),
+        initial: true,
+        // initial: _isInitialMain(isFirstTime, isAuthenticated),
         children: [],
       ),
       AutoRoute(page: SignupRoute.page, path: AppRoutes.signup),
@@ -45,6 +46,8 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: RateRoute.page, path: AppRoutes.rate),
       AutoRoute(page: ProfileDetailsRoute.page, path: AppRoutes.profileDetails),
       AutoRoute(page: WalletRoute.page, path: AppRoutes.wallet),
+      AutoRoute(page: MyOrderDetailsRoute.page, path: AppRoutes.myOrderDetails),
+      
       AutoRoute(
           page: RecomendedQuestionRoute.page,
           path: AppRoutes.recommendedQuestions),

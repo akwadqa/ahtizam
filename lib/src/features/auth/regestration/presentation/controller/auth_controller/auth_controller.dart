@@ -1,8 +1,7 @@
+import 'package:ahtizam/src/features/auth/regestration/data/repository/auth_repository.dart';
+import 'package:ahtizam/src/features/auth/regestration/domain/entity/login_params.dart';
+import 'package:ahtizam/src/features/auth/regestration/domain/entity/signup_params.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../../application/auth_service.dart';
-import '../../../data/auth_repository.dart';
-
 part 'auth_controller.g.dart';
 
 @riverpod
@@ -21,7 +20,7 @@ class AuthController extends _$AuthController {
   }
 
   Future<void> login(String phone) async {
-    await _authenticate((authRepo) => authRepo.login(phone));
+    await _authenticate((authRepo) => authRepo.login(LoginParams(phone: phone)));
   }
 
   Future<void> signup(
@@ -30,7 +29,7 @@ class AuthController extends _$AuthController {
     String phone,
   ) async {
     await _authenticate(
-      (authRepo) => authRepo.signup(email, name, phone),
+      (authRepo) => authRepo.signup(SignupParams(email: email, name: name, phone: phone)),
     );
   }
 }

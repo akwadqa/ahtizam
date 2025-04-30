@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../routing/app_router.gr.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../shared_widgets/dotted_path_with_circles.dart';
 
@@ -143,7 +144,11 @@ class _PastOrdersList extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemCount: 2,
-      itemBuilder: (_, index) => const _OrderCard(isOngoing: false),
+      itemBuilder: (_, index) => GestureDetector(
+        onTap: () {
+                context.pushRoute(MyOrderDetailsRoute());
+              },
+        child: const _OrderCard(isOngoing: false)),
     );
   }
 }
