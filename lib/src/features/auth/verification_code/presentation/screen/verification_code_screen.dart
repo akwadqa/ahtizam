@@ -124,17 +124,17 @@ final countdown = verificationController.countdown;
       BuildContext context, WidgetRef ref, verificationState) {
     return Consumer(
       builder: (context, ref, child) {
-        ref.listen(verificationCodeControllerProvider, (prev, next) {
-          if (next is AsyncData) {
-            debugPrint("✅ OTP Verification Successful!");
+        // ref.listen(verificationCodeControllerProvider, (prev, next) {
+        //   if (next is AsyncData) {
+        //     debugPrint("✅ OTP Verification Successful!");
 
-            Future.microtask(() {
-              context.router.replaceAll([const MainRoute()]);
-            });
-          } else if (next is AsyncError) {
-            showErrorDialog(context, next.error.toString());
-          }
-        });
+        //     Future.microtask(() {
+        //       context.router.replaceAll([const MainRoute()]);
+        //     });
+        //   } else if (next is AsyncError) {
+        //     showErrorDialog(context, next.error.toString());
+        //   }
+        // });
         final asyncData = ref.watch(verificationCodeControllerProvider);
         final verificationController =
             ref.read(verificationCodeControllerProvider.notifier);

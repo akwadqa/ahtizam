@@ -1,9 +1,7 @@
-import 'dart:math';
 
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/shared_widgets/circle_image_widget.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class NotificationCardWidget extends StatelessWidget {
@@ -12,7 +10,7 @@ class NotificationCardWidget extends StatelessWidget {
   final String time;
   final String imageUrl;
 
-  const NotificationCardWidget({
+  const NotificationCardWidget({super.key, 
     required this.driverName,
     required this.message,
     required this.time,

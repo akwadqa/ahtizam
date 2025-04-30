@@ -40,7 +40,11 @@
     "select_truck_type": "Select flatbed truck type",
     "search_for_truck": "Search for a flatbed truck",
     "delivery_fee": "Delivery fee",
-
+    "order_details": "Order Details",
+    "trip_date": "Trip Date",
+    "bill_details": "Bill Details",
+    "trip_cost": "Trip Cost",
+    "get_help": "Get Help",
     "sign_in": "sign in",
     "user_name": "User name",
     "home": "Home",

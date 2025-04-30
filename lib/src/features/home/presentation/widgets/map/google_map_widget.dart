@@ -77,6 +77,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
 
         return GoogleMap(
           mapType: MapType.normal,
+          zoomControlsEnabled: false,
           onTap: isSelectLocationFromMap
               ? (LatLng latLng) async {
                   await mapController.setCurrentLocation(latLng);

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../../shared_widgets/custom_appbar.dart';
-import 'package:ahtizam/gen/assets.gen.dart';
 
 @RoutePage()
 class NotificationsScreen extends ConsumerWidget {
