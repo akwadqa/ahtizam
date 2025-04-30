@@ -27,14 +27,26 @@ class CustomBottomNavigationBar extends ConsumerWidget {
     return isThirdWidgetVisible
         ? Container()
         : ClipRRect(
+            clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(20),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.4),
-                ),
                 height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white
+                      .withOpacity(0.5), // Light white tint over blur
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.border, width: 1),
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     color: Colors.black.withOpacity(0.1), // Soft bottom shadow
+                  //     offset: Offset(0, 4),
+                  //     blurRadius: 10,
+                  //     spreadRadius: 0,
+                  //   ),
+                  // ],
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

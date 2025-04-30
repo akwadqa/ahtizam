@@ -5,10 +5,10 @@
 class ApiResponse<T> {
   ApiResponse(this.status, this.message, this.data);
 
-  ApiResponse.success({this.message, this.data}) : status = true;
+  ApiResponse.success({this.message, this.data}) : status = 200;
 
   ApiResponse.error({this.message, this.error})
-      : status = false,
+      : status = null,
         data = null;
 
   factory ApiResponse.fromJson(
@@ -16,7 +16,7 @@ class ApiResponse<T> {
     T Function(Object? json) fromJsonT,
   ) {
     try {
-      if (json['status_code'] == false) {
+      if (json['status_code'] != 200) {
         return ApiResponse<T>.error(
           message: json['message'],
           error: json['data'],
@@ -33,7 +33,7 @@ class ApiResponse<T> {
       return ApiResponse<T>.error(message: error.toString(), error: error);
     }
   }
-  final bool? status;
+  final int? status;
   final String? message;
   final T? data;
   dynamic error;
@@ -48,7 +48,7 @@ class ApiResponse<T> {
     return 'ApiResponse{status: $status, message: $message, data: $data, error: $error}';
   }
 
-  bool get hasSucceeded => status == true;
+  bool get hasSucceeded => status == 200;
 
-  bool get hasFailed => status == false || status == null;
+  bool get hasFailed => status != 200 || status == null;
 }
