@@ -89,6 +89,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/qr.svg
   SvgGenImage get qr => const SvgGenImage('assets/icons/qr.svg');
 
+  /// File path: assets/icons/send_ic.svg
+  SvgGenImage get sendIc => const SvgGenImage('assets/icons/send_ic.svg');
+
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
@@ -129,6 +132,7 @@ class $AssetsIconsGen {
         polyline,
         profile,
         qr,
+        sendIc,
         settings,
         timeIc,
         truck,

@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'profile_controller.dart';
+part of 'chat_controller.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileControllerHash() => r'540813a0d41acbe841364967a9e89921b5e463e4';
+String _$chatControllerHash() => r'a1ca7b1ca0479f489aef1966b29eaafcbfdc137b';
 
-/// See also [ProfileController].
-@ProviderFor(ProfileController)
-final profileControllerProvider =
-    AsyncNotifierProvider<ProfileController, ProfileModel>.internal(
-  ProfileController.new,
-  name: r'profileControllerProvider',
+/// See also [ChatController].
+@ProviderFor(ChatController)
+final chatControllerProvider =
+    AutoDisposeNotifierProvider<ChatController, ChatState>.internal(
+  ChatController.new,
+  name: r'chatControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$profileControllerHash,
+      : _$chatControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ProfileController = AsyncNotifier<ProfileModel>;
+typedef _$ChatController = AutoDisposeNotifier<ChatState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
