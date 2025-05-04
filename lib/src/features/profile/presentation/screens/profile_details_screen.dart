@@ -17,13 +17,15 @@ import '../widgets/text_form_fields/profile_phone_form_field.dart';
 class ProfileDetailsScreen extends ConsumerWidget {
   const ProfileDetailsScreen({super.key});
 
-
   Future<void> handleUpload(BuildContext context, WidgetRef ref) async {
     final pickedImage = await showImageSourcePicker(context);
     if (pickedImage != null) {
-        ref.read(profileControllerProvider.notifier).setPersonalImage(pickedImage);
+      ref
+          .read(profileControllerProvider.notifier)
+          .setPersonalImage(pickedImage);
     }
   }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileControllerProvider);
@@ -74,7 +76,7 @@ class ProfileDetailsScreen extends ConsumerWidget {
 
   Widget _buildProfileImage(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         handleUpload(context, ref);
       },
       child: Stack(

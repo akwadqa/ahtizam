@@ -4,7 +4,8 @@ import 'package:ahtizam/src/theme/app_colors.dart';
 
 class CustomBackArrowWidget extends StatelessWidget {
   final VoidCallback? onTap;
-  const CustomBackArrowWidget({super.key, this.onTap});
+  final IconData? icon;
+  const CustomBackArrowWidget({super.key, this.onTap, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class CustomBackArrowWidget extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(16)),
           ),
           child: Icon(
-            Icons.arrow_back_ios,
+            icon ?? Icons.arrow_back_ios,
             color: Colors.white,
             size: 18,
           )),

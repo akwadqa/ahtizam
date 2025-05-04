@@ -22,6 +22,11 @@ Future<T> retryOperation<T>(Future<T> Function() operation,
   }
   throw Exception('Failed after $maxAttempts attempts');
 }
+bool isRTL(String text) {
+  final rtlRegex = RegExp(r'^[\u0600-\u06FF]');
+  return rtlRegex.hasMatch(text.trim());
+}
+
 
 Future<void> safelyPop(BuildContext context) async {
   FocusScope.of(context).unfocus();
