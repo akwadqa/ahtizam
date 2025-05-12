@@ -28,7 +28,7 @@ Dio dio(Ref ref) {
     InterceptorsWrapper(
       onRequest: (options, handler) {
         if (***REMOVED*** != null) {
-          options.headers['Authorization'] = ***REMOVED***;
+          options.headers['Authorization'] = "***REMOVED*** $***REMOVED***";
         }
         // options.queryParameters['sl'] = language;
         options.headers['Accept-Language'] = language;

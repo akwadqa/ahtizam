@@ -29,6 +29,7 @@ class ProfileEmailFormField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             textAlignVertical: TextAlignVertical.center,
+            enabled: false,
             style: Theme.of(context)
                 .textTheme
                 .labelSmall!
@@ -47,6 +48,7 @@ class ProfileEmailFormField extends StatelessWidget {
                   .copyWith(fontSize: 14, color: AppColors.grey600),
             ),
             textInputAction: TextInputAction.next,
+            
             validator: qValidator([
               IsRequired(context.tr('required')),
               IsEmail(context.tr('emailValidatorMessage'))

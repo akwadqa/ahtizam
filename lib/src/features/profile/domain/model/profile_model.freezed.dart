@@ -27,7 +27,7 @@ mixin _$ProfileModel {
   @JsonKey(name: "email")
   String get email => throw _privateConstructorUsedError;
   @JsonKey(name: "profile_image")
-  String get profileImage => throw _privateConstructorUsedError;
+  String? get profileImage => throw _privateConstructorUsedError;
 
   /// Serializes this ProfileModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +49,7 @@ abstract class $ProfileModelCopyWith<$Res> {
       {@JsonKey(name: "full_name") String fullName,
       @JsonKey(name: "mobile_no") String mobileNumber,
       @JsonKey(name: "email") String email,
-      @JsonKey(name: "profile_image") String profileImage});
+      @JsonKey(name: "profile_image") String? profileImage});
 }
 
 /// @nodoc
@@ -70,7 +70,7 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
     Object? fullName = null,
     Object? mobileNumber = null,
     Object? email = null,
-    Object? profileImage = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_value.copyWith(
       fullName: null == fullName
@@ -85,10 +85,10 @@ class _$ProfileModelCopyWithImpl<$Res, $Val extends ProfileModel>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImage: null == profileImage
+      profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -105,7 +105,7 @@ abstract class _$$ProfileModelImplCopyWith<$Res>
       {@JsonKey(name: "full_name") String fullName,
       @JsonKey(name: "mobile_no") String mobileNumber,
       @JsonKey(name: "email") String email,
-      @JsonKey(name: "profile_image") String profileImage});
+      @JsonKey(name: "profile_image") String? profileImage});
 }
 
 /// @nodoc
@@ -124,7 +124,7 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
     Object? fullName = null,
     Object? mobileNumber = null,
     Object? email = null,
-    Object? profileImage = null,
+    Object? profileImage = freezed,
   }) {
     return _then(_$ProfileModelImpl(
       fullName: null == fullName
@@ -139,10 +139,10 @@ class __$$ProfileModelImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImage: null == profileImage
+      profileImage: freezed == profileImage
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -170,7 +170,7 @@ class _$ProfileModelImpl implements _ProfileModel {
   final String email;
   @override
   @JsonKey(name: "profile_image")
-  final String profileImage;
+  final String? profileImage;
 
   @override
   String toString() {
@@ -214,11 +214,11 @@ class _$ProfileModelImpl implements _ProfileModel {
 
 abstract class _ProfileModel implements ProfileModel {
   factory _ProfileModel(
-          {@JsonKey(name: "full_name") required final String fullName,
-          @JsonKey(name: "mobile_no") required final String mobileNumber,
-          @JsonKey(name: "email") required final String email,
-          @JsonKey(name: "profile_image") required final String profileImage}) =
-      _$ProfileModelImpl;
+      {@JsonKey(name: "full_name") required final String fullName,
+      @JsonKey(name: "mobile_no") required final String mobileNumber,
+      @JsonKey(name: "email") required final String email,
+      @JsonKey(name: "profile_image")
+      required final String? profileImage}) = _$ProfileModelImpl;
 
   factory _ProfileModel.fromJson(Map<String, dynamic> json) =
       _$ProfileModelImpl.fromJson;
@@ -234,7 +234,7 @@ abstract class _ProfileModel implements ProfileModel {
   String get email;
   @override
   @JsonKey(name: "profile_image")
-  String get profileImage;
+  String? get profileImage;
 
   /// Create a copy of ProfileModel
   /// with the given fields replaced by the non-null parameter values.

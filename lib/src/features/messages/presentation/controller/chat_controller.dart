@@ -54,21 +54,55 @@ void handleSend(types.PartialText message) {
     state = state.copyWith(filteredMessages: filtered);
   }
 
- Future<void> pickImage(ImageSource source) async {
-  final picker = ImagePicker();
-  final result = await picker.pickImage(source: source);
+ Future<void> pickImage(File ?result) async {
+  // final picker = ImagePicker();
+  // final result = await picker.pickImage(source: source);
   if (result != null) {
     final image = types.ImageMessage(
       author: state.currentUser,
       createdAt: DateTime.now().millisecondsSinceEpoch,
       id: const Uuid().v4(),
-      name: result.name,
+      name: result.path,
       size: File(result.path).lengthSync(),
       uri: result.path,
     );
     _addMessage(image);
   }
 }
+
+void deleteMessage(types.Message message) {
+  final updated = state.messages.where((m) => m.id != message.id).toList();
+  state = state.copyWith(
+    messages: updated,
+    filteredMessages: updated,
+  );
+}
+void reactToMessage(types.Message message, String emoji) {
+  final updatedMessages = state.messages.map((m) {
+    if (m.id == message.id) {
+      final currentMetadata = Map<String, dynamic>.from(m.metadata ?? {});
+      final currentReactions = List<String>.from(currentMetadata['reactions'] ?? []);
+      
+      if (currentReactions.contains(emoji)) {
+        currentReactions.remove(emoji);
+      } else {
+        currentReactions.add(emoji);
+      }
+
+      return m.copyWith(metadata: {
+        ...currentMetadata,
+        'reactions': currentReactions,
+      });
+    }
+    return m;
+  }).toList();
+
+  state = state.copyWith(
+    messages: updatedMessages,
+    filteredMessages: updatedMessages,
+  );
+}
+
 
 void setReplyingTo(types.Message? message) {
   state = state.copyWith(replyingTo: message);

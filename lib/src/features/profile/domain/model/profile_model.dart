@@ -9,7 +9,7 @@ class ProfileModel with _$ProfileModel {
     @JsonKey(name: "full_name") required String fullName,
     @JsonKey(name: "mobile_no") required String mobileNumber,
     @JsonKey(name: "email") required String email,
-    @JsonKey(name: "profile_image") required String profileImage,
+    @JsonKey(name: "profile_image") required String? profileImage,
   }) = _ProfileModel;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) =>

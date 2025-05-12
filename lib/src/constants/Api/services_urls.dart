@@ -4,9 +4,11 @@ import 'package:ahtizam/src/constants/Api/dotenv_keys.dart';
 
 class ServicesUrls {
   static String baseUrl = '';
+  static String imageUrl = '';
   static String mapApiKey = '';
   static init() {
     baseUrl = dotenv.get(DotenvKeys.baseUrl);
+    imageUrl = dotenv.get(DotenvKeys.imageUrl);
     mapApiKey = dotenv.get(DotenvKeys.mapApiKey);
     debugPrint('mnor $baseUrl');
   }

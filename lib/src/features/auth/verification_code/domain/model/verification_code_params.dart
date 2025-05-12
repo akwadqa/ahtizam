@@ -9,7 +9,7 @@ class VerificationCodeParams {
 
   Map<String, dynamic> toJson() => {
         'otp': otp,
-        'mobile_no': "55550000",
+        'mobile_no': phone,
         'action': "passenger",
       };
 }

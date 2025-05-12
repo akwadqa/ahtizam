@@ -18,9 +18,8 @@ abstract class NetworkService<T> {
   });
 
   Future<T> put(
-    String url,
-     {
-      dynamic data,
+    String url, {
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
   });
@@ -81,8 +80,8 @@ class DioNetworkService implements NetworkService<Response> {
 
   @override
   Future<Response> put(
-    String url,{
-    dynamic data, 
+    String url, {
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, String>? headers,
   }) {

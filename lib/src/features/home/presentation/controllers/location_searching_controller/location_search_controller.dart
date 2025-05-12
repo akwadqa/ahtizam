@@ -128,4 +128,32 @@ class LocationSearchController extends _$LocationSearchController {
           "📍 Updated Second Point: ${mapController.secondPointAddress}");
     }
   }
+
+
+void sendCoordinates() {
+  final mapController = ref.read(mapControllerProvider.notifier);
+
+  final LatLng? userLocation = mapController.firstPoint;
+  final LatLng? workshopLocation = mapController.secondPoint;
+
+  if (userLocation == null || workshopLocation == null) {
+    debugPrint("🚫 One or both coordinates are missing.");
+    // Show a snackbar or dialog to inform user
+    return;
+  }
+
+  final data = {
+    "user_lat": userLocation.latitude,
+    "user_lng": userLocation.longitude,
+    "workshop_lat": workshopLocation.latitude,
+    "workshop_lng": workshopLocation.longitude,
+  };
+
+  // You can send `data` via an API call or pass it to another part of the app
+  debugPrint("📤 Sending coordinates: $data");
+
+  // Example: pass to your API service
+  // ref.read(yourApiServiceProvider).sendCoordinates(data);
+}
+
 }

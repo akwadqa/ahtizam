@@ -189,59 +189,69 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                 onTap: selectedTruck == null
                     ? null
                     : () async {
-                        try {
+                        // try {
                           await ref
                               .read(mapControllerProvider.notifier)
                               .captureScreenshot();
 
                           showSearchingTruckLoading(context: context);
-                          final parsedPrice = double.tryParse(
-                                selectedTruck.price
-                                    .replaceAll(RegExp(r'[^\d.]'), ''),
-                              ) ??
-                              0;
+                       
+                  Future.delayed(Duration(seconds: 5), () {
+
+                                 Navigator.pop(context);
+                                    Navigator.pop(context);
+                                              ref
+                                .read(showOrderFormControllerProvider.notifier)
+                                .initiallValue ==
+                            "request_offer"
+                        ? context.pushRoute(PricesOfferRoute())
+                        : showDriverDetailsBottomSheet(context);
+                  });
+
+                  // });
+
                           // Create order
-                          await ref
-                              .read(orderControllerProvider.notifier)
-                              .createOrder(
-                                pickupLat: pickupLocation.latitude,
-                                pickupLng: pickupLocation.longitude,
-                                workshopLat: workshopLocation.latitude,
-                                workshopLng: workshopLocation.longitude,
-                                truckType: selectedTruck.id.toString(),
-                                price: parsedPrice,
-                              );
+                          // await ref
+                          //     .read(orderControllerProvider.notifier)
+                          //     .createOrder(
+                          //       pickupLat: pickupLocation.latitude,
+                          //       pickupLng: pickupLocation.longitude,
+                          //       workshopLat: workshopLocation.latitude,
+                          //       workshopLng: workshopLocation.longitude,
+                          //       truckType: selectedTruck.id.toString(),
+                          //       price: parsedPrice,
+                          //     );
 
                           // Listen to order state changes
-                          ref.listen(orderControllerProvider, (previous, next) {
-                            next.whenData((order) {
-                              if (order != null) {
-                                switch (order.status) {
-                                  case 'accepted':
-                                    Navigator.pop(context); // Close loading
-                                    Navigator.pop(
-                                        context); // Close bottom sheet
-                                    showDriverDetailsBottomSheet(context);
-                                    break;
-                                  case 'rejected':
-                                    // Order was rejected, system will automatically try next driver
-                                    break;
-                                  case 'completed':
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                    break;
-                                }
-                              }
-                            });
-                          });
-                        } catch (e) {
-                          Navigator.pop(context); // Close any open sheet/dialog
-                          // shows(context, "❌ ${"order_failed".tr()}: $e");
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(e.toString()),
-                            backgroundColor: Colors.redAccent,
-                          ));
-                        }
+                        //   ref.listen(orderControllerProvider, (previous, next) {
+                        //     next.whenData((order) {
+                        //       if (order != null) {
+                        //         switch (order.status) {
+                        //           case 'accepted':
+                        //             Navigator.pop(context); // Close loading
+                        //             Navigator.pop(
+                        //                 context); // Close bottom sheet
+                        //             showDriverDetailsBottomSheet(context);
+                        //             break;
+                        //           case 'rejected':
+                        //             // Order was rejected, system will automatically try next driver
+                        //             break;
+                        //           case 'completed':
+                        //             Navigator.pop(context);
+                        //             Navigator.pop(context);
+                        //             break;
+                        //         }
+                        //       }
+                        //     });
+                        //   });
+                        // } catch (e) {
+                        //   Navigator.pop(context); // Close any open sheet/dialog
+                        //   // shows(context, "❌ ${"order_failed".tr()}: $e");
+                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //     content: Text(e.toString()),
+                        //     backgroundColor: Colors.redAccent,
+                        //   ));
+                        // }
                       },
                 backgroundColor:
                     selectedTruck == null ? AppColors.gray : AppColors.black,
