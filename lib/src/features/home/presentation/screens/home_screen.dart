@@ -1,19 +1,13 @@
 import 'dart:ui';
-import 'package:ahtizam/src/features/home/presentation/pages/test_page.dart';
-import 'package:ahtizam/src/features/messages/presentation/screens/chat_screens.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_car.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_details_form.dart';
-import '../../../../localization/current_language.dart';
-import '../../../../routing/app_router.gr.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
 import '../../../auth/regestration/application/auth_service.dart';
@@ -36,7 +30,7 @@ class HomeScreen extends ConsumerWidget {
       body: Stack(
         children: [
           const _BackgroundMap(),
-          const _TopNavigationBar(),
+          const TopNavigationBar(),
           (isThirdWidgetVisible)
               ? const RequestDetailsForm()
               : isSecondWidgetVisible
@@ -58,12 +52,14 @@ class HomeScreen extends ConsumerWidget {
       child: CustomButtonWidget(
         text: context.tr("request"),
         onTap: () {
-          if (formKey.currentState!.validate()) {
-            formKey.currentState!.save();
-            ref
-                .read(selectTruckControllerProvider.notifier)
-                .getTrucksDataInformation(context);
-          }
+              ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
+
+          // if (formKey.currentState!.validate()) {
+          //   formKey.currentState!.save();
+          //   ref
+          //       .read(selectTruckControllerProvider.notifier)
+          //       .getTrucksDataInformation(context);
+          // }
         },
         backgroundColor: AppColors.black,
         isFiled: true,
@@ -89,61 +85,6 @@ class _BackgroundMap extends StatelessWidget {
   }
 }
 
-/// **Blurred Top Navigation Bar with Icons**
-class _TopNavigationBar extends ConsumerWidget {
-  const _TopNavigationBar();
-
-  @override
-  Widget build(BuildContext context, ref) {
-    final currentLanguage = ref.watch(currentLanguageProvider);
-
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(bottom: Radius.circular(20)),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            height: 100,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.4),
-              borderRadius:
-                  const BorderRadius.vertical(bottom: Radius.circular(20)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                    onTap: () {
-                      final currentLanguageNotifier =
-                          ref.read(currentLanguageProvider.notifier);
-
-                      currentLanguageNotifier.changeLanguage(
-                          context, currentLanguage == 'ar' ? 'en' : 'ar');
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ChatScreen()));
-                    },
-                    child: Assets.icons.settings.svg(height: 30, width: 30)),
-                Assets.icons.logo
-                    .svg(fit: BoxFit.scaleDown)
-                    .onlyPadding(top: 5),
-                GestureDetector(
-                  onTap: () => context.pushRoute(NotificationsRoute()),
-                  child: const Icon(Icons.notifications, size: 28),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// **Blurred Bottom Action Card with Button**
 class _BottomActionCard extends ConsumerWidget {
   const _BottomActionCard();
 

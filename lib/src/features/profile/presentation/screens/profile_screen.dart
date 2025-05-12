@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/profile/domain/model/profile_model.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
@@ -23,6 +24,7 @@ class ProfileScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.halfWhite,
+    
       body:
       asyncProfileData.when(data: (data) {
         return  SafeArea(
@@ -50,7 +52,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
       );
       },
-      loading: () => FadeCircleLoadingIndicator(),
+      loading: () => FadeCircleLoadingIndicator().centered(),
       error: (error, stackTrace) => AppErrorWidget(),
       ),
       
@@ -63,10 +65,10 @@ class ProfileScreen extends ConsumerWidget {
       child: Stack(
         children: [
           CircleImageWidget(
-            imageUrl: ServicesUrls.baseUrl + data.profileImage,
+            imageUrl: data.profileImage!=null? ServicesUrls.imageUrl + data.profileImage!:null,
                 // "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-            height: 200,
-            width: 200,
+            height: 225,
+            width: 225,
             circleWidth: 5,
           ),
           PositionedDirectional(

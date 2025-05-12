@@ -509,7 +509,10 @@
 
 //////////////////////////////////////////////////////
 ///
+import 'package:ahtizam/src/features/messages/presentation/widgets/message_action_seet.dart';
 import 'package:ahtizam/src/utils/helper_methods.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart' as locale;
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -520,8 +523,9 @@ import 'package:ahtizam/src/features/messages/presentation/controller/chat_contr
 import 'package:ahtizam/src/features/messages/presentation/widgets/custom_app_bar.dart';
 import 'package:ahtizam/src/features/messages/presentation/widgets/custom_input_bar.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
-import 'package:intl/intl.dart' as locale;
+// import 'package:intl/intl.dart'  as local;
 
+@RoutePage()
 class ChatScreen extends ConsumerStatefulWidget {
   const ChatScreen({super.key});
   @override
@@ -560,9 +564,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 color: AppColors.lightGray, // Or any color you like
 
                 child: Chat(
-                  textMessageOptions: TextMessageOptions(
-                    
-                  ),
+                  textMessageOptions: TextMessageOptions(),
                   textMessageBuilder: (message,
                           {required int messageWidth,
                           required bool showName}) =>
@@ -572,13 +574,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     showName: showName,
                     currentUser: state.currentUser,
                   ),
-                  
+
                   theme: DefaultChatTheme(
                     inputBackgroundColor: Colors.white,
                     backgroundColor: AppColors.lightGray,
                     primaryColor: AppColors.white,
                     sentMessageBodyTextStyle: TextStyle(color: AppColors.black),
-                    
                     receivedMessageBodyTextStyle:
                         TextStyle(color: Colors.white),
                   ),
@@ -602,9 +603,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       child: child,
                     );
                   },
-                  onMessageLongPress: (context, message) {
-                    controller.setReplyingTo(message);
+                  onMessageLongPress: (context, message) async {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (_) => MessageActionSheet(
+                        onDelete: () {
+                          Navigator.pop(context);
+                          controller.deleteMessage(message);
+                        },
+                        onReact: (emoji) {
+
+                          controller.reactToMessage(message, emoji);
+                          Navigator.pop(context);
+
+                        },
+                        currentReactions:  List<String>.from(message.metadata?['reactions'] ?? []),
+                      ),
+                    );
                   },
+
                   // onAttachmentPressed: controller.pickImage,
                   customBottomWidget: CustomInputBar(),
                 ),
@@ -623,76 +640,115 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     required types.User currentUser,
   }) {
     final isCurrentUser = message.author.id == currentUser.id;
-  final bool isArabic = isRTL(message.text);
+    final bool isArabic = isRTL(message.text);
 // print(message.previewData?.title);
-    return Container(
-      width: messageWidth.toDouble(),
-      // margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
-      decoration: BoxDecoration(
-        color: isCurrentUser ? Colors.white : AppColors.primary,
-// border: Border.all(color:isCurrentUser ? Colors.white : AppColors.primary, ),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(10),
-          topRight: Radius.circular(10),
-          bottomLeft: isCurrentUser ? Radius.circular(10) : Radius.zero,
-          bottomRight: isCurrentUser ? Radius.zero : Radius.circular(10),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment:isArabic? CrossAxisAlignment.start: CrossAxisAlignment.end,
-        children: [
-          // Reply part if any
-          if (message.repliedMessage != null)
-            Container(
-              margin: const EdgeInsets.only(bottom: 6),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-              decoration: BoxDecoration(
-                color: AppColors.lightGray,
-                borderRadius: BorderRadius.circular(10),
-                border: Border(
-                  right: BorderSide(width: 4, color: AppColors.primary),
-                ),
+    return Stack(
+      children: [
+        Container(
+          color: AppColors.lightGray,
+          padding: EdgeInsets.only(bottom: 20),
+          child: Container(
+            width: messageWidth.toDouble(),
+            // margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            decoration: BoxDecoration(
+              color: isCurrentUser ? Colors.white : AppColors.primary,
+              // border: Border.all(color:isCurrentUser ? Colors.white : AppColors.primary, ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: isCurrentUser ? Radius.circular(10) : Radius.zero,
+                bottomRight: isCurrentUser ? Radius.zero : Radius.circular(10),
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      message.repliedMessage is types.TextMessage
-                          ? (message.repliedMessage as types.TextMessage).text
-                          : 'صورة أو ملف',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            child: Column(
+              crossAxisAlignment:
+                  isArabic ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+              children: [
+                // Reply part if any
+                if (message.repliedMessage != null)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 24),
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGray,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border(
+                        right: BorderSide(width: 4, color: AppColors.primary),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child:
+                          
+                          message.repliedMessage is types.TextMessage
+                                ?  Text(
+                            (message.repliedMessage as types.TextMessage)
+                                    .text,
+                                // : 'صورة أو ملف',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ):SizedBox(
+                            height: 20,
+                            width: 50,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
 
-          // Main message text
-          Text(
-            message.text,
-            textDirection:isArabic? TextDirection.rtl: TextDirection.ltr,
-            style: TextStyle(
-              color: isCurrentUser ? AppColors.black : Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 14
+                // Main message text
+                Text(
+                  message.text,
+                  textDirection:
+                      isArabic ? TextDirection.rtl : TextDirection.ltr,
+                  style: TextStyle(
+                      color: isCurrentUser ? AppColors.black : Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14),
+                ),
+                const SizedBox(height: 4),
+
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    _formatTime(message.createdAt!),
+                    style: TextStyle(
+                      color: isCurrentUser ? Colors.grey : Colors.white70,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Text(
-              _formatTime(message.createdAt!),
-              style: TextStyle(
-                color: isCurrentUser ? Colors.grey : Colors.white70,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+        PositionedDirectional(
+            bottom: 0,
+            start: 5,
+            child: (message.metadata?['reactions'] != null)
+                ?
+                message.metadata!['reactions'].toString().isNotEmpty
+                    ?  Wrap(
+                            children: List<Widget>.from(
+                              (message.metadata!['reactions'] as List)
+                                  .map((e) => ClipOval(
+                        child: Container(
+                          color: AppColors.white,
+                          padding: EdgeInsets.all(8),
+                          child:Text(e,
+                                            style: TextStyle(fontSize: 14)),
+                                      )),
+                            ),
+                          ),
+                        )
+                      
+                    : SizedBox()
+                : SizedBox()),
+      ],
     );
   }
 

@@ -4,13 +4,10 @@
     "get_started": "Get started",
     "lets_go": "Let`s Go",
     "welcome": "Welcome {}",
-
     "welcome_msg": "Welcome to ahtezam",
     "welcome_dsc": "Welcome to ahtezam where you could move your broken down car easily and smothly",
-
     "seconde_welcome_msg": "App features",
     "seconde_welcome_dsc": "This app provide with latest emplement and quick response",
-
     "login_weclome": "Welcome Back!",
     "login_dsc": "Let`s sign in wth your phone ",
     "sign_up_welcome": "Sign Up",
@@ -47,13 +44,18 @@
     "get_help": "Get Help",
     "sign_in": "sign in",
     "user_name": "User name",
+    "full_name": "Full name",
     "home": "Home",
     "category": "Orders",
     "messages": "Messages",
     "profile": "Profile",
+    "profile_updated_msg": "Personal information updated successfully",
     "email": "Email",
     "phone_number": "phone number",
-
+    "take_photo": "Take a photo",
+    "Choose_from_gallery": "Choose from gallery",
+    "delete": "Delete",
+    "react": "React",
     "send_a_message": "Send a message",
     "call_by": "call by {}",
     "with_currency": "{} QAR",
@@ -62,7 +64,6 @@
     "yes": "yes",
     "no": "no",
     "success_payment": "Payment done by successfully",
-
     "enter_location": "Please enter a location",
     "vehicle_capacity": "Vehicle Capacity",
     "vehicle_size": "Vehicle Size",
@@ -73,7 +74,6 @@
     "enter_coupon_number": "Enter coupon number",
     "cancel_order_msg": "Do you want to cancel your flatbed truck order?",
     "cancel_order_dsc": "If you cancel now, you will lose a\n 20 QAR late cancellation fee.",
-
     "payment_information": "Payment Information",
     "payment_methods": "Payment Methods",
     "credit_card": "Credit Card",
@@ -120,7 +120,6 @@
     "lowestPrice": "Lowest prices",
     "nearestToMe": "Nearest to me",
     "order": "Order({})",
-
     "search": "Search",
     "today": "Today",
     "write_your_message": "Write your message...",

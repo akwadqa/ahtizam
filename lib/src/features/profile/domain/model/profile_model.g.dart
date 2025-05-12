@@ -11,7 +11,7 @@ _$ProfileModelImpl _$$ProfileModelImplFromJson(Map<String, dynamic> json) =>
       fullName: json['full_name'] as String,
       mobileNumber: json['mobile_no'] as String,
       email: json['email'] as String,
-      profileImage: json['profile_image'] as String,
+      profileImage: json['profile_image'] as String?,
     );
 
 Map<String, dynamic> _$$ProfileModelImplToJson(_$ProfileModelImpl instance) =>

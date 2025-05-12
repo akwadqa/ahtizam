@@ -5,15 +5,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CircleImageWidget extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
+  final Widget? child;
   final double? height;
   final double? width;
   final double? circleWidth;
   const CircleImageWidget(
       {super.key,
-      required this.imageUrl,
+       this.imageUrl,
       this.height,
       this.width,
+      this.child,
       this.circleWidth});
 
   @override
@@ -32,8 +34,8 @@ class CircleImageWidget extends StatelessWidget {
           ),
         ),
         child: ClipOval(
-          child: CachedNetworkImage(
-            imageUrl: imageUrl,
+          child:child ?? (imageUrl!=null? CachedNetworkImage(
+            imageUrl: imageUrl!,
             fit: BoxFit.fill,
             errorWidget: (_, __, ___) {
               return Icon(
@@ -42,7 +44,11 @@ class CircleImageWidget extends StatelessWidget {
                 size: 50,
               );
             },
-          ),
+          ):Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 50,
+              )),
         ));
   }
 }

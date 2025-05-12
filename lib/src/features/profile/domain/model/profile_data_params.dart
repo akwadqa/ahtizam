@@ -23,7 +23,7 @@ class ProfileDataParams {
     final Map<String, dynamic> data = {};
     if (name != null) data['name'] = name;
     if (phone != null) data['mobile_no'] = phone;
-    if (phone != null) data['email'] = email;
+    if (email != null) data['email'] = email;
 
     if (image != null) {
       if (image!.path != '') {

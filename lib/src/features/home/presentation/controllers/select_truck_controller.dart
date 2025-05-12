@@ -11,11 +11,29 @@ import 'package:ahtizam/src/features/home/application/map_service.dart';
 
 part 'select_truck_controller.g.dart';
 
+      final List<Truck> trucks = [
+        Truck(
+            id: 1,
+            name: "سطحة",
+            price: "with_currency".tr(args: ['10']),
+            image: "assets/icons/truck.svg"),
+        Truck(
+            id: 2,
+            name: "ونش",
+            price: "with_currency".tr(args: ['12']),
+            image: "assets/icons/truck.svg"),
+        Truck(
+            id: 3,
+            name: "قاطرة",
+            price: "with_currency".tr(args: ['20']),
+            image: "assets/icons/truck.svg"),
+      ];
 @Riverpod(keepAlive: true)
 class SelectTruckController extends _$SelectTruckController {
   @override
   Future<TruckState> build() async {
-    return TruckState(trucks: [], selectedTruck: null);
+    
+    return TruckState(trucks: trucks, selectedTruck: null);
   }
 
   Future<void> getTrucksDataInformation(BuildContext context) async {
@@ -35,23 +53,6 @@ class SelectTruckController extends _$SelectTruckController {
       // Simulate API or Firebase call
       // await Future.delayed(const Duration(seconds: 2));
 
-      final List<Truck> trucks = [
-        Truck(
-            id: 1,
-            name: "سطحة",
-            price: "with_currency".tr(args: ['10']),
-            image: "assets/icons/truck.svg"),
-        Truck(
-            id: 2,
-            name: "ونش",
-            price: "with_currency".tr(args: ['12']),
-            image: "assets/icons/truck.svg"),
-        Truck(
-            id: 3,
-            name: "قاطرة",
-            price: "with_currency".tr(args: ['20']),
-            image: "assets/icons/truck.svg"),
-      ];
 
       state = AsyncData(TruckState(trucks: trucks, selectedTruck: null));
 

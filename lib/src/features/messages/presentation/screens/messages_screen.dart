@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/features/messages/presentation/screens/chat_screens.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -85,8 +86,8 @@ class MessagesScreen extends StatelessWidget {
         ),
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            // Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (context) => ChatScreen()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ChatScreen()));
           },
           child: ChatItemCard(
             userName: messages[index].userName,
@@ -152,7 +153,6 @@ class ChatItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).textTheme;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),

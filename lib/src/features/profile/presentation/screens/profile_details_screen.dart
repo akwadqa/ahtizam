@@ -1,5 +1,10 @@
+import 'package:ahtizam/gen/assets.gen.dart';
+import 'package:ahtizam/src/constants/Api/services_urls.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:ahtizam/src/utils/image_picker_utils.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,23 +19,29 @@ import '../widgets/text_form_fields/profile_name_form_field.dart';
 import '../widgets/text_form_fields/profile_phone_form_field.dart';
 
 @RoutePage()
-class ProfileDetailsScreen extends ConsumerWidget {
+class ProfileDetailsScreen extends ConsumerStatefulWidget {
   const ProfileDetailsScreen({super.key});
+  @override
+  ConsumerState<ProfileDetailsScreen> createState() => _ProfileDetailsScreenState();
+}
 
+class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
   Future<void> handleUpload(BuildContext context, WidgetRef ref) async {
     final pickedImage = await showImageSourcePicker(context);
     if (pickedImage != null) {
       ref
           .read(profileControllerProvider.notifier)
           .setPersonalImage(pickedImage);
+          setState(() {
+            
+          });
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final profile = ref.watch(profileControllerProvider);
+  Widget build(BuildContext context) {
     final controller = ref.read(profileControllerProvider.notifier);
-
+    final state=ref.watch(profileControllerProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -50,6 +61,8 @@ class ProfileDetailsScreen extends ConsumerWidget {
                 50.verticalSpace,
                 _buildForm(context, controller),
                 const Spacer(),
+                state.isLoading?
+                FadeCircleLoadingIndicator():
                 CustomButtonWidget(
                   text: context.tr('save_changes'),
                   onTap: () async {
@@ -58,6 +71,15 @@ class ProfileDetailsScreen extends ConsumerWidget {
                       if (context.mounted) {
                         context.maybePop();
                       }
+                      Navigator.pop(context);
+                      Future.delayed(Duration(milliseconds: 100));
+                      showCustomDialog(
+                          context: context,
+                          icon: Assets.icons.verifiedCheckIc.svg(
+                            height: 50,
+                            width: 50,
+                          ),
+                          title: Text("profile_updated_msg".tr()));
                     }
                   },
                   backgroundColor: AppColors.black,
@@ -75,6 +97,13 @@ class ProfileDetailsScreen extends ConsumerWidget {
   }
 
   Widget _buildProfileImage(BuildContext context, WidgetRef ref) {
+    final pickedImage = ref
+        .watch(
+          profileControllerProvider.notifier,
+        )
+        .pickedImage;
+    final state =
+        ref.watch(profileControllerProvider);
     return GestureDetector(
       onTap: () {
         handleUpload(context, ref);
@@ -82,11 +111,27 @@ class ProfileDetailsScreen extends ConsumerWidget {
       child: Stack(
         children: [
           CircleImageWidget(
-            imageUrl:
-                "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
             height: 225,
             width: 225,
+            // imageUrl: personalImage,
             circleWidth: 5,
+            child: pickedImage != null
+                ? Image.file(pickedImage, fit: BoxFit.fill)
+                :state.value?.profileImage!=null? CachedNetworkImage(
+                    imageUrl:ServicesUrls.imageUrl+ state.value!.profileImage!,
+                    fit: BoxFit.fill,
+                    errorWidget: (_, __, ___) {
+                      return Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: 50,
+                      );
+                    },
+                  ):Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 50,
+              ),
           ),
           PositionedDirectional(
             bottom: 0,

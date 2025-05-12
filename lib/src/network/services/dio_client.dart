@@ -28,7 +28,7 @@ Dio dio(Ref ref) {
     InterceptorsWrapper(
       onRequest: (options, handler) {
         if (token != null) {
-          options.headers['Authorization'] = token;
+          options.headers['Authorization'] = "token $token";
         }
         // options.queryParameters['sl'] = language;
         options.headers['Accept-Language'] = language;
