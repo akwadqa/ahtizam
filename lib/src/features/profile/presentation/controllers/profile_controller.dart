@@ -36,6 +36,9 @@ class ProfileController extends _$ProfileController {
       personalImage = data.profileImage;
       return data;
     } catch (e) {
+          fullNameController = TextEditingController(text: userData.fullName);
+      emailController = TextEditingController(text: userData.email);
+      phoneController = TextEditingController(text: userData.mobileNumber);
       // Return a default profile with the basic user data if API fails
       return ProfileModel(
         fullName: userData.fullName,

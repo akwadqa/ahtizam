@@ -21,8 +21,8 @@ abstract class AppInitializer {
     );
 
     // -- Initialize Notifications -- //
-    final container = ProviderContainer();
-    await container.read(notificationServiceProvider).initialize();
+    // final container = ProviderContainer();
+    // await container.read(notificationServiceProvider).initialize();
     
     //-- ENV FILE LOAD  --
     await dotenv.load(fileName: '.env');
