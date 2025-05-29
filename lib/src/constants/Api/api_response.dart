@@ -16,18 +16,32 @@ class ApiResponse<T> {
     T Function(Object? json) fromJsonT,
   ) {
     try {
-      if (json['status_code'] != 200) {
-        return ApiResponse<T>.error(
-          message: json['message'],
-          error: json['data'],
-        );
-      } else {
-        T data;
-        data = fromJsonT(json['data']);
+       if (json['status_code'] != 200) {
+      return ApiResponse<T>.error(
+        message: json['message']?.toString() ?? 'Unknown error',
+        error: json['data'], // May or may not be useful
+      );
+    } else {
+        // T data;
+        final rawData = json['data'];
+
+        if (rawData is Map<String, dynamic> && rawData.isEmpty) {
+          // return success with `data = null`
+          return ApiResponse<T>.success(
+            message: json['message'],
+            data: null,
+          );
+        }
+
         return ApiResponse<T>.success(
           message: json['message'],
-          data: data,
+          data: fromJsonT(rawData),
         );
+        // data = fromJsonT(json['data']);
+        // return ApiResponse<T>.success(
+        //   message: json['message'],
+        //   data: data,
+        // );
       }
     } catch (error) {
       return ApiResponse<T>.error(message: error.toString(), error: error);

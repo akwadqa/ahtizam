@@ -8,6 +8,14 @@ abstract class EndPoints {
   static const String verificationCodeApi =
       'ehtezam.api.authentication.verify_otp';
 
+  // 🟨 NEW ORDER  
+    static const String quickOrderApi =
+      'ehtezam.api.quick_order.quick_order';  
+      
+    static const String quickOrderDetailsApi =
+      'ehtezam.api.quick_order.quick_order_details';  
+
+
   // 🟨 Profile  
     static const String profileDataApi =
       'ehtezam.api.profile.profile';  

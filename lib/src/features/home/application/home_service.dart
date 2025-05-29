@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,7 +23,10 @@ class HomeService extends _$HomeService {
     ref.read(mapControllerProvider.notifier)
       ..resetPoints()
       ..updateLocation();
-    ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
-    ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
+               ref
+                        .read(hideLayersDuringOrderControllerProvider.notifier)
+                        .hideLayersDuringOrder();
+    // ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
+    // ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
   }
 }

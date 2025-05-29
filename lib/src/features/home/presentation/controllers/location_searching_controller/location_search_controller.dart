@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/features/home/domain/models/passenger_coordinates_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.dart';
@@ -130,7 +131,7 @@ class LocationSearchController extends _$LocationSearchController {
   }
 
 
-void sendCoordinates() {
+PassengerCoordinatesParams? sendCoordinates() {
   final mapController = ref.read(mapControllerProvider.notifier);
 
   final LatLng? userLocation = mapController.firstPoint;
@@ -139,7 +140,7 @@ void sendCoordinates() {
   if (userLocation == null || workshopLocation == null) {
     debugPrint("🚫 One or both coordinates are missing.");
     // Show a snackbar or dialog to inform user
-    return;
+    return null;
   }
 
   final data = {
@@ -151,7 +152,7 @@ void sendCoordinates() {
 
   // You can send `data` via an API call or pass it to another part of the app
   debugPrint("📤 Sending coordinates: $data");
-
+return PassengerCoordinatesParams(lat: userLocation.latitude, lng: userLocation.longitude);
   // Example: pass to your API service
   // ref.read(yourApiServiceProvider).sendCoordinates(data);
 }

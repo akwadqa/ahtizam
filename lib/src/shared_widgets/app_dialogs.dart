@@ -1,3 +1,6 @@
+import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -61,7 +64,7 @@ Future<void> showYesNowChoicesDialog(
     builder: (BuildContext context) {
       return Dialog(
           insetPadding: EdgeInsets.symmetric(horizontal: 20),
-          backgroundColor: Colors.white.withOpacity(0.8),
+          backgroundColor: Colors.white.withOpacity(0.99),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -203,9 +206,16 @@ Future<void> showRateDriverDialog(
 
 Future<void> showAcceptCancelOrder(
   BuildContext context,
+  WidgetRef ref,
 ) {
   return showYesNowChoicesDialog(context,
-      title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: () {
+      title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: ()async {
+         ref
+                        .read(hideLayersDuringOrderControllerProvider.notifier)
+                        .hideLayersDuringOrder();
+                        ref.read(mapControllerProvider.notifier)
+      ..resetPoints()
+      ..updateLocation();
     Navigator.pop(context);
     Navigator.pop(context);
   });
@@ -213,7 +223,7 @@ Future<void> showAcceptCancelOrder(
 
 void showLogoutDialog(BuildContext context) {
   showYesNowChoicesDialog(context,
-      title: "Logout", dsc: "Are you sure want logout?", yesButton: () {
+      title: "logout", dsc: "logout_confirmation", yesButton: () {
     Navigator.pop(context);
     // Navigator.pop(context);
   });

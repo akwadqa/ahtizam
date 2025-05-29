@@ -59,10 +59,7 @@ class SelectTruckController extends _$SelectTruckController {
       await Future.delayed(const Duration(milliseconds: 300));
       showTruckSelectionBottomSheet(
         context: context,
-        pickupLocation: GeoPoint(
-            currentLocation.value!.latitude, currentLocation.value!.longitude),
-        workshopLocation: GeoPoint(currentLocation.value!.latitude + 0.01,
-            currentLocation.value!.longitude + 0.01), // Example
+      
       );
     } catch (e) {
       debugPrint("❌ Error loading trucks: $e");

@@ -61,6 +61,8 @@ dependencies:
   flutter_chat_types: ^3.6.1
   uuid: ^4.0.0
   image_picker: ^1.1.2
+  pretty_dio_logger: ^1.4.0
+  socket_io_client: ^3.1.2
 
 
 

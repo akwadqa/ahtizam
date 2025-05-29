@@ -3,8 +3,6 @@ import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:ahtizam/src/routing/app_router.gr.dart';
 
 part 'payment_controller.g.dart';
 
