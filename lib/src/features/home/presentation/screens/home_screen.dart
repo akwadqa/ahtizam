@@ -1,4 +1,7 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_car.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -23,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
     final isSecondWidgetVisible =
         ref.watch(changeRequestOrderStateServiceProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
+    final hideWidgetsDuringOrder = ref.watch(hideLayersDuringOrderControllerProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -31,12 +35,13 @@ class HomeScreen extends ConsumerWidget {
         children: [
           const _BackgroundMap(),
           const TopNavigationBar(),
+          if(!hideWidgetsDuringOrder)...[
           (isThirdWidgetVisible)
               ? const RequestDetailsForm()
               : isSecondWidgetVisible
                   ? const _RequestOrderBottomActionCard()
                   : const _BottomActionCard(),
-          if (isThirdWidgetVisible) _orderButton(context, ref),
+          if (isThirdWidgetVisible) _orderButton(context, ref),]
         ],
       ),
     );
@@ -52,14 +57,15 @@ class HomeScreen extends ConsumerWidget {
       child: CustomButtonWidget(
         text: context.tr("request"),
         onTap: () {
-              ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
+          // ref.read(quickOrderControllerProvider.notifier).createOrder();
+              // ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
 
-          // if (formKey.currentState!.validate()) {
-          //   formKey.currentState!.save();
-          //   ref
-          //       .read(selectTruckControllerProvider.notifier)
-          //       .getTrucksDataInformation(context);
-          // }
+          if (formKey.currentState!.validate()) {
+            formKey.currentState!.save();
+            ref
+                .read(selectTruckControllerProvider.notifier)
+                .getTrucksDataInformation(context);
+          }
         },
         backgroundColor: AppColors.black,
         isFiled: true,

@@ -6,7 +6,7 @@ part of 'home_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeServiceHash() => r'83fdd788a96c2539473498118739f9c9924a19e7';
+String _$homeServiceHash() => r'56d4c1cf6c976bf759a56e480eee9b866515ec97';
 
 /// **Provider to Manage Widget Visibility**
 ///

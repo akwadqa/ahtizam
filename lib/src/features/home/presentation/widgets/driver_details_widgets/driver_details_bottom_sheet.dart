@@ -6,6 +6,7 @@ import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../../theme/app_colors.dart';
@@ -14,6 +15,8 @@ void showDriverDetailsBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    enableDrag: false,
+    isDismissible: false,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -25,11 +28,11 @@ void showDriverDetailsBottomSheet(BuildContext context) {
   );
 }
 
-class DriverDetailsBottomSheet extends StatelessWidget {
+class DriverDetailsBottomSheet extends ConsumerWidget {
   const DriverDetailsBottomSheet({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode()); // Dismiss keyboard
@@ -204,7 +207,7 @@ class DriverDetailsBottomSheet extends StatelessWidget {
                   child: CustomButtonWidget(
                     text: context.tr("cancel"),
                     onTap: () {
-                      showAcceptCancelOrder(context);
+                      showAcceptCancelOrder(context,ref);
                     },
                     color: AppColors.black,
                     borderColor: AppColors.lightestGray,

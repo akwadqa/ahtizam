@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +24,9 @@ class CustomBottomNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
+    final hideBootNavigationBar = ref.watch(hideLayersDuringOrderControllerProvider);
 
-    return isThirdWidgetVisible
+    return isThirdWidgetVisible 
         ? Container()
         : ClipRRect(
             clipBehavior: Clip.hardEdge,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 extension WidgetExtension on Widget {
   Widget centered() {
@@ -124,3 +125,21 @@ extension AssetImageExtensions on String {
     return byteData!.buffer.asUint8List();
   }
 }
+
+
+Future<BitmapDescriptor> createCircleMarker(Color color, {double size = 40}) async {
+  final recorder = ui.PictureRecorder();
+  final canvas = Canvas(recorder);
+  final paint = Paint()..color = color;
+
+  final double radius = size / 2;
+  canvas.drawCircle(Offset(radius, radius), radius, paint);
+
+  final picture = recorder.endRecording();
+  final image = await picture.toImage(size.toInt(), size.toInt());
+  final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  final bytes = byteData!.buffer.asUint8List();
+
+  return BitmapDescriptor.fromBytes(bytes);
+}
+

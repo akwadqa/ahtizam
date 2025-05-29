@@ -26,7 +26,6 @@ class GoogleMapWidget extends ConsumerStatefulWidget {
 }
 
 class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
-  GoogleMapController? _controller;
   BitmapDescriptor? _customMarker;
   String locationAddress = "";
   final geocoding = GoogleGeocodingApi(ServicesUrls.mapApiKey);
@@ -62,18 +61,26 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
 
     return mapState.when(
       data: (currentLocation) {
-        if (currentLocation == null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.warning, color: AppColors.primary),
-                4.verticalSpace,
-                Text("Location unavailable"),
-              ],
-            ),
-          );
-        }
+       if (currentLocation == null) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.warning, color: AppColors.primary),
+        4.verticalSpace,
+        Text("Location unavailable"),
+        8.verticalSpace,
+        TextButton(
+          onPressed: () {
+            ref.read(mapControllerProvider.notifier).updateLocation();
+          },
+          child: const Text("Retry"),
+        )
+      ],
+    ),
+  );
+}
+
 
         return GoogleMap(
           mapType: MapType.normal,
@@ -124,6 +131,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
             zoom: 17,
           ),
           myLocationEnabled: false,
+          
           onMapCreated: (controller) {
             mapController.setMapController(controller);
             // Reload custom marker if it's null
@@ -136,14 +144,19 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
       loading: () {
         return const Center(child: FadeCircleLoadingIndicator());
       },
-      error: (error, _) => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.warning, color: AppColors.primary),
-            4.verticalSpace,
-            Text("Error: $error"),
-          ],
+      error: (error, _) => InkWell(
+        onTap: (){
+
+        },
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.warning, color: AppColors.primary),
+              4.verticalSpace,
+              Text("Error: $error"),
+            ],
+          ),
         ),
       ),
     );

@@ -49,35 +49,42 @@ class MapController extends _$MapController {
 
   /// **Fetch current location**
   Future<LatLng?> _fetchCurrentLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      debugPrint("LAT location: ${position.latitude}");
-      debugPrint("LONG location: ${position.longitude}");
+  try {
+    debugPrint("🟠 Fetching current location...");
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    debugPrint("✅ Got location: ${position.latitude}, ${position.longitude}");
 
-      LatLng latLng = LatLng(position.latitude, position.longitude);
-      await mapController?.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: latLng,
-          zoom: 17,
-        ),
-      ));
-      firstPoint = latLng;
-      debugPrint("📍 First point : $firstPoint");
+    LatLng latLng = LatLng(position.latitude, position.longitude);
 
-      firstPointAddress = await _getAddressFromLatLng(latLng);
-
-      return latLng;
-    } catch (e) {
-      debugPrint("Error fetching location: $e");
-      return null;
+    // Only animate camera if controller is ready
+    if (mapController != null) {
+      try {
+        await mapController!.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: latLng, zoom: 17),
+        ));
+      } catch (e) {
+        debugPrint("⚠️ animateCamera failed: $e");
+        // Still return location even if animation failed
+      }
+    } else {
+      debugPrint("⚠️ mapController is null, skipping camera animation");
     }
+
+    firstPoint = latLng;
+    firstPointAddress = await _getAddressFromLatLng(latLng);
+    return latLng;
+  } catch (e) {
+    debugPrint("❌ Error fetching location: $e");
+    return null;
   }
+}
+
 
   /// **Manually update location**
   Future<void> updateLocation() async {
-    // state = const AsyncValue.loading();
+    state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async => await _fetchCurrentLocation());
   }
 

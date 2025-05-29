@@ -11,7 +11,7 @@ platform :android do
       ***REMOVED***: "1//09RZYAFtFdl-9CgYIARAAGAkSNwF-L9Ir6oYCbfCN3o0OhaC7pjqakSwgvukLOyGberZsojXCz3W9cbeIkWwuqSzSEJO-RkBDoWE",
       android_artifact_type: "APK",
       android_artifact_path: "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
-      testers: "mouazhariry5@gmail.com",
+      testers: "mouazhariry5@gmail.com,moh.allaaadeen@gmail.com",
       release_notes: "First app uploaded with CI/CD Fastlane and Firebase App Distribution"
     )
   end

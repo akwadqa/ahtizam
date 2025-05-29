@@ -2,6 +2,9 @@ import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_controller.dart';
+import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_tab_controller.dart';
+import 'package:ahtizam/src/features/my_orders/presentation/widgets/ongoing_orders_list_widget.dart';
+import 'package:ahtizam/src/features/my_orders/presentation/widgets/past_orders_list_widget.dart';
 import 'package:ahtizam/src/shared_widgets/circle_image_widget.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
@@ -64,8 +67,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen>
       body: TabBarView(
         controller: _tabController,
         children: const [
-          _OngoingOrdersList(),
-          _PastOrdersList(),
+          OngoingOrdersList(),
+          PastOrdersList(),
         ],
       ),
     );

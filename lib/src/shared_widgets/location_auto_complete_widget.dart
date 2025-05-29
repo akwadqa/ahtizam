@@ -15,12 +15,12 @@ class LocationAutoCompleteField extends ConsumerWidget {
   final String fieldId; // Unique ID for this text field
 
   const LocationAutoCompleteField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     required this.onSelected,
     required this.fieldId, // Pass a unique identifier for each field
-  }) : super(key: key);
+  });
 
   Future<void> _handleSearch(WidgetRef ref, String input) async {
     if (input.isEmpty) {
@@ -38,6 +38,9 @@ class LocationAutoCompleteField extends ConsumerWidget {
     final result = await places.autocomplete(
       input,
       language: 'en',
+      region: "QA",
+        components: [Component(Component.country, "QA")], 
+
     );
 
     if (result.status == "OK") {

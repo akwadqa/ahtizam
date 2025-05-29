@@ -6,24 +6,22 @@ part of 'my_orders_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$ordersTabControllerHash() =>
-    r'35bdaa3446b94c29b4d931d0f38e198c2bedee55';
+String _$myOrdersControllerHash() =>
+    r'd9dbf4b23e9f805954f7a1aa1f92ede9ef6b8e9e';
 
-/// --- CONTROLLER ---
-///
-/// Copied from [OrdersTabController].
-@ProviderFor(OrdersTabController)
-final ordersTabControllerProvider =
-    AutoDisposeNotifierProvider<OrdersTabController, int>.internal(
-  OrdersTabController.new,
-  name: r'ordersTabControllerProvider',
+/// See also [MyOrdersController].
+@ProviderFor(MyOrdersController)
+final myOrdersControllerProvider = AutoDisposeNotifierProvider<
+    MyOrdersController, List<MyOrderModel>>.internal(
+  MyOrdersController.new,
+  name: r'myOrdersControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$ordersTabControllerHash,
+      : _$myOrdersControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$OrdersTabController = AutoDisposeNotifier<int>;
+typedef _$MyOrdersController = AutoDisposeNotifier<List<MyOrderModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
