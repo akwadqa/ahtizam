@@ -14,6 +14,10 @@ abstract class EndPoints {
       
     static const String quickOrderDetailsApi =
       'ehtezam.api.quick_order.quick_order_details';  
+      
+    static const String serviceTypes =
+      'ehtezam.api.service_type.service_types';  
+
 
 
   // 🟨 Profile  

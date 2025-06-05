@@ -1,4 +1,6 @@
 import 'package:ahtizam/src/features/home/application/home_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
 import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:flutter/material.dart';
@@ -56,10 +58,13 @@ class PaymentController extends _$PaymentController {
     state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
     // Navigate to success page
     showSuccessPayment(context: context);
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 3), () async {
+      showSearchingTruckLoading(context: context);
+  
+      await ref.read(quickOrderControllerProvider.notifier).startOpenNewOrderSocket(context);
       ref.read(homeServiceProvider.notifier).resetLayers(context);
       Navigator.pop(context);
-      showRateDriverDialog(context);
+      // showRateDriverDialog(context);
     });
   }
 }

@@ -1,21 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'passenger_coordinates_params.dart';
+part of 'coordinates_params.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PassengerCoordinatesParamsImpl _$$PassengerCoordinatesParamsImplFromJson(
+_$CoordinatesParamsImpl _$$CoordinatesParamsImplFromJson(
         Map<String, dynamic> json) =>
-    _$PassengerCoordinatesParamsImpl(
+    _$CoordinatesParamsImpl(
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
+      address: json['address'] as String,
     );
 
-Map<String, dynamic> _$$PassengerCoordinatesParamsImplToJson(
-        _$PassengerCoordinatesParamsImpl instance) =>
+Map<String, dynamic> _$$CoordinatesParamsImplToJson(
+        _$CoordinatesParamsImpl instance) =>
     <String, dynamic>{
       'lat': instance.lat,
       'lng': instance.lng,
+      'address': instance.address,
     };

@@ -1,12 +1,6 @@
-import 'package:ahtizam/src/constants/Api/api_response.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/quick_order_details_model.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
-import 'package:ahtizam/src/routing/app_router.gr.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ahtizam/src/utils/functions.dart';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,20 +12,60 @@ import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
-import '../../application/map_service.dart';
 import '../controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import '../controllers/quick_order_controller.dart';
 
 /// **Bottom Sheet for Truck Selection**
 class TruckSelectionBottomSheet extends ConsumerWidget {
-  const TruckSelectionBottomSheet({
-    super.key,
-  });
+  const TruckSelectionBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final truckState = ref.watch(selectTruckControllerProvider);
-    // final orderState = ref.watch(orderControllerProvider);
+    final truckState = ref.watch(selectServiceTypeControllerProvider);
+    final orderState = ref.watch(quickOrderControllerProvider);
+
+    ref.listen<AsyncValue<OrderState?>>(
+      quickOrderControllerProvider,
+      (prev, next) {
+        debugPrint("📡 Listener triggered: $next");
+
+        if (next is AsyncLoading) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              
+              builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
+            );
+          });
+        }
+
+        if (next is AsyncError) {
+          debugPrint("❌ Error in controller: ${next.error}");
+          ref
+              .read(selectServiceTypeControllerProvider.notifier)
+              .clearSelection();
+
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Navigator.of(context, rootNavigator: true).canPop()) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+            // ref.read(selectServiceTypeControllerProvider.notifier).clearSelection();
+
+            showErrorDialog(context, next.error.toString());
+          });
+        }
+
+        if (next is AsyncData) {
+          debugPrint("✅ Order data received: ${next.value}");
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Navigator.of(context, rootNavigator: true).canPop()) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+          });
+        }
+      },
+    );
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 30),
@@ -46,7 +80,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodyMedium),
         ),
         data: (state) {
-          final selectedTruck = state.selectedTruck;
+          final selectedTruck = state?.selectedServiceType;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,12 +101,18 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: state.trucks.map((truck) {
-                    final isSelected = selectedTruck?.id == truck.id;
+                  children: state!.trucks.map((truck) {
+                    final isSelected =
+                        selectedTruck?.serviceId == truck.serviceId;
                     return GestureDetector(
-                      onTap: () => ref
-                          .read(selectTruckControllerProvider.notifier)
-                          .selectTruck(truck),
+                      onTap: () {
+                        ref
+                            .read(selectServiceTypeControllerProvider.notifier)
+                            .selectServiceType(truck);
+                        ref
+                            .read(quickOrderControllerProvider.notifier)
+                            .createOrder();
+                      },
                       child: Stack(
                         children: [
                           Container(
@@ -94,10 +134,13 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                               children: [
                                 Assets.icons.truck.svg(),
                                 10.verticalSpace,
-                                Text(truck.name,
+                                Text(truck.serviceItem,
                                     style:
                                         Theme.of(context).textTheme.bodySmall),
-                                Text(truck.price,
+                                Text(
+                                    "with_currency".tr(args: [
+                                      truck.serviceCostPerKm.toString()
+                                    ]),
                                     style:
                                         Theme.of(context).textTheme.bodySmall),
                               ],
@@ -111,8 +154,9 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                                     onPressed: () {
                                       showTruckDetailsDialog(
                                         context: context,
-                                        weight: "1200",
-                                        scales: "8ft x 4.5ft x 5.5ft",
+                                        serviceTypeName: truck.serviceItem,
+                                        weight: truck.vehicleCapacity,
+                                        scales: truck.vehiclesSize,
                                       );
                                     },
                                     icon: ClipOval(
@@ -144,7 +188,8 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
               25.verticalSpace,
 
               // **Extra Details (Checkmarks)**
-              if (selectedTruck != null) ...[
+              if (selectedTruck != null &&
+                  orderState.value?.orderModel != null) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -156,7 +201,10 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                             .bodySmall!
                             .copyWith(fontSize: 14)),
                     Spacer(),
-                    Text("with_currency".tr(args: ['100']),
+                    Text(
+                        "with_currency".tr(args: [
+                          orderState.value!.orderModel!.baseFee.toString()
+                        ]),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -175,7 +223,11 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                             .bodySmall!
                             .copyWith(fontSize: 14)),
                     Spacer(),
-                    Text("with_currency".tr(args: ['100']),
+                    Text(
+                        "with_currency".tr(args: [
+                          orderState.value!.orderModel?.taxFee.toString() ??
+                              "90"
+                        ]),
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -187,164 +239,76 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
 
               Consumer(builder:
                   (BuildContext context, WidgetRef ref, Widget? child) {
-                ref.listen(quickOrderControllerProvider, (prev, next) {
-                  if (next is AsyncLoading) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      showSearchingTruckLoading(context: context);
-                    });
-                  }
-                   if (next is AsyncError) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      Navigator.pop(context); // Close loading dialog if open
-                      showErrorDialog(context, next.error.toString());
-                    });
-                  }
+                final eta = orderState.value?.orderModel?.eta;
 
-                  if (next is AsyncData) {
-                    final response = next.value;
+                final distanceStr = processEtaValue(eta, 1); // e.g., "1.5 كم"
+                final timeStr = processEtaValue(eta, 2); // e.g., "5 دقيقة"
+                // ref.listen(quickOrderControllerProvider, (prev, next) {
+                //   if (next is AsyncLoading) {
+                //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                //       showSearchingTruckLoading(context: context);
+                //     });
+                //   }
+                //   if (next is AsyncError) {
+                //     WidgetsBinding.instance.addPostFrameCallback((_) {
+                //       Navigator.pop(context); // Close loading dialog if open
+                //       showErrorDialog(context, next.error.toString());
+                //     });
+                //   }
 
-                    final isSelectLocationFromMap =
-                        ref.watch(selectLocationFromMapControllerProvider);
+                //   if (next is AsyncData) {
+                //     final response = next.value;
 
-                    Navigator.pop(context); // Close loading
-                    Navigator.pop(context); // Close bottom sheet
-                    ref
-                        .read(changeRequestOrderStateServiceProvider.notifier)
-                        .toggleWidget();
-                    ref
-                        .read(showOrderFormControllerProvider.notifier)
-                        .toggleVisibility();
-                          ref
-                        .read(hideLayersDuringOrderControllerProvider.notifier)
-                        .hideLayersDuringOrder();
-                    if (isSelectLocationFromMap) {
-                      ref
-                          .read(
-                              selectLocationFromMapControllerProvider.notifier)
-                          .toggleSelection();
-                    }
+                //     final isSelectLocationFromMap =
+                //         ref.watch(selectLocationFromMapControllerProvider);
 
-                    final value = ref
-                        .read(showOrderFormControllerProvider.notifier)
-                        .initiallValue;
+                //     // Navigator.pop(context); // Close loading
+                //     // Navigator.pop(context); // Close bottom sheet
+                //     // ref
+                //     //     .read(changeRequestOrderStateServiceProvider.notifier)
+                //     //     .toggleWidget();
+                //     // ref
+                //     //     .read(showOrderFormControllerProvider.notifier)
+                //     //     .toggleVisibility();
+                //     //       ref
+                //     //     .read(hideLayersDuringOrderControllerProvider.notifier)
+                //     //     .hideLayersDuringOrder();
+                //     if (isSelectLocationFromMap) {
+                //       ref
+                //           .read(selectLocationFromMapControllerProvider
+                //               .notifier)
+                //           .toggleSelection();
+                //     }
 
-                    // WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (value == "request_offer") {
-                        context.pushRoute(PricesOfferRoute());
-                      } else {
-                        showDriverDetailsBottomSheet(context);
-                      }
-                    // });
-                  }
+                //     final value = ref
+                //         .read(showOrderFormControllerProvider.notifier)
+                //         .initiallValue;
 
-                 
-                });
+                //     // WidgetsBinding.instance.addPostFrameCallback((_) {
+                //     if (value == "request_offer") {
+                //       context.pushRoute(PricesOfferRoute());
+                //     } else {
+                //       showDriverDetailsBottomSheet(context);
+                //     }
+                //     // });
+                //   }
+                // });
 
                 return CustomButtonWidget(
                   text: context.tr("request_truck"),
                   onTap: selectedTruck == null
                       ? null
                       : () async {
-                        
-                          // try {
-                          // await ref
-                          //     .read(mapControllerProvider.notifier)
-                          //     .captureScreenshot();
-
-  //                         showSearchingTruckLoading(context: context);
-  //                          Future.delayed(Duration(seconds: 3), () {
-  //  final isSelectLocationFromMap =
-  //                       ref.watch(selectLocationFromMapControllerProvider);
-
-  //                   Navigator.pop(context); // Close loading
-  //                   Navigator.pop(context); // Close bottom sheet
-  //                   ref
-  //                       .read(changeRequestOrderStateServiceProvider.notifier)
-  //                       .toggleWidget();
-  //                   ref
-  //                       .read(showOrderFormControllerProvider.notifier)
-  //                       .toggleVisibility();
-  //                         ref
-  //                       .read(hideLayersDuringOrderControllerProvider.notifier)
-  //                       .hideLayersDuringOrder();
-  //                   if (isSelectLocationFromMap) {
-  //                     ref
-  //                         .read(
-  //                             selectLocationFromMapControllerProvider.notifier)
-  //                         .toggleSelection();
-  //                   }
-
-  //                   final value = ref
-  //                       .read(showOrderFormControllerProvider.notifier)
-  //                       .initiallValue;
-
-  //                   // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //                     if (value == "request_offer") {
-  //                       context.pushRoute(PricesOfferRoute());
-  //                     } else {
-  //                       showDriverDetailsBottomSheet(context);
-  //                     }
-    // });
-                          await ref
-                              .read(quickOrderControllerProvider.notifier)
-                              .createOrder();
- 
-                          // Future.delayed(Duration(seconds: 5), () {
-
-                          //          Navigator.pop(context);
-                          //             Navigator.pop(context);
-                          //                       ref
-                          //         .read(showOrderFormControllerProvider.notifier)
-                          //         .initiallValue ==
-                          //     "request_offer"
-                          // ? context.pushRoute(PricesOfferRoute())
-                          // : showDriverDetailsBottomSheet(context);
-                          // });
-
-                          // });
-
-                          // Create order
-                          // await ref
-                          //     .read(orderControllerProvider.notifier)
-                          //     .createOrder(
-                          //       pickupLat: pickupLocation.latitude,
-                          //       pickupLng: pickupLocation.longitude,
-                          //       workshopLat: workshopLocation.latitude,
-                          //       workshopLng: workshopLocation.longitude,
-                          //       truckType: selectedTruck.id.toString(),
-                          //       price: parsedPrice,
-                          //     );
-
-                          // Listen to order state changes
-                          //   ref.listen(orderControllerProvider, (previous, next) {
-                          //     next.whenData((order) {
-                          //       if (order != null) {
-                          //         switch (order.status) {
-                          //           case 'accepted':
-                          //             Navigator.pop(context); // Close loading
-                          //             Navigator.pop(
-                          //                 context); // Close bottom sheet
-                          //             showDriverDetailsBottomSheet(context);
-                          //             break;
-                          //           case 'rejected':
-                          //             // Order was rejected, system will automatically try next driver
-                          //             break;
-                          //           case 'completed':
-                          //             Navigator.pop(context);
-                          //             Navigator.pop(context);
-                          //             break;
-                          //         }
-                          //       }
-                          //     });
-                          //   });
-                          // } catch (e) {
-                          //   Navigator.pop(context); // Close any open sheet/dialog
-                          //   // shows(context, "❌ ${"order_failed".tr()}: $e");
-                          //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          //     content: Text(e.toString()),
-                          //     backgroundColor: Colors.redAccent,
-                          //   ));
-                          // }
+                          showPaymentDialog(
+                            context,
+                            totalCost:
+                                orderState.value?.orderModel?.finalFee ?? 0,
+                            duration: distanceStr,
+                            distance: timeStr,
+                          );
+                          //  await ref
+                          //           .read(quickOrderControllerProvider.notifier)
+                          //           .createOrder();
                         },
                   backgroundColor:
                       selectedTruck == null ? AppColors.gray : AppColors.black,

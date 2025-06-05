@@ -155,24 +155,24 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Flexible(
-                  flex: 1,
-                  child: CustomButtonWidget(
-                    text: context.tr("pay"),
-                    onTap: () {
-                      showPaymentDialog(context,
-                          totalCost: 55, duration: "20 دقيقة", distance: "15");
-                    },
-                    backgroundColor: AppColors.black,
-                    isFiled: true,
-                    height: 52,
-                    radius: 12,
-                    width: MediaQuery.sizeOf(context).width,
-                  ),
-                ),
+                // Flexible(
+                //   flex: 1,
+                //   child: CustomButtonWidget(
+                //     text: context.tr("pay"),
+                //     onTap: () {
+                //       showPaymentDialog(context,
+                //           totalCost: 55, duration: "20 دقيقة", distance: "15");
+                //     },
+                //     backgroundColor: AppColors.black,
+                //     isFiled: true,
+                //     height: 52,
+                //     radius: 12,
+                //     width: MediaQuery.sizeOf(context).width,
+                //   ),
+                // ),
                 8.horizontalSpace,
                 Flexible(
-                  flex: 2,
+                  flex: 3,
                   child: CustomButtonWidget(
                     text: context.tr("call_by", args: ["user"]),
                     onTap: () {},
@@ -203,7 +203,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                 ),
                 8.horizontalSpace,
                 Flexible(
-                  flex: 1,
+                  flex: 2,
                   child: CustomButtonWidget(
                     text: context.tr("cancel"),
                     onTap: () {

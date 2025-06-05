@@ -1,4 +1,4 @@
-import 'package:ahtizam/src/features/home/domain/models/passenger_coordinates_params.dart';
+import 'package:ahtizam/src/features/home/domain/models/coordinates_params.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.dart';
@@ -130,31 +130,34 @@ class LocationSearchController extends _$LocationSearchController {
     }
   }
 
+  List<CoordinatesParams>? sendCoordinates() {
+    final mapController = ref.read(mapControllerProvider.notifier);
 
-PassengerCoordinatesParams? sendCoordinates() {
-  final mapController = ref.read(mapControllerProvider.notifier);
+    final LatLng? userLocation = mapController.firstPoint;
+    final LatLng? workshopLocation = mapController.secondPoint;
 
-  final LatLng? userLocation = mapController.firstPoint;
-  final LatLng? workshopLocation = mapController.secondPoint;
+    if (userLocation == null || workshopLocation == null) {
+      debugPrint("🚫 One or both coordinates are missing.");
+      // Show a snackbar or dialog to inform user
+      return null;
+    }
 
-  if (userLocation == null || workshopLocation == null) {
-    debugPrint("🚫 One or both coordinates are missing.");
-    // Show a snackbar or dialog to inform user
-    return null;
+    final data = {
+      "user_lat": userLocation.latitude,
+      "user_lng": userLocation.longitude,
+      "workshop_lat": workshopLocation.latitude,
+      "workshop_lng": workshopLocation.longitude,
+    };
+
+    // You can send `data` via an API call or pass it to another part of the app
+    debugPrint("📤 Sending coordinates: $data");
+    return [
+      CoordinatesParams(
+          lat: userLocation.latitude, lng: userLocation.longitude,address: mapController.firstPointAddress??""),
+      CoordinatesParams(
+          lat: workshopLocation.latitude, lng: workshopLocation.longitude,address: mapController.secondPointAddress??"")
+    ];
+    // Example: pass to your API service
+    // ref.read(yourApiServiceProvider).sendCoordinates(data);
   }
-
-  final data = {
-    "user_lat": userLocation.latitude,
-    "user_lng": userLocation.longitude,
-    "workshop_lat": workshopLocation.latitude,
-    "workshop_lng": workshopLocation.longitude,
-  };
-
-  // You can send `data` via an API call or pass it to another part of the app
-  debugPrint("📤 Sending coordinates: $data");
-return PassengerCoordinatesParams(lat: userLocation.latitude, lng: userLocation.longitude);
-  // Example: pass to your API service
-  // ref.read(yourApiServiceProvider).sendCoordinates(data);
-}
-
 }

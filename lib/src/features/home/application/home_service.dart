@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
-import '../presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
-import 'map_service.dart';
+
 
 part 'home_service.g.dart';
 
@@ -20,13 +19,13 @@ class HomeService extends _$HomeService {
     Navigator.pop(context);
     Navigator.pop(context);
     Navigator.pop(context);
-    ref.read(mapControllerProvider.notifier)
-      ..resetPoints()
-      ..updateLocation();
-               ref
-                        .read(hideLayersDuringOrderControllerProvider.notifier)
-                        .hideLayersDuringOrder();
-    // ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
+    // ref.read(mapControllerProvider.notifier)
+    //   ..resetPoints()
+    //   ..updateLocation();
+              //  ref
+              //           .read(hideLayersDuringOrderControllerProvider.notifier)
+              //           .hideLayersDuringOrder();
+    ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
     // ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
   }
 }

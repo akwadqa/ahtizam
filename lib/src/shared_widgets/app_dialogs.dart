@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
@@ -10,6 +11,7 @@ import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/payment_controller/payment_coupon_controller.dart';
 import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
+import 'package:queen_validators/queen_validators.dart';
 
 import '../../gen/assets.gen.dart';
 import '../features/payment/presentation/widgets/success_payment.dart';
@@ -37,13 +39,7 @@ Future<void> showCustomDialog({
             padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 50),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
-                icon ?? SizedBox(),
-                28.verticalSpace,
-                title
-            
-            
-              ],
+              children: [icon ?? SizedBox(), 28.verticalSpace, title],
             ),
           ),
         ),
@@ -209,11 +205,11 @@ Future<void> showAcceptCancelOrder(
   WidgetRef ref,
 ) {
   return showYesNowChoicesDialog(context,
-      title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: ()async {
-         ref
-                        .read(hideLayersDuringOrderControllerProvider.notifier)
-                        .hideLayersDuringOrder();
-                        ref.read(mapControllerProvider.notifier)
+      title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: () async {
+    ref
+        .read(hideLayersDuringOrderControllerProvider.notifier)
+        .hideLayersDuringOrder();
+    ref.read(mapControllerProvider.notifier)
       ..resetPoints()
       ..updateLocation();
     Navigator.pop(context);
@@ -222,8 +218,8 @@ Future<void> showAcceptCancelOrder(
 }
 
 void showLogoutDialog(BuildContext context) {
-  showYesNowChoicesDialog(context,
-      title: "logout", dsc: "logout_confirmation", yesButton: () {
+  showYesNowChoicesDialog(context, title: "logout", dsc: "logout_confirmation",
+      yesButton: () {
     Navigator.pop(context);
     // Navigator.pop(context);
   });
@@ -244,6 +240,7 @@ showErrorDialog(BuildContext context, String message) {
 Future<void> showTruckDetailsDialog({
   required BuildContext context,
   required String weight,
+  required String serviceTypeName,
   required String scales,
 }) {
   return showDialog(
@@ -274,7 +271,7 @@ Future<void> showTruckDetailsDialog({
                   alignment: AlignmentDirectional.topStart,
                   onPressed: () => Navigator.pop(context),
                 ),
-                _truckRow(context),
+                _truckRow(context, serviceTypeName),
                 8.verticalSpace,
                 _customeDivider(),
                 _infoRow(context, "vehicle_capacity".tr(), "$weight kg"),
@@ -294,12 +291,12 @@ _customeDivider() => Divider(
       height: 1,
     );
 
-_truckRow(BuildContext context) {
+_truckRow(BuildContext context, String value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Text(
-        "سطحة",
+        value,
         style: Theme.of(context).textTheme.bodyMedium,
       ),
       Assets.icons.truck.svg(),
@@ -347,18 +344,19 @@ Future<void> showPaymentDialog(
   required String distance,
   required String duration,
 }) {
-  TextEditingController couponController = TextEditingController();
-
+  String couponValue = '';
+  final couponController = TextEditingController();
   return showDialog(
     context: context,
     builder: (BuildContext context) {
       return Consumer(
         builder: (context, ref, _) {
-          final paymentState =
-              ref.watch(paymentCouponControllerProvider(totalCost));
+          final paymentState = ref.watch(paymentCouponControllerProvider);
+          // final orderState =
+          //     ref.watch(quickOrderControllerProvider);
           final paymentController =
-              ref.read(paymentCouponControllerProvider(totalCost).notifier);
-
+              ref.read(paymentCouponControllerProvider.notifier);
+          final paymentStateValue = paymentState.value;
           return GestureDetector(
             onTap: () {
               FocusScope.of(context)
@@ -366,7 +364,7 @@ Future<void> showPaymentDialog(
             },
             child: Dialog(
               insetPadding: EdgeInsets.symmetric(horizontal: 20),
-              backgroundColor: Colors.white.withOpacity(0.8),
+              backgroundColor: Colors.white.withOpacity(0.98),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -393,11 +391,13 @@ Future<void> showPaymentDialog(
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (paymentState
-                                .isCouponApplied) // Show original price if discount applied
+                            if (paymentStateValue!.isCouponApplied &&
+                                paymentStateValue.discountedCost !=
+                                    null) // Show original price if discount applied
                               Text(
-                                "with_currency".tr(
-                                    args: [paymentState.totalCost.toString()]),
+                                "with_currency".tr(args: [
+                                  paymentStateValue.totalCost.toString()
+                                ]),
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodySmall!
@@ -411,17 +411,17 @@ Future<void> showPaymentDialog(
                             6.horizontalSpace,
                             Text(
                               "with_currency".tr(args: [
-                                paymentState.discountedCost.toString()
+                                paymentStateValue.totalCost.toString()
                               ]),
-
-                              // "${paymentState.discountedCost} ر.ق",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
-                                    color: paymentState.isCouponApplied
+                                    color: paymentStateValue.isCouponApplied&&
+                                paymentStateValue.discountedCost !=
+                                    null
                                         ? Colors.orange
                                         : Colors.black,
                                   ),
@@ -446,7 +446,7 @@ Future<void> showPaymentDialog(
                             ),
                             Spacer(),
                             Text(
-                              "$duration - $distance كم",
+                              "$duration - $distance",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
@@ -461,95 +461,130 @@ Future<void> showPaymentDialog(
                         30.verticalSpace,
 
                         // **Coupon Code Input**
-                        Row(
-                          children: [
-                            // Coupon Input Field
-                            Flexible(
-                              flex: 4,
-                              child: SizedBox(
-                                height: 54,
-                                child: TextFormField(
-                                  controller: couponController,
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: paymentState.isCouponApplied
-                                        ? AppColors.lightPrimary
-                                            .withOpacity(0.4)
-                                        : Colors.white,
-                                    focusColor: Colors.white,
-                                    suffixIcon: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Assets.icons.coupon.svg(),
-                                    ),
-                                    hintText: "enter_coupon_number".tr(),
-                                    hintStyle: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall!
-                                        .copyWith(
-                                            fontSize: 11,
-                                            color: AppColors.grey600),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(
-                                          color: paymentState.isCouponApplied
-                                              ? AppColors.primary
-                                              : AppColors.lightestGray,
-                                          width: 1.5),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(
-                                          color: paymentState.isCouponApplied
-                                              ? AppColors.primary
-                                              : AppColors.lightestGray,
-                                          width: 1.5),
-                                    ),
+                        StatefulBuilder(builder: (context, setState) {
+                          return Row(
+                            children: [
+                              // Coupon Input Field
+                              Flexible(
+                                flex: 4,
+                                child: SizedBox(
+                                  height: 54,
+                                  child: TextFormField(
+                                    controller: couponController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        couponValue = value;
+                                      });
+                                    },
+                                    validator: qValidator([
+                                      IsRequired(context.tr('required')),
+                                      // IsEmail(context.tr('name_valdation_msg'))
+                                    ]),
+                                    decoration: InputDecoration(
+                                      filled: true,
+                                      fillColor:
+                                          paymentStateValue.isCouponApplied
+                                          &&
+                                paymentStateValue.discountedCost !=
+                                    null
+                                              ? AppColors.lightPrimary
+                                                  .withOpacity(0.4)
+                                              : Colors.white,
+                                      focusColor: Colors.white,
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Assets.icons.coupon.svg(),
+                                      ),
+                                      hintText: "enter_coupon_number".tr(),
 
-                                    // ✅ Border when the field is focused (user clicked inside)
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(
-                                          color: paymentState.isCouponApplied
-                                              ? AppColors.primary
-                                              : AppColors.lightestGray,
-                                          width: 2),
+                                      hintStyle: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall!
+                                          .copyWith(
+                                              fontSize: 11,
+                                              color: AppColors.grey600),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide(
+                                            color: paymentStateValue
+                                                    .isCouponApplied
+                                                    &&
+                                paymentStateValue.discountedCost !=
+                                    null
+                                                ? AppColors.primary
+                                                : AppColors.lightestGray,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide(
+                                            color: paymentStateValue
+                                                    .isCouponApplied
+                                                    &&
+                                paymentStateValue.discountedCost !=
+                                    null
+                                                ? AppColors.primary
+                                                : AppColors.lightestGray,
+                                            width: 1.5),
+                                      ),
+
+                                      // ✅ Border when the field is focused (user clicked inside)
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(14),
+                                        borderSide: BorderSide(
+                                            color: paymentStateValue
+                                                    .isCouponApplied
+                                                    &&
+                                paymentStateValue.discountedCost !=
+                                    null
+                                                ? AppColors.primary
+                                                : AppColors.lightestGray,
+                                            width: 2),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            15.horizontalSpace,
+                              15.horizontalSpace,
 
-                            // **Activate / Cancel Button**
-                            Flexible(
-                              flex: 2,
-                              child: CustomButtonWidget(
-                                text: paymentState.isCouponApplied
-                                    ? context.tr("cancel")
-                                    : context.tr("active"),
-                                onTap: () {
-                                  if (paymentState.isCouponApplied) {
-                                    // Reset coupon
-                                    paymentController.removeCoupon();
-                                    couponController.clear();
-                                  } else {
-                                    // Apply discount logic
-                                    if (couponController.text.isNotEmpty) {
-                                      paymentController
-                                          .applyCoupon(couponController.text);
-                                    }
-                                  }
-                                },
-                                backgroundColor: AppColors.primary,
-                                color: AppColors.black,
-                                isFiled: true,
-                                height: 52,
-                                radius: 12,
-                                width: 100,
-                              ).onlyPadding(bottom: 0),
-                            ),
-                          ],
-                        ),
+                              // **Activate / Cancel Button**
+                              Flexible(
+                                flex: 2,
+                                child: CustomButtonWidget(
+                                  text: paymentStateValue.isCouponApplied
+                                      ? context.tr("cancel")
+                                      : context.tr("active"),
+                                  onTap: couponValue.isEmpty
+                                      ? null
+                                      : () {
+                                          if (paymentStateValue
+                                              .isCouponApplied) {
+                                            // Reset coupon
+                                            paymentController.removeCoupon();
+                                            couponValue = "";
+                                            couponController.clear();
+                                          } else {
+                                            // Apply discount logic
+                                            if (couponController
+                                                .text.isNotEmpty) {
+                                              paymentController.applyCoupon(
+                                                  couponController.text);
+                                            }
+                                          }
+                                        },
+                                  backgroundColor: couponValue.isEmpty
+                                      ? AppColors.lightestGray
+                                      : AppColors.primary,
+                                  color: AppColors.black,
+                                  isFiled: true,
+                                  height: 52,
+                                  radius: 12,
+                                  width: 100,
+                                ).onlyPadding(bottom: 0),
+                              ),
+                            ],
+                          );
+                        }),
 
                         20.verticalSpace,
 

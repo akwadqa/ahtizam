@@ -22,6 +22,16 @@ QuickOrderModel _$QuickOrderModelFromJson(Map<String, dynamic> json) {
 mixin _$QuickOrderModel {
   @JsonKey(name: "quick_order_id")
   String get quickOrderId => throw _privateConstructorUsedError;
+  @JsonKey(name: "base_fee")
+  double get baseFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "tax_fee")
+  double get taxFee => throw _privateConstructorUsedError;
+  @JsonKey(name: "discount_cost")
+  double? get discountCost => throw _privateConstructorUsedError;
+  @JsonKey(name: "final_fee")
+  double get finalFee =>
+      throw _privateConstructorUsedError; //  distance, duration
+  String get eta => throw _privateConstructorUsedError;
 
   /// Serializes this QuickOrderModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +49,13 @@ abstract class $QuickOrderModelCopyWith<$Res> {
           QuickOrderModel value, $Res Function(QuickOrderModel) then) =
       _$QuickOrderModelCopyWithImpl<$Res, QuickOrderModel>;
   @useResult
-  $Res call({@JsonKey(name: "quick_order_id") String quickOrderId});
+  $Res call(
+      {@JsonKey(name: "quick_order_id") String quickOrderId,
+      @JsonKey(name: "base_fee") double baseFee,
+      @JsonKey(name: "tax_fee") double taxFee,
+      @JsonKey(name: "discount_cost") double? discountCost,
+      @JsonKey(name: "final_fee") double finalFee,
+      String eta});
 }
 
 /// @nodoc
@@ -58,11 +74,36 @@ class _$QuickOrderModelCopyWithImpl<$Res, $Val extends QuickOrderModel>
   @override
   $Res call({
     Object? quickOrderId = null,
+    Object? baseFee = null,
+    Object? taxFee = null,
+    Object? discountCost = freezed,
+    Object? finalFee = null,
+    Object? eta = null,
   }) {
     return _then(_value.copyWith(
       quickOrderId: null == quickOrderId
           ? _value.quickOrderId
           : quickOrderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      baseFee: null == baseFee
+          ? _value.baseFee
+          : baseFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      taxFee: null == taxFee
+          ? _value.taxFee
+          : taxFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountCost: freezed == discountCost
+          ? _value.discountCost
+          : discountCost // ignore: cast_nullable_to_non_nullable
+              as double?,
+      finalFee: null == finalFee
+          ? _value.finalFee
+          : finalFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      eta: null == eta
+          ? _value.eta
+          : eta // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -76,7 +117,13 @@ abstract class _$$QuickOrderModelImplCopyWith<$Res>
       __$$QuickOrderModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: "quick_order_id") String quickOrderId});
+  $Res call(
+      {@JsonKey(name: "quick_order_id") String quickOrderId,
+      @JsonKey(name: "base_fee") double baseFee,
+      @JsonKey(name: "tax_fee") double taxFee,
+      @JsonKey(name: "discount_cost") double? discountCost,
+      @JsonKey(name: "final_fee") double finalFee,
+      String eta});
 }
 
 /// @nodoc
@@ -93,11 +140,36 @@ class __$$QuickOrderModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? quickOrderId = null,
+    Object? baseFee = null,
+    Object? taxFee = null,
+    Object? discountCost = freezed,
+    Object? finalFee = null,
+    Object? eta = null,
   }) {
     return _then(_$QuickOrderModelImpl(
       quickOrderId: null == quickOrderId
           ? _value.quickOrderId
           : quickOrderId // ignore: cast_nullable_to_non_nullable
+              as String,
+      baseFee: null == baseFee
+          ? _value.baseFee
+          : baseFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      taxFee: null == taxFee
+          ? _value.taxFee
+          : taxFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountCost: freezed == discountCost
+          ? _value.discountCost
+          : discountCost // ignore: cast_nullable_to_non_nullable
+              as double?,
+      finalFee: null == finalFee
+          ? _value.finalFee
+          : finalFee // ignore: cast_nullable_to_non_nullable
+              as double,
+      eta: null == eta
+          ? _value.eta
+          : eta // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -107,7 +179,12 @@ class __$$QuickOrderModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$QuickOrderModelImpl implements _QuickOrderModel {
   const _$QuickOrderModelImpl(
-      {@JsonKey(name: "quick_order_id") required this.quickOrderId});
+      {@JsonKey(name: "quick_order_id") required this.quickOrderId,
+      @JsonKey(name: "base_fee") required this.baseFee,
+      @JsonKey(name: "tax_fee") required this.taxFee,
+      @JsonKey(name: "discount_cost") required this.discountCost,
+      @JsonKey(name: "final_fee") required this.finalFee,
+      required this.eta});
 
   factory _$QuickOrderModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$QuickOrderModelImplFromJson(json);
@@ -115,10 +192,25 @@ class _$QuickOrderModelImpl implements _QuickOrderModel {
   @override
   @JsonKey(name: "quick_order_id")
   final String quickOrderId;
+  @override
+  @JsonKey(name: "base_fee")
+  final double baseFee;
+  @override
+  @JsonKey(name: "tax_fee")
+  final double taxFee;
+  @override
+  @JsonKey(name: "discount_cost")
+  final double? discountCost;
+  @override
+  @JsonKey(name: "final_fee")
+  final double finalFee;
+//  distance, duration
+  @override
+  final String eta;
 
   @override
   String toString() {
-    return 'QuickOrderModel(quickOrderId: $quickOrderId)';
+    return 'QuickOrderModel(quickOrderId: $quickOrderId, baseFee: $baseFee, taxFee: $taxFee, discountCost: $discountCost, finalFee: $finalFee, eta: $eta)';
   }
 
   @override
@@ -127,12 +219,20 @@ class _$QuickOrderModelImpl implements _QuickOrderModel {
         (other.runtimeType == runtimeType &&
             other is _$QuickOrderModelImpl &&
             (identical(other.quickOrderId, quickOrderId) ||
-                other.quickOrderId == quickOrderId));
+                other.quickOrderId == quickOrderId) &&
+            (identical(other.baseFee, baseFee) || other.baseFee == baseFee) &&
+            (identical(other.taxFee, taxFee) || other.taxFee == taxFee) &&
+            (identical(other.discountCost, discountCost) ||
+                other.discountCost == discountCost) &&
+            (identical(other.finalFee, finalFee) ||
+                other.finalFee == finalFee) &&
+            (identical(other.eta, eta) || other.eta == eta));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, quickOrderId);
+  int get hashCode => Object.hash(
+      runtimeType, quickOrderId, baseFee, taxFee, discountCost, finalFee, eta);
 
   /// Create a copy of QuickOrderModel
   /// with the given fields replaced by the non-null parameter values.
@@ -153,8 +253,12 @@ class _$QuickOrderModelImpl implements _QuickOrderModel {
 
 abstract class _QuickOrderModel implements QuickOrderModel {
   const factory _QuickOrderModel(
-      {@JsonKey(name: "quick_order_id")
-      required final String quickOrderId}) = _$QuickOrderModelImpl;
+      {@JsonKey(name: "quick_order_id") required final String quickOrderId,
+      @JsonKey(name: "base_fee") required final double baseFee,
+      @JsonKey(name: "tax_fee") required final double taxFee,
+      @JsonKey(name: "discount_cost") required final double? discountCost,
+      @JsonKey(name: "final_fee") required final double finalFee,
+      required final String eta}) = _$QuickOrderModelImpl;
 
   factory _QuickOrderModel.fromJson(Map<String, dynamic> json) =
       _$QuickOrderModelImpl.fromJson;
@@ -162,6 +266,20 @@ abstract class _QuickOrderModel implements QuickOrderModel {
   @override
   @JsonKey(name: "quick_order_id")
   String get quickOrderId;
+  @override
+  @JsonKey(name: "base_fee")
+  double get baseFee;
+  @override
+  @JsonKey(name: "tax_fee")
+  double get taxFee;
+  @override
+  @JsonKey(name: "discount_cost")
+  double? get discountCost;
+  @override
+  @JsonKey(name: "final_fee")
+  double get finalFee; //  distance, duration
+  @override
+  String get eta;
 
   /// Create a copy of QuickOrderModel
   /// with the given fields replaced by the non-null parameter values.
