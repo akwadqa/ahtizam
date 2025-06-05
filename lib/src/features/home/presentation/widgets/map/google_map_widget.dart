@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,8 @@ class GoogleMapWidget extends ConsumerStatefulWidget {
 
 class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
   BitmapDescriptor? _customMarker;
+  BitmapDescriptor? _driverMarker;
+  BitmapDescriptor? _destinationMarker;
   String locationAddress = "";
   final geocoding = GoogleGeocodingApi(ServicesUrls.mapApiKey);
   PolylinePoints polylinePoints = PolylinePoints();
@@ -41,9 +44,12 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
   Future<void> _loadCustomMarker() async {
     try {
       final Uint8List markerIcon =
-          await 'assets/icons/my_marker.png'.toMarkerBytes(targetSize: 30);
+          await Assets.icons.myMarker.path.toMarkerBytes(targetSize: 30);
+      final Uint8List driverMarkerIcon =
+          await Assets.icons.destinationMarker.path.toMarkerBytes();
 
       _customMarker = BitmapDescriptor.fromBytes(markerIcon);
+      _destinationMarker = BitmapDescriptor.fromBytes(driverMarkerIcon);
       setState(() {}); // Trigger rebuild when marker is loaded
     } catch (e) {
       debugPrint('Error loading custom marker: $e');
@@ -61,26 +67,25 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
 
     return mapState.when(
       data: (currentLocation) {
-       if (currentLocation == null) {
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.warning, color: AppColors.primary),
-        4.verticalSpace,
-        Text("Location unavailable"),
-        8.verticalSpace,
-        TextButton(
-          onPressed: () {
-            ref.read(mapControllerProvider.notifier).updateLocation();
-          },
-          child: const Text("Retry"),
-        )
-      ],
-    ),
-  );
-}
-
+        if (currentLocation == null) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.warning, color: AppColors.primary),
+                4.verticalSpace,
+                Text("Location unavailable"),
+                8.verticalSpace,
+                TextButton(
+                  onPressed: () {
+                    ref.read(mapControllerProvider.notifier).updateLocation();
+                  },
+                  child: const Text("Retry"),
+                )
+              ],
+            ),
+          );
+        }
 
         return GoogleMap(
           mapType: MapType.normal,
@@ -88,8 +93,10 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           onTap: isSelectLocationFromMap
               ? (LatLng latLng) async {
                   await mapController.setCurrentLocation(latLng);
-                  mapController.mapController
-                      ?.animateCamera(CameraUpdate.newCameraPosition(
+                  mapController.mapController?.animateCamera(
+                      // CameraUpdate.newLatLngZoom(latLng, 14),
+
+                      CameraUpdate.newCameraPosition(
                     CameraPosition(
                       target: latLng,
                       zoom: 17,
@@ -112,8 +119,9 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
                 alpha: 0.8,
                 markerId: const MarkerId("secondPoint"),
                 position: mapController.secondPoint!,
-                icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueOrange),
+                icon: _destinationMarker ??
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueOrange),
               ),
           },
           polylines: mapController.polylineCoordinates.isNotEmpty
@@ -131,7 +139,6 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
             zoom: 17,
           ),
           myLocationEnabled: false,
-          
           onMapCreated: (controller) {
             mapController.setMapController(controller);
             // Reload custom marker if it's null
@@ -145,9 +152,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
         return const Center(child: FadeCircleLoadingIndicator());
       },
       error: (error, _) => InkWell(
-        onTap: (){
-
-        },
+        onTap: () {},
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

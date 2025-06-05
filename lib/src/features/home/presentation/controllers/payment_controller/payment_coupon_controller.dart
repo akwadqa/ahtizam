@@ -1,3 +1,5 @@
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -6,44 +8,56 @@ part 'payment_coupon_controller.g.dart';
 @riverpod
 class PaymentCouponController extends _$PaymentCouponController {
   @override
-  PaymentState build(double totalCost) {
+  FutureOr<PaymentState> build() {
+    final orderState = ref.watch(quickOrderControllerProvider);
+    debugPrint("Final fee ${orderState.value!.orderModel!.finalFee}");
+    debugPrint("discountCost${ orderState.value!.orderModel!.discountCost}");
+
     return PaymentState(
       isCouponApplied: false,
-      totalCost: totalCost,
-      discountedCost: totalCost,
+      totalCost: orderState.value!.orderModel!.finalFee,
+      discountedCost: orderState.value!.orderModel!.discountCost,
       couponCode: '',
     );
   }
 
-  void applyCoupon(String coupon) {
+  Future<void >applyCoupon(String coupon)async {
+    final orderState = ref.watch(quickOrderControllerProvider);
     if (coupon.isNotEmpty) {
-      state = state.copyWith(
+   await   ref
+          .read(quickOrderControllerProvider.notifier)
+          .createOrder(couponCode: coupon);
+      final currentState = state.value;
+      state = AsyncData(currentState!.copyWith(
         isCouponApplied: true,
-        discountedCost: state.totalCost * 0.65, // Example: 35% discount
+        discountedCost: orderState.value?.orderModel?.discountCost,
         couponCode: coupon,
-      );
+      ));
     }
   }
 
   void removeCoupon() {
-    state = state.copyWith(
+    final orderState = ref.watch(quickOrderControllerProvider);
+      final currentState = state.value;
+      state = AsyncData(currentState!.copyWith(
       isCouponApplied: false,
-      discountedCost: state.totalCost,
+      discountedCost: orderState.value?.orderModel?.finalFee,
       couponCode: '',
-    );
+      ));
+   
   }
 }
 
 class PaymentState {
   final bool isCouponApplied;
   final double totalCost;
-  final double discountedCost;
+  final double? discountedCost;
   final String couponCode;
 
   PaymentState({
     required this.isCouponApplied,
     required this.totalCost,
-    required this.discountedCost,
+    this.discountedCost,
     this.couponCode = '',
   });
 

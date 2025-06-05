@@ -1,8 +1,11 @@
 import 'dart:ui';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/service_types_controller/service_types_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_car.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +29,8 @@ class HomeScreen extends ConsumerWidget {
     final isSecondWidgetVisible =
         ref.watch(changeRequestOrderStateServiceProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
-    final hideWidgetsDuringOrder = ref.watch(hideLayersDuringOrderControllerProvider);
+    final hideWidgetsDuringOrder =
+        ref.watch(hideLayersDuringOrderControllerProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -35,13 +39,14 @@ class HomeScreen extends ConsumerWidget {
         children: [
           const _BackgroundMap(),
           const TopNavigationBar(),
-          if(!hideWidgetsDuringOrder)...[
-          (isThirdWidgetVisible)
-              ? const RequestDetailsForm()
-              : isSecondWidgetVisible
-                  ? const _RequestOrderBottomActionCard()
-                  : const _BottomActionCard(),
-          if (isThirdWidgetVisible) _orderButton(context, ref),]
+          if (!hideWidgetsDuringOrder) ...[
+            (isThirdWidgetVisible)
+                ? const RequestDetailsForm()
+                : isSecondWidgetVisible
+                    ? const _RequestOrderBottomActionCard()
+                    : const _BottomActionCard(),
+            if (isThirdWidgetVisible) _orderButton(context, ref),
+          ]
         ],
       ),
     );
@@ -54,25 +59,67 @@ class HomeScreen extends ConsumerWidget {
       bottom: 25,
       right: 15,
       left: 15,
-      child: CustomButtonWidget(
-        text: context.tr("request"),
-        onTap: () {
-          // ref.read(quickOrderControllerProvider.notifier).createOrder();
-              // ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
+      child: Consumer(
+          builder: (BuildContext context, WidgetRef ref, Widget? child) {
+        final asyncData = ref.watch(selectServiceTypeControllerProvider);
 
-          if (formKey.currentState!.validate()) {
-            formKey.currentState!.save();
-            ref
-                .read(selectTruckControllerProvider.notifier)
-                .getTrucksDataInformation(context);
+        if (asyncData is AsyncLoading) {
+          return const FadeCircleLoadingIndicator();
+        }
+
+        // if (asyncData is AsyncError) {
+        //   showErrorDialog(context, "Something wrong");
+        // }
+        ref.listen(selectServiceTypeControllerProvider, (prev, next) {
+          if (next is AsyncLoading) {
+            debugPrint("loading🌀");
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+            FadeCircleLoadingIndicator();
+            });
           }
-        },
-        backgroundColor: AppColors.black,
-        isFiled: true,
-        height: 55,
-        radius: 15,
-        width: MediaQuery.sizeOf(context).width,
-      ),
+          if (next is AsyncError) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              // Navigator.pop(context); // Close loading dialog if open
+              showErrorDialog(context, next.error.toString());
+            });
+          }
+          if (next is AsyncData) {
+            final response = next.value;
+            debugPrint("data done done ");
+          }
+        });
+
+        return
+            //   serviceTypesState.isLoading
+            // ? const Center(
+            //     child: SizedBox(
+            //       height: 55,
+            //       child: FadeCircleLoadingIndicator(),
+            //     ),
+            //   )
+            // :
+            CustomButtonWidget(
+          text: context.tr("request"),
+          onTap: asyncData is AsyncLoading
+              ? null
+              : () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    ref
+                        .read(selectServiceTypeControllerProvider.notifier)
+                        .getServiceTypesDataInformation(context);
+                    // ref
+                    //     .read(selectTruckControllerProvider.notifier)
+                    //     .getTrucksDataInformation(context);
+                  }
+                },
+          backgroundColor: AppColors.black,
+          isFiled: true,
+          height: 55,
+          radius: 15,
+          width: MediaQuery.sizeOf(context).width,
+        );
+      }),
     );
   }
 }

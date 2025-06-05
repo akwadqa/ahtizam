@@ -90,6 +90,7 @@ class PriceOfferCard extends StatelessWidget {
                           showTruckDetailsDialog(
                             context: context,
                             weight: "1200",
+                            serviceTypeName: "serviceTypeName",
                             scales: "8ft x 4.5ft x 5.5ft",
                           );
                         },

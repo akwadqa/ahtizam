@@ -48,6 +48,18 @@ class $AssetsIconsGen {
   SvgGenImage get creditCardIcn =>
       const SvgGenImage('assets/icons/credit_card_icn.svg');
 
+  /// File path: assets/icons/destination_marker.png
+  AssetGenImage get destinationMarker =>
+      const AssetGenImage('assets/icons/destination_marker.png');
+
+  /// File path: assets/icons/destination_marker1.png
+  AssetGenImage get destinationMarker1 =>
+      const AssetGenImage('assets/icons/destination_marker1.png');
+
+  /// File path: assets/icons/destination_marker2.png
+  AssetGenImage get destinationMarker2 =>
+      const AssetGenImage('assets/icons/destination_marker2.png');
+
   /// File path: assets/icons/google_ic.svg
   SvgGenImage get googleIc => const SvgGenImage('assets/icons/google_ic.svg');
 
@@ -101,6 +113,14 @@ class $AssetsIconsGen {
   /// File path: assets/icons/truck.svg
   SvgGenImage get truck => const SvgGenImage('assets/icons/truck.svg');
 
+  /// File path: assets/icons/truck_marker.png
+  AssetGenImage get truckMarker =>
+      const AssetGenImage('assets/icons/truck_marker.png');
+
+  /// File path: assets/icons/truck_marker1.png
+  AssetGenImage get truckMarker1 =>
+      const AssetGenImage('assets/icons/truck_marker1.png');
+
   /// File path: assets/icons/verifiedCheck_ic.svg
   SvgGenImage get verifiedCheckIc =>
       const SvgGenImage('assets/icons/verifiedCheck_ic.svg');
@@ -119,6 +139,9 @@ class $AssetsIconsGen {
         coupon,
         creditCardIc,
         creditCardIcn,
+        destinationMarker,
+        destinationMarker1,
+        destinationMarker2,
         googleIc,
         home,
         locationIc,
@@ -136,6 +159,8 @@ class $AssetsIconsGen {
         settings,
         timeIc,
         truck,
+        truckMarker,
+        truckMarker1,
         verifiedCheckIc,
         verifiedCheckIcq,
         walletIc

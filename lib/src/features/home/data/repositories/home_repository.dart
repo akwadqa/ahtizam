@@ -1,8 +1,9 @@
 import 'package:ahtizam/src/constants/Api/api_response.dart';
 import 'package:ahtizam/src/features/home/data/datasources/home_data_source.dart';
-import 'package:ahtizam/src/features/home/domain/models/passenger_coordinates_params.dart';
+import 'package:ahtizam/src/features/home/domain/models/coordinates_params.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_details_model.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
+import 'package:ahtizam/src/features/home/domain/models/service_types/service_types_model.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,11 +23,20 @@ class HomeRepository {
 
   // Create a new order
   Future<ApiResponse<QuickOrderModel>> createQuickOrder({
-    required PassengerCoordinatesParams coordinates,
+    required CoordinatesParams passengerCoordinates,
+    required CoordinatesParams destinationCoordinates,
+    required String searviceItemId,
+    String? couponCode,
     required String email,
   }) async {
     try {
-      final result = await _remoteDataSource.createQuickOrder(coordinates,email);
+      final result = await _remoteDataSource.createQuickOrder(
+        passengerCoordinates,
+        destinationCoordinates,
+        email,
+        searviceItemId,
+        couponCode,
+      );
       // Start finding nearest driver
       // await _findAndNotifyNearestDriver(order);
 
@@ -55,6 +65,22 @@ class HomeRepository {
       }
     } catch (e) {
       throw Exception('Failed to Get order details: $e');
+    }
+  }
+
+  Future<ApiResponse<List<ServiceTypesModel>>> getServiceTypes() async {
+    try {
+      final result = await _remoteDataSource.getServiceTypes();
+      if (result.hasFailed) {
+        throw Exception(
+          result.message ?? 'Failed to fetch service types',
+        );
+      }
+      // if (result.status == 200) {
+      return result;
+      // }
+    } catch (e) {
+      throw Exception('❌ Failed to Get Service Types: $e');
     }
   }
 

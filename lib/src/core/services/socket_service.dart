@@ -33,6 +33,11 @@ class SocketService {
     _socket.onDisconnect((_) {
       debugPrint("❌ Socket disconnected");
     });
+     _socket.onReconnect((_) {
+      {
+        debugPrint("🔄 Socket reconnected");
+      }
+    });
   }
   ///********************************/
   //! Action	Method	Meaning	Direction

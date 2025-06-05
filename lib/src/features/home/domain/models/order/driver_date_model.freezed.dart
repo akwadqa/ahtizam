@@ -22,7 +22,13 @@ DriverDateModel _$DriverDateModelFromJson(Map<String, dynamic> json) {
 mixin _$DriverDateModel {
   @JsonKey(name: "driver_id")
   String? get driverId => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
+  String get status =>
+      throw _privateConstructorUsedError; //     required String name,
+//     required String image,
+//     required String phone,
+//  @JsonKey(name: "truck_number")   required String truckNumber,
+//   @JsonKey(name: "otp_number")  required String otpNumber,
+//     required double rate,
   double get lat => throw _privateConstructorUsedError;
   double get lng => throw _privateConstructorUsedError;
 
@@ -161,6 +167,12 @@ class _$DriverDateModelImpl implements _DriverDateModel {
   final String? driverId;
   @override
   final String status;
+//     required String name,
+//     required String image,
+//     required String phone,
+//  @JsonKey(name: "truck_number")   required String truckNumber,
+//   @JsonKey(name: "otp_number")  required String otpNumber,
+//     required double rate,
   @override
   final double lat;
   @override
@@ -218,7 +230,12 @@ abstract class _DriverDateModel implements DriverDateModel {
   @JsonKey(name: "driver_id")
   String? get driverId;
   @override
-  String get status;
+  String get status; //     required String name,
+//     required String image,
+//     required String phone,
+//  @JsonKey(name: "truck_number")   required String truckNumber,
+//   @JsonKey(name: "otp_number")  required String otpNumber,
+//     required double rate,
   @override
   double get lat;
   @override
