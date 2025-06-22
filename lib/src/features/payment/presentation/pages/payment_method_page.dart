@@ -49,12 +49,12 @@ class PaymentMethodPage extends ConsumerWidget {
           },
         ),
         40.verticalSpace,
-        if (state.selectedMethod?.id == 'credit_card')
-          EmptyCardsSection(
-            onAddCard: () {
-              context.pushRoute(const AddCardRoute());
-            },
-          ),
+        // if (state.selectedMethod?.id == 'credit_card')
+        //   EmptyCardsSection(
+        //     onAddCard: () {
+        //       context.pushRoute(const AddCardRoute());
+        //     },
+        //   ),
         const Spacer(),
         PaymentBottomSection(
           totalAmount: state.totalAmount,

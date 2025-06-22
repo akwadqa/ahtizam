@@ -6,11 +6,9 @@ part of 'home_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeServiceHash() => r'9f687426d7216265f0a857dfe2083a94c5537fc1';
+String _$homeServiceHash() => r'34677d435df1bd63caa03b5631fcef88c3c83122';
 
-/// **Provider to Manage Widget Visibility**
-///
-/// Copied from [HomeService].
+/// See also [HomeService].
 @ProviderFor(HomeService)
 final homeServiceProvider =
     AutoDisposeNotifierProvider<HomeService, void>.internal(

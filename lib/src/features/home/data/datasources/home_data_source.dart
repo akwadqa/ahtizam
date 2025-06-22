@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:ahtizam/src/constants/Api/api_response.dart';
 import 'package:ahtizam/src/constants/Api/end_points.dart';
 import 'package:ahtizam/src/features/home/domain/models/coordinates_params.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/quick_order_details_model.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
 import 'package:ahtizam/src/features/home/domain/models/service_types/service_types_model.dart';
 import 'package:ahtizam/src/network/services/network_service.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 class HomeRemoteDataSource {
   final NetworkService _networkService;
@@ -26,7 +28,7 @@ class HomeRemoteDataSource {
           'destination_coordinates': destinationCoordinates.toJson(),
           'service_type': serviceItemId,
           'passenger_email': email,
-          if (couponCode != null) "coupun_code": couponCode, 
+          if (couponCode != null) "coupun_code": couponCode,
         },
       );
 
@@ -39,41 +41,38 @@ class HomeRemoteDataSource {
     }
   }
 
-  // Future<List<String>> getPendingOffers() async {
-  //   final response = await _networkService.get(EndPoints.pendingOffers);
-  //   final offers = response.data['data'] as List;
-  //   return offers.map((e) => e['quick_order_offer_id'].toString()).toList();
-  // }
+ Future<ApiResponse<QuickOrderModel>> proccessQuickOrder(
+  String quickOrderId,
+  String paymentMethod,
+  File? mapScreenshotFile,
+) async {
+  try {
+    // Prepare multipart form data
+    final formData = FormData.fromMap({
+      'quick_order_id': quickOrderId,
+      'payment_method': paymentMethod,
+      if (mapScreenshotFile != null)
+        'map_image_file': await MultipartFile.fromFile(
+          mapScreenshotFile.path,
+          filename: 'map_image${DateTime.now()}.png',
+        ),
+    });
 
-  // Future<bool> respondToOffer(String offerId, {bool accept = true}) async {
-  //   final response = await _networkService.put(
-  //     EndPoints.respondToOffer,
-  //     data: {
-  //       'offer_id': offerId,
-  //       'response': accept ? 'accepted' : 'rejected',
-  //     },
-  //   );
-  //   return response.data['error'] == 0;
-  // }
+    final Response response = await _networkService.post(
+      EndPoints.processQuickOrderApi,
+      data: formData,
+    );
 
-  Future<ApiResponse<QuickOrderDetailsModel>> getQuickOrderDetails(
-      String quickOrderId) async {
-    try {
-      final response = await _networkService.get(
-        EndPoints.quickOrderDetailsApi,
-        queryParameters: {'quick_order_id': quickOrderId},
-      );
-      return ApiResponse.fromJson(
-        response.data,
-        (json) => QuickOrderDetailsModel.fromJson(json as Map<String, dynamic>),
-      );
-    } catch (e) {
-      return ApiResponse.error(message: e.toString());
-    }
+    return ApiResponse.fromJson(
+      response.data,
+      (json) => QuickOrderModel.fromJson(json as Map<String, dynamic>),
+    );
+  } catch (e) {
+    return ApiResponse.error(message: e.toString());
   }
+}
 
-  Future<ApiResponse<List<ServiceTypesModel>>> getServiceTypes(
-      ) async {
+  Future<ApiResponse<List<ServiceTypesModel>>> getServiceTypes() async {
     try {
       final response = await _networkService.get(
         EndPoints.serviceTypes,
@@ -81,14 +80,12 @@ class HomeRemoteDataSource {
       return ApiResponse.fromJson(
         response.data,
         (json) => (json as List)
-            .map((item) => ServiceTypesModel.fromJson(item as Map<String, dynamic>))
+            .map((item) =>
+                ServiceTypesModel.fromJson(item as Map<String, dynamic>))
             .toList(),
       );
     } catch (e) {
       return ApiResponse.error(message: e.toString());
     }
   }
-
-
-
 }

@@ -20,19 +20,37 @@ MyOrderDetailsModel _$MyOrderDetailsModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MyOrderDetailsModel {
-  String get driverImage => throw _privateConstructorUsedError;
-  String get driverName => throw _privateConstructorUsedError;
-  String get driverRating => throw _privateConstructorUsedError;
-  String get vehicleType => throw _privateConstructorUsedError;
-  String get vehicleId => throw _privateConstructorUsedError;
-  String get orderStart => throw _privateConstructorUsedError;
-  String get orderNumber => throw _privateConstructorUsedError;
-  String get orderEnd => throw _privateConstructorUsedError;
-  String get orderTimeStart => throw _privateConstructorUsedError;
-  String get orderTimeEnd => throw _privateConstructorUsedError;
-  String get date => throw _privateConstructorUsedError;
-  double get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'quick_order_id')
+  String get quickOrderId => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  @JsonKey(name: 'driver_details')
+  DriverDetails get driverDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: 'passenger_details')
+  PassengerDetails get passengerDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: "passenger_location")
+  OrderLocationModel get passengerLocation =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: "destination_location")
+  OrderLocationModel get destinationLocation =>
+      throw _privateConstructorUsedError;
+  @JsonKey(name: "map_image")
+  String? get mapImage => throw _privateConstructorUsedError;
+  @JsonKey(name: "service_type")
+  String get serviceType => throw _privateConstructorUsedError;
+  @JsonKey(name: "payment_method")
   String get paymentMethod => throw _privateConstructorUsedError;
+  @JsonKey(name: "coupon_code")
+  String? get couponCode => throw _privateConstructorUsedError;
+  @JsonKey(name: "fare_details")
+  FareDetails get fareDetails => throw _privateConstructorUsedError;
+  @JsonKey(name: "creation_date")
+  DateTime get creationDate => throw _privateConstructorUsedError;
+  @JsonKey(name: "creation_time")
+  String get creationTime => throw _privateConstructorUsedError;
+  @JsonKey(name: "start_time")
+  String get startTime => throw _privateConstructorUsedError;
+  @JsonKey(name: "end_time")
+  String get endTime => throw _privateConstructorUsedError;
 
   /// Serializes this MyOrderDetailsModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -51,19 +69,28 @@ abstract class $MyOrderDetailsModelCopyWith<$Res> {
       _$MyOrderDetailsModelCopyWithImpl<$Res, MyOrderDetailsModel>;
   @useResult
   $Res call(
-      {String driverImage,
-      String driverName,
-      String driverRating,
-      String vehicleType,
-      String vehicleId,
-      String orderStart,
-      String orderNumber,
-      String orderEnd,
-      String orderTimeStart,
-      String orderTimeEnd,
-      String date,
-      double price,
-      String paymentMethod});
+      {@JsonKey(name: 'quick_order_id') String quickOrderId,
+      String status,
+      @JsonKey(name: 'driver_details') DriverDetails driverDetails,
+      @JsonKey(name: 'passenger_details') PassengerDetails passengerDetails,
+      @JsonKey(name: "passenger_location") OrderLocationModel passengerLocation,
+      @JsonKey(name: "destination_location")
+      OrderLocationModel destinationLocation,
+      @JsonKey(name: "map_image") String? mapImage,
+      @JsonKey(name: "service_type") String serviceType,
+      @JsonKey(name: "payment_method") String paymentMethod,
+      @JsonKey(name: "coupon_code") String? couponCode,
+      @JsonKey(name: "fare_details") FareDetails fareDetails,
+      @JsonKey(name: "creation_date") DateTime creationDate,
+      @JsonKey(name: "creation_time") String creationTime,
+      @JsonKey(name: "start_time") String startTime,
+      @JsonKey(name: "end_time") String endTime});
+
+  $DriverDetailsCopyWith<$Res> get driverDetails;
+  $PassengerDetailsCopyWith<$Res> get passengerDetails;
+  $OrderLocationModelCopyWith<$Res> get passengerLocation;
+  $OrderLocationModelCopyWith<$Res> get destinationLocation;
+  $FareDetailsCopyWith<$Res> get fareDetails;
 }
 
 /// @nodoc
@@ -81,74 +108,135 @@ class _$MyOrderDetailsModelCopyWithImpl<$Res, $Val extends MyOrderDetailsModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? driverImage = null,
-    Object? driverName = null,
-    Object? driverRating = null,
-    Object? vehicleType = null,
-    Object? vehicleId = null,
-    Object? orderStart = null,
-    Object? orderNumber = null,
-    Object? orderEnd = null,
-    Object? orderTimeStart = null,
-    Object? orderTimeEnd = null,
-    Object? date = null,
-    Object? price = null,
+    Object? quickOrderId = null,
+    Object? status = null,
+    Object? driverDetails = null,
+    Object? passengerDetails = null,
+    Object? passengerLocation = null,
+    Object? destinationLocation = null,
+    Object? mapImage = freezed,
+    Object? serviceType = null,
     Object? paymentMethod = null,
+    Object? couponCode = freezed,
+    Object? fareDetails = null,
+    Object? creationDate = null,
+    Object? creationTime = null,
+    Object? startTime = null,
+    Object? endTime = null,
   }) {
     return _then(_value.copyWith(
-      driverImage: null == driverImage
-          ? _value.driverImage
-          : driverImage // ignore: cast_nullable_to_non_nullable
+      quickOrderId: null == quickOrderId
+          ? _value.quickOrderId
+          : quickOrderId // ignore: cast_nullable_to_non_nullable
               as String,
-      driverName: null == driverName
-          ? _value.driverName
-          : driverName // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
-      driverRating: null == driverRating
-          ? _value.driverRating
-          : driverRating // ignore: cast_nullable_to_non_nullable
+      driverDetails: null == driverDetails
+          ? _value.driverDetails
+          : driverDetails // ignore: cast_nullable_to_non_nullable
+              as DriverDetails,
+      passengerDetails: null == passengerDetails
+          ? _value.passengerDetails
+          : passengerDetails // ignore: cast_nullable_to_non_nullable
+              as PassengerDetails,
+      passengerLocation: null == passengerLocation
+          ? _value.passengerLocation
+          : passengerLocation // ignore: cast_nullable_to_non_nullable
+              as OrderLocationModel,
+      destinationLocation: null == destinationLocation
+          ? _value.destinationLocation
+          : destinationLocation // ignore: cast_nullable_to_non_nullable
+              as OrderLocationModel,
+      mapImage: freezed == mapImage
+          ? _value.mapImage
+          : mapImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serviceType: null == serviceType
+          ? _value.serviceType
+          : serviceType // ignore: cast_nullable_to_non_nullable
               as String,
-      vehicleType: null == vehicleType
-          ? _value.vehicleType
-          : vehicleType // ignore: cast_nullable_to_non_nullable
-              as String,
-      vehicleId: null == vehicleId
-          ? _value.vehicleId
-          : vehicleId // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderStart: null == orderStart
-          ? _value.orderStart
-          : orderStart // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderNumber: null == orderNumber
-          ? _value.orderNumber
-          : orderNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderEnd: null == orderEnd
-          ? _value.orderEnd
-          : orderEnd // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderTimeStart: null == orderTimeStart
-          ? _value.orderTimeStart
-          : orderTimeStart // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderTimeEnd: null == orderTimeEnd
-          ? _value.orderTimeEnd
-          : orderTimeEnd // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
               as String,
+      couponCode: freezed == couponCode
+          ? _value.couponCode
+          : couponCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fareDetails: null == fareDetails
+          ? _value.fareDetails
+          : fareDetails // ignore: cast_nullable_to_non_nullable
+              as FareDetails,
+      creationDate: null == creationDate
+          ? _value.creationDate
+          : creationDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      creationTime: null == creationTime
+          ? _value.creationTime
+          : creationTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
+  }
+
+  /// Create a copy of MyOrderDetailsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $DriverDetailsCopyWith<$Res> get driverDetails {
+    return $DriverDetailsCopyWith<$Res>(_value.driverDetails, (value) {
+      return _then(_value.copyWith(driverDetails: value) as $Val);
+    });
+  }
+
+  /// Create a copy of MyOrderDetailsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $PassengerDetailsCopyWith<$Res> get passengerDetails {
+    return $PassengerDetailsCopyWith<$Res>(_value.passengerDetails, (value) {
+      return _then(_value.copyWith(passengerDetails: value) as $Val);
+    });
+  }
+
+  /// Create a copy of MyOrderDetailsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OrderLocationModelCopyWith<$Res> get passengerLocation {
+    return $OrderLocationModelCopyWith<$Res>(_value.passengerLocation, (value) {
+      return _then(_value.copyWith(passengerLocation: value) as $Val);
+    });
+  }
+
+  /// Create a copy of MyOrderDetailsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $OrderLocationModelCopyWith<$Res> get destinationLocation {
+    return $OrderLocationModelCopyWith<$Res>(_value.destinationLocation,
+        (value) {
+      return _then(_value.copyWith(destinationLocation: value) as $Val);
+    });
+  }
+
+  /// Create a copy of MyOrderDetailsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $FareDetailsCopyWith<$Res> get fareDetails {
+    return $FareDetailsCopyWith<$Res>(_value.fareDetails, (value) {
+      return _then(_value.copyWith(fareDetails: value) as $Val);
+    });
   }
 }
 
@@ -161,19 +249,33 @@ abstract class _$$MyOrderDetailsModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String driverImage,
-      String driverName,
-      String driverRating,
-      String vehicleType,
-      String vehicleId,
-      String orderStart,
-      String orderNumber,
-      String orderEnd,
-      String orderTimeStart,
-      String orderTimeEnd,
-      String date,
-      double price,
-      String paymentMethod});
+      {@JsonKey(name: 'quick_order_id') String quickOrderId,
+      String status,
+      @JsonKey(name: 'driver_details') DriverDetails driverDetails,
+      @JsonKey(name: 'passenger_details') PassengerDetails passengerDetails,
+      @JsonKey(name: "passenger_location") OrderLocationModel passengerLocation,
+      @JsonKey(name: "destination_location")
+      OrderLocationModel destinationLocation,
+      @JsonKey(name: "map_image") String? mapImage,
+      @JsonKey(name: "service_type") String serviceType,
+      @JsonKey(name: "payment_method") String paymentMethod,
+      @JsonKey(name: "coupon_code") String? couponCode,
+      @JsonKey(name: "fare_details") FareDetails fareDetails,
+      @JsonKey(name: "creation_date") DateTime creationDate,
+      @JsonKey(name: "creation_time") String creationTime,
+      @JsonKey(name: "start_time") String startTime,
+      @JsonKey(name: "end_time") String endTime});
+
+  @override
+  $DriverDetailsCopyWith<$Res> get driverDetails;
+  @override
+  $PassengerDetailsCopyWith<$Res> get passengerDetails;
+  @override
+  $OrderLocationModelCopyWith<$Res> get passengerLocation;
+  @override
+  $OrderLocationModelCopyWith<$Res> get destinationLocation;
+  @override
+  $FareDetailsCopyWith<$Res> get fareDetails;
 }
 
 /// @nodoc
@@ -189,72 +291,82 @@ class __$$MyOrderDetailsModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? driverImage = null,
-    Object? driverName = null,
-    Object? driverRating = null,
-    Object? vehicleType = null,
-    Object? vehicleId = null,
-    Object? orderStart = null,
-    Object? orderNumber = null,
-    Object? orderEnd = null,
-    Object? orderTimeStart = null,
-    Object? orderTimeEnd = null,
-    Object? date = null,
-    Object? price = null,
+    Object? quickOrderId = null,
+    Object? status = null,
+    Object? driverDetails = null,
+    Object? passengerDetails = null,
+    Object? passengerLocation = null,
+    Object? destinationLocation = null,
+    Object? mapImage = freezed,
+    Object? serviceType = null,
     Object? paymentMethod = null,
+    Object? couponCode = freezed,
+    Object? fareDetails = null,
+    Object? creationDate = null,
+    Object? creationTime = null,
+    Object? startTime = null,
+    Object? endTime = null,
   }) {
     return _then(_$MyOrderDetailsModelImpl(
-      driverImage: null == driverImage
-          ? _value.driverImage
-          : driverImage // ignore: cast_nullable_to_non_nullable
+      quickOrderId: null == quickOrderId
+          ? _value.quickOrderId
+          : quickOrderId // ignore: cast_nullable_to_non_nullable
               as String,
-      driverName: null == driverName
-          ? _value.driverName
-          : driverName // ignore: cast_nullable_to_non_nullable
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
-      driverRating: null == driverRating
-          ? _value.driverRating
-          : driverRating // ignore: cast_nullable_to_non_nullable
+      driverDetails: null == driverDetails
+          ? _value.driverDetails
+          : driverDetails // ignore: cast_nullable_to_non_nullable
+              as DriverDetails,
+      passengerDetails: null == passengerDetails
+          ? _value.passengerDetails
+          : passengerDetails // ignore: cast_nullable_to_non_nullable
+              as PassengerDetails,
+      passengerLocation: null == passengerLocation
+          ? _value.passengerLocation
+          : passengerLocation // ignore: cast_nullable_to_non_nullable
+              as OrderLocationModel,
+      destinationLocation: null == destinationLocation
+          ? _value.destinationLocation
+          : destinationLocation // ignore: cast_nullable_to_non_nullable
+              as OrderLocationModel,
+      mapImage: freezed == mapImage
+          ? _value.mapImage
+          : mapImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serviceType: null == serviceType
+          ? _value.serviceType
+          : serviceType // ignore: cast_nullable_to_non_nullable
               as String,
-      vehicleType: null == vehicleType
-          ? _value.vehicleType
-          : vehicleType // ignore: cast_nullable_to_non_nullable
-              as String,
-      vehicleId: null == vehicleId
-          ? _value.vehicleId
-          : vehicleId // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderStart: null == orderStart
-          ? _value.orderStart
-          : orderStart // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderNumber: null == orderNumber
-          ? _value.orderNumber
-          : orderNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderEnd: null == orderEnd
-          ? _value.orderEnd
-          : orderEnd // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderTimeStart: null == orderTimeStart
-          ? _value.orderTimeStart
-          : orderTimeStart // ignore: cast_nullable_to_non_nullable
-              as String,
-      orderTimeEnd: null == orderTimeEnd
-          ? _value.orderTimeEnd
-          : orderTimeEnd // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as String,
-      price: null == price
-          ? _value.price
-          : price // ignore: cast_nullable_to_non_nullable
-              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String,
+      couponCode: freezed == couponCode
+          ? _value.couponCode
+          : couponCode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fareDetails: null == fareDetails
+          ? _value.fareDetails
+          : fareDetails // ignore: cast_nullable_to_non_nullable
+              as FareDetails,
+      creationDate: null == creationDate
+          ? _value.creationDate
+          : creationDate // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      creationTime: null == creationTime
+          ? _value.creationTime
+          : creationTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      endTime: null == endTime
+          ? _value.endTime
+          : endTime // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -264,53 +376,73 @@ class __$$MyOrderDetailsModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MyOrderDetailsModelImpl implements _MyOrderDetailsModel {
   const _$MyOrderDetailsModelImpl(
-      {required this.driverImage,
-      required this.driverName,
-      required this.driverRating,
-      required this.vehicleType,
-      required this.vehicleId,
-      required this.orderStart,
-      required this.orderNumber,
-      required this.orderEnd,
-      required this.orderTimeStart,
-      required this.orderTimeEnd,
-      required this.date,
-      required this.price,
-      required this.paymentMethod});
+      {@JsonKey(name: 'quick_order_id') required this.quickOrderId,
+      required this.status,
+      @JsonKey(name: 'driver_details') required this.driverDetails,
+      @JsonKey(name: 'passenger_details') required this.passengerDetails,
+      @JsonKey(name: "passenger_location") required this.passengerLocation,
+      @JsonKey(name: "destination_location") required this.destinationLocation,
+      @JsonKey(name: "map_image") this.mapImage,
+      @JsonKey(name: "service_type") required this.serviceType,
+      @JsonKey(name: "payment_method") required this.paymentMethod,
+      @JsonKey(name: "coupon_code") this.couponCode,
+      @JsonKey(name: "fare_details") required this.fareDetails,
+      @JsonKey(name: "creation_date") required this.creationDate,
+      @JsonKey(name: "creation_time") required this.creationTime,
+      @JsonKey(name: "start_time") required this.startTime,
+      @JsonKey(name: "end_time") required this.endTime});
 
   factory _$MyOrderDetailsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$MyOrderDetailsModelImplFromJson(json);
 
   @override
-  final String driverImage;
+  @JsonKey(name: 'quick_order_id')
+  final String quickOrderId;
   @override
-  final String driverName;
+  final String status;
   @override
-  final String driverRating;
+  @JsonKey(name: 'driver_details')
+  final DriverDetails driverDetails;
   @override
-  final String vehicleType;
+  @JsonKey(name: 'passenger_details')
+  final PassengerDetails passengerDetails;
   @override
-  final String vehicleId;
+  @JsonKey(name: "passenger_location")
+  final OrderLocationModel passengerLocation;
   @override
-  final String orderStart;
+  @JsonKey(name: "destination_location")
+  final OrderLocationModel destinationLocation;
   @override
-  final String orderNumber;
+  @JsonKey(name: "map_image")
+  final String? mapImage;
   @override
-  final String orderEnd;
+  @JsonKey(name: "service_type")
+  final String serviceType;
   @override
-  final String orderTimeStart;
-  @override
-  final String orderTimeEnd;
-  @override
-  final String date;
-  @override
-  final double price;
-  @override
+  @JsonKey(name: "payment_method")
   final String paymentMethod;
+  @override
+  @JsonKey(name: "coupon_code")
+  final String? couponCode;
+  @override
+  @JsonKey(name: "fare_details")
+  final FareDetails fareDetails;
+  @override
+  @JsonKey(name: "creation_date")
+  final DateTime creationDate;
+  @override
+  @JsonKey(name: "creation_time")
+  final String creationTime;
+  @override
+  @JsonKey(name: "start_time")
+  final String startTime;
+  @override
+  @JsonKey(name: "end_time")
+  final String endTime;
 
   @override
   String toString() {
-    return 'MyOrderDetailsModel(driverImage: $driverImage, driverName: $driverName, driverRating: $driverRating, vehicleType: $vehicleType, vehicleId: $vehicleId, orderStart: $orderStart, orderNumber: $orderNumber, orderEnd: $orderEnd, orderTimeStart: $orderTimeStart, orderTimeEnd: $orderTimeEnd, date: $date, price: $price, paymentMethod: $paymentMethod)';
+    return 'MyOrderDetailsModel(quickOrderId: $quickOrderId, status: $status, driverDetails: $driverDetails, passengerDetails: $passengerDetails, passengerLocation: $passengerLocation, destinationLocation: $destinationLocation, mapImage: $mapImage, serviceType: $serviceType, paymentMethod: $paymentMethod, couponCode: $couponCode, fareDetails: $fareDetails, creationDate: $creationDate, creationTime: $creationTime, startTime: $startTime, endTime: $endTime)';
   }
 
   @override
@@ -318,49 +450,55 @@ class _$MyOrderDetailsModelImpl implements _MyOrderDetailsModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$MyOrderDetailsModelImpl &&
-            (identical(other.driverImage, driverImage) ||
-                other.driverImage == driverImage) &&
-            (identical(other.driverName, driverName) ||
-                other.driverName == driverName) &&
-            (identical(other.driverRating, driverRating) ||
-                other.driverRating == driverRating) &&
-            (identical(other.vehicleType, vehicleType) ||
-                other.vehicleType == vehicleType) &&
-            (identical(other.vehicleId, vehicleId) ||
-                other.vehicleId == vehicleId) &&
-            (identical(other.orderStart, orderStart) ||
-                other.orderStart == orderStart) &&
-            (identical(other.orderNumber, orderNumber) ||
-                other.orderNumber == orderNumber) &&
-            (identical(other.orderEnd, orderEnd) ||
-                other.orderEnd == orderEnd) &&
-            (identical(other.orderTimeStart, orderTimeStart) ||
-                other.orderTimeStart == orderTimeStart) &&
-            (identical(other.orderTimeEnd, orderTimeEnd) ||
-                other.orderTimeEnd == orderTimeEnd) &&
-            (identical(other.date, date) || other.date == date) &&
-            (identical(other.price, price) || other.price == price) &&
+            (identical(other.quickOrderId, quickOrderId) ||
+                other.quickOrderId == quickOrderId) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.driverDetails, driverDetails) ||
+                other.driverDetails == driverDetails) &&
+            (identical(other.passengerDetails, passengerDetails) ||
+                other.passengerDetails == passengerDetails) &&
+            (identical(other.passengerLocation, passengerLocation) ||
+                other.passengerLocation == passengerLocation) &&
+            (identical(other.destinationLocation, destinationLocation) ||
+                other.destinationLocation == destinationLocation) &&
+            (identical(other.mapImage, mapImage) ||
+                other.mapImage == mapImage) &&
+            (identical(other.serviceType, serviceType) ||
+                other.serviceType == serviceType) &&
             (identical(other.paymentMethod, paymentMethod) ||
-                other.paymentMethod == paymentMethod));
+                other.paymentMethod == paymentMethod) &&
+            (identical(other.couponCode, couponCode) ||
+                other.couponCode == couponCode) &&
+            (identical(other.fareDetails, fareDetails) ||
+                other.fareDetails == fareDetails) &&
+            (identical(other.creationDate, creationDate) ||
+                other.creationDate == creationDate) &&
+            (identical(other.creationTime, creationTime) ||
+                other.creationTime == creationTime) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      driverImage,
-      driverName,
-      driverRating,
-      vehicleType,
-      vehicleId,
-      orderStart,
-      orderNumber,
-      orderEnd,
-      orderTimeStart,
-      orderTimeEnd,
-      date,
-      price,
-      paymentMethod);
+      quickOrderId,
+      status,
+      driverDetails,
+      passengerDetails,
+      passengerLocation,
+      destinationLocation,
+      mapImage,
+      serviceType,
+      paymentMethod,
+      couponCode,
+      fareDetails,
+      creationDate,
+      creationTime,
+      startTime,
+      endTime);
 
   /// Create a copy of MyOrderDetailsModel
   /// with the given fields replaced by the non-null parameter values.
@@ -381,49 +519,74 @@ class _$MyOrderDetailsModelImpl implements _MyOrderDetailsModel {
 
 abstract class _MyOrderDetailsModel implements MyOrderDetailsModel {
   const factory _MyOrderDetailsModel(
-      {required final String driverImage,
-      required final String driverName,
-      required final String driverRating,
-      required final String vehicleType,
-      required final String vehicleId,
-      required final String orderStart,
-      required final String orderNumber,
-      required final String orderEnd,
-      required final String orderTimeStart,
-      required final String orderTimeEnd,
-      required final String date,
-      required final double price,
-      required final String paymentMethod}) = _$MyOrderDetailsModelImpl;
+          {@JsonKey(name: 'quick_order_id') required final String quickOrderId,
+          required final String status,
+          @JsonKey(name: 'driver_details')
+          required final DriverDetails driverDetails,
+          @JsonKey(name: 'passenger_details')
+          required final PassengerDetails passengerDetails,
+          @JsonKey(name: "passenger_location")
+          required final OrderLocationModel passengerLocation,
+          @JsonKey(name: "destination_location")
+          required final OrderLocationModel destinationLocation,
+          @JsonKey(name: "map_image") final String? mapImage,
+          @JsonKey(name: "service_type") required final String serviceType,
+          @JsonKey(name: "payment_method") required final String paymentMethod,
+          @JsonKey(name: "coupon_code") final String? couponCode,
+          @JsonKey(name: "fare_details") required final FareDetails fareDetails,
+          @JsonKey(name: "creation_date") required final DateTime creationDate,
+          @JsonKey(name: "creation_time") required final String creationTime,
+          @JsonKey(name: "start_time") required final String startTime,
+          @JsonKey(name: "end_time") required final String endTime}) =
+      _$MyOrderDetailsModelImpl;
 
   factory _MyOrderDetailsModel.fromJson(Map<String, dynamic> json) =
       _$MyOrderDetailsModelImpl.fromJson;
 
   @override
-  String get driverImage;
+  @JsonKey(name: 'quick_order_id')
+  String get quickOrderId;
   @override
-  String get driverName;
+  String get status;
   @override
-  String get driverRating;
+  @JsonKey(name: 'driver_details')
+  DriverDetails get driverDetails;
   @override
-  String get vehicleType;
+  @JsonKey(name: 'passenger_details')
+  PassengerDetails get passengerDetails;
   @override
-  String get vehicleId;
+  @JsonKey(name: "passenger_location")
+  OrderLocationModel get passengerLocation;
   @override
-  String get orderStart;
+  @JsonKey(name: "destination_location")
+  OrderLocationModel get destinationLocation;
   @override
-  String get orderNumber;
+  @JsonKey(name: "map_image")
+  String? get mapImage;
   @override
-  String get orderEnd;
+  @JsonKey(name: "service_type")
+  String get serviceType;
   @override
-  String get orderTimeStart;
-  @override
-  String get orderTimeEnd;
-  @override
-  String get date;
-  @override
-  double get price;
-  @override
+  @JsonKey(name: "payment_method")
   String get paymentMethod;
+  @override
+  @JsonKey(name: "coupon_code")
+  String? get couponCode;
+  @override
+  @JsonKey(name: "fare_details")
+  FareDetails get fareDetails;
+  @override
+  @JsonKey(name: "creation_date")
+  DateTime get creationDate;
+  @override
+  @JsonKey(name: "creation_time")
+  String get creationTime;
+  @override
+  @JsonKey(name: "start_time")
+  String get startTime;
+  @override
+  @JsonKey(name: "end_time")
+  String get endTime;
 
   /// Create a copy of MyOrderDetailsModel
   /// with the given fields replaced by the non-null parameter values.

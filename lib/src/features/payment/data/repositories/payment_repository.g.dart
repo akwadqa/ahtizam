@@ -1,28 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'service_types_controller.dart';
+part of 'payment_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$serviceTypesControllerHash() =>
-    r'ae30dff6df95dc0aac65d88667dcc7ab2341f2ee';
+String _$paymentRepositoryHash() => r'772830e56bbfd777553f75380680b0aeb6bccd13';
 
-/// See also [ServiceTypesController].
-@ProviderFor(ServiceTypesController)
-final serviceTypesControllerProvider = AutoDisposeAsyncNotifierProvider<
-    ServiceTypesController, List<ServiceTypesModel>?>.internal(
-  ServiceTypesController.new,
-  name: r'serviceTypesControllerProvider',
+/// See also [paymentRepository].
+@ProviderFor(paymentRepository)
+final paymentRepositoryProvider = Provider<PaymentRepository>.internal(
+  paymentRepository,
+  name: r'paymentRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$serviceTypesControllerHash,
+      : _$paymentRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$ServiceTypesController
-    = AutoDisposeAsyncNotifier<List<ServiceTypesModel>?>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef PaymentRepositoryRef = ProviderRef<PaymentRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

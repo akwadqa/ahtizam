@@ -1,25 +1,64 @@
 // features/my_orders/presentation/widgets/ongoing_orders_list_widget.dart
+import 'package:ahtizam/src/features/my_order_details/presentation/controller/my_order_details_controller.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_controller.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/widgets/my_order_card.dart';
+import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
+import 'package:ahtizam/src/shared_widgets/app_pagination_widget.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 class OngoingOrdersList extends ConsumerWidget {
   const OngoingOrdersList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Fetch all orders from the controller
-    final allOrders = ref.watch(myOrdersControllerProvider);
+    final asyncOrders = ref.watch(myOrdersControllerProvider);
 
+    return asyncOrders.when(
+      data: (orders) {
+        if (orders.isEmpty) {
+          return const Center(child: Text('لا توجد طلبات جارية'));
+        }
 
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: allOrders.length,
-      itemBuilder: (_, index) => OrderCardWidget(
-        isOngoing: true, // Indicating this is an ongoing order
-        order: allOrders[index], // Passing the ongoing order data
-      ),
+        // فلترة الطلبات الجارية فقط
+        final activeOrders = orders.where((order) => order.status == 'Accepted').toList();
+
+        if (activeOrders.isEmpty) {
+          return const Center(child: Text('لا توجد طلبات جارية'));
+        }
+
+        return AppPaginationWidget(
+          enablePullDown: true,
+          onRefresh: () async {
+            await ref.read(myOrdersControllerProvider.notifier).refreshOrders();
+            return true;
+          },
+          onLoading: (page) async {
+            return await ref.read(myOrdersControllerProvider.notifier).loadNextPage();
+          },
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            itemCount: activeOrders.length,
+            itemBuilder: (_, index) => GestureDetector(
+              onTap: () {
+                context.pushRoute(
+                  MyOrderDetailsRoute(
+                    quickOrderId: activeOrders[index].quickOrderId,
+                  ),
+                );
+              },
+              child: OrderCardWidget(
+                isOngoing: true,
+                order: activeOrders[index],
+              ),
+            ),
+          ),
+        );
+      },
+      error: (error, stackTrace) => const AppErrorWidget(),
+      loading: () => const FadeCircleLoadingIndicator(),
     );
   }
 }

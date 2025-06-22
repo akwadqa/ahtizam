@@ -206,14 +206,18 @@ Future<void> showAcceptCancelOrder(
 ) {
   return showYesNowChoicesDialog(context,
       title: "cancel_order_msg", dsc: "cancel_order_dsc", yesButton: () async {
-    ref
+  ref.read(quickOrderControllerProvider.notifier)
+      .resetOrderDetails();
+        ref
         .read(hideLayersDuringOrderControllerProvider.notifier)
         .hideLayersDuringOrder();
     ref.read(mapControllerProvider.notifier)
       ..resetPoints()
       ..updateLocation();
     Navigator.pop(context);
-    Navigator.pop(context);
+    
+    // await Future.delayed(Duration(milliseconds: 1000));
+    // Navigator.pop(context);
   });
 }
 
@@ -320,6 +324,7 @@ Future<void> showSearchingTruckLoading({
   return showDialog(
     context: context,
     useSafeArea: false,
+    barrierDismissible: false,
     builder: (BuildContext context) {
       return SearchingTruckLoading();
     },
@@ -568,7 +573,7 @@ Future<void> showPaymentDialog(
                                             if (couponController
                                                 .text.isNotEmpty) {
                                               paymentController.applyCoupon(
-                                                  couponController.text);
+                                                  couponController.text,context);
                                             }
                                           }
                                         },

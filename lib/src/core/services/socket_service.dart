@@ -1,24 +1,25 @@
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'socket_service.g.dart';
 
 @Riverpod(keepAlive: true)
-SocketService socketService(SocketServiceRef ref) {
+SocketService socketService(Ref ref) {
   return SocketService();
 }
 
 class SocketService {
-  late IO.Socket _socket;
+  late io.Socket _socket;
 
-  IO.Socket get socket => _socket;
+  io.Socket get socket => _socket;
 
   Future<void> connect(String token) async {
     
-    _socket = IO.io(
+    _socket = io.io(
       ServicesUrls.socketUrl,
-      IO.OptionBuilder()
+      io.OptionBuilder()
           .setTransports(['websocket'])
           .disableAutoConnect()
           .setPath('/custom-socket.io')

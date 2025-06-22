@@ -111,13 +111,13 @@ class ProfileScreen extends ConsumerWidget {
               context.pushRoute(WalletRoute());
             },
           ),
-          _buildMenuItem(
-            context,
-            context.tr('recommended_questions'),
-            onTap: () {
-              context.pushRoute(RecomendedQuestionRoute());
-            },
-          ),
+          // _buildMenuItem(
+          //   context,
+          //   context.tr('recommended_questions'),
+          //   onTap: () {
+          //     context.pushRoute(RecomendedQuestionRoute());
+          //   },
+          // ),
           _buildMenuItem(
             context,
             context.tr('privacy_policy'),
@@ -132,11 +132,11 @@ class ProfileScreen extends ConsumerWidget {
               context.pushRoute(WithdrawRequestsRoute());
             },
           ),
-          _buildMenuItem(
-            context,
-            context.tr('help_center'),
-            onTap: () {},
-          ),
+          // _buildMenuItem(
+          //   context,
+          //   context.tr('help_center'),
+          //   onTap: () {},
+          // ),
           _buildMenuItem(
             context,
             context.tr('notifications'),
@@ -166,7 +166,7 @@ class ProfileScreen extends ConsumerWidget {
     return Column(
       children: [
         ListTile(
-          contentPadding: EdgeInsets.zero,
+          contentPadding: EdgeInsets.symmetric(vertical: 5),
           title: Text(
             title,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(

@@ -45,11 +45,14 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
     try {
       final Uint8List markerIcon =
           await Assets.icons.myMarker.path.toMarkerBytes(targetSize: 30);
-      final Uint8List driverMarkerIcon =
+      final Uint8List destinatioMarkerIcon =
           await Assets.icons.destinationMarker.path.toMarkerBytes();
+      final Uint8List driverMarkerIcon =
+          await Assets.icons.truckMarker.path.toMarkerBytes();
 
       _customMarker = BitmapDescriptor.fromBytes(markerIcon);
-      _destinationMarker = BitmapDescriptor.fromBytes(driverMarkerIcon);
+      _destinationMarker = BitmapDescriptor.fromBytes(destinatioMarkerIcon);
+      _driverMarker = BitmapDescriptor.fromBytes(driverMarkerIcon);
       setState(() {}); // Trigger rebuild when marker is loaded
     } catch (e) {
       debugPrint('Error loading custom marker: $e');
@@ -123,6 +126,14 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
                     BitmapDescriptor.defaultMarkerWithHue(
                         BitmapDescriptor.hueOrange),
               ),
+            if (mapController.driverPoint != null)
+              Marker(
+                markerId: const MarkerId("driver"),
+                position: mapController.driverPoint!,
+                icon: _driverMarker ??
+                    BitmapDescriptor.defaultMarkerWithHue(
+                        BitmapDescriptor.hueBlue), // or a custom truck icon
+              ),
           },
           polylines: mapController.polylineCoordinates.isNotEmpty
               ? {
@@ -138,13 +149,15 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
             target: currentLocation,
             zoom: 17,
           ),
-          myLocationEnabled: false,
+          // myLocationEnabled: false,
           onMapCreated: (controller) {
             mapController.setMapController(controller);
+            
             // Reload custom marker if it's null
-            if (_customMarker == null) {
-              _loadCustomMarker();
-            }
+            
+            // if (_customMarker == null) {
+            //   _loadCustomMarker();
+            // }
           },
         );
       },

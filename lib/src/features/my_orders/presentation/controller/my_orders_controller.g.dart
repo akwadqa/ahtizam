@@ -7,12 +7,12 @@ part of 'my_orders_controller.dart';
 // **************************************************************************
 
 String _$myOrdersControllerHash() =>
-    r'd9dbf4b23e9f805954f7a1aa1f92ede9ef6b8e9e';
+    r'c371f3fa3164e5b81a038e16911968705d007454';
 
 /// See also [MyOrdersController].
 @ProviderFor(MyOrdersController)
-final myOrdersControllerProvider = AutoDisposeNotifierProvider<
-    MyOrdersController, List<MyOrderModel>>.internal(
+final myOrdersControllerProvider = AsyncNotifierProvider<MyOrdersController,
+    List<MyOrderDetailsModel>>.internal(
   MyOrdersController.new,
   name: r'myOrdersControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final myOrdersControllerProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$MyOrdersController = AutoDisposeNotifier<List<MyOrderModel>>;
+typedef _$MyOrdersController = AsyncNotifier<List<MyOrderDetailsModel>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

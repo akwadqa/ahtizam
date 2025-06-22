@@ -1,6 +1,7 @@
 // import 'package:flutter/material.dart';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -52,8 +53,8 @@ extension DoubleFormatting on double {
         NumberFormat.decimalPattern(currentLanguage == 'ar' ? 'ar' : 'en');
 
     return currentLanguage == 'ar'
-        ? '${formatter.format(this)} ر.س'
-        : '${formatter.format(this)} SAR';
+        ? '${formatter.format(this)} ر.ق'
+        : '${formatter.format(this)} QAR';
   }
 
   String toCommaSeparated({String locale = 'en'}) {
@@ -75,6 +76,25 @@ extension DistanceFormatting on double {
       return '${toStringAsFixed(2)} m';
     } else {
       return '${(this / 1000).toStringAsFixed(2)} km';
+    }
+  }
+}
+extension ArabicDateFormatter on DateTime {
+  String toArabicDate(String locale) {
+    return DateFormat("d MMMM yy", locale).format(this);
+  }
+}
+
+
+extension TimeFormatExtension on String {
+  /// Converts `HH:mm:ss.SSSSSS` string to localized time format like "10:00 AM" or "10:00 صباحًا"
+  String formatTimeLocalized(BuildContext context) {
+    try {
+      final time = DateFormat("HH:mm:ss.SSSSSS").parse(this);
+      final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+      return DateFormat(isArabic ? 'h:mm a' : 'h:mm a', isArabic ? 'ar' : 'en').format(time);
+    } catch (e) {
+      return this; // fallback in case parsing fails
     }
   }
 }

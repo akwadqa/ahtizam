@@ -37,7 +37,7 @@ class UserData extends _$UserData {
     final sharedPrefs = ref.read(sharedPreferencesProvider).requireValue;
     await sharedPrefs.setString(Keys.token, token);
 
-    // state = token;
+    state = token;
   }
 
   Future<void> removeData() async {

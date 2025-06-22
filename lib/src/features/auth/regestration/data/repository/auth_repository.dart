@@ -27,7 +27,7 @@ class AuthRepository {
     if (statusCode == 200) {
       return message ?? '';
     } else {
-      throw Exception(message ?? "An unknown error occurred");
+      throw message ?? "An unknown error occurred";
     }
   }
 

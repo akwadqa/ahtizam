@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_polyline_points_plus/flutter_polyline_points_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +12,7 @@ import 'package:google_geocoding_api/google_geocoding_api.dart';
 
 import '../../../constants/Api/services_urls.dart';
 import '../presentation/controllers/location_searching_controller/location_search_controller.dart';
+import 'package:path_provider/path_provider.dart';
 
 part 'map_service.g.dart';
 
@@ -23,9 +27,12 @@ Future<bool> locationPermission(Ref ref) async {
 @Riverpod(keepAlive: true)
 class MapController extends _$MapController {
   Uint8List? cachedMapScreenshot;
+  File? mapScreenshotFile;
+
   GoogleMapController? mapController;
   LatLng? firstPoint;
   LatLng? secondPoint;
+  LatLng? driverPoint;
   bool isFirstPointSelected = false;
   List<LatLng> polylineCoordinates = [];
   PolylinePoints polylinePoints = PolylinePoints();
@@ -33,6 +40,7 @@ class MapController extends _$MapController {
   String? currentAddress;
   String? firstPointAddress;
   String? secondPointAddress;
+  bool _isMapReady = false; // Add this flag
 
   @override
   FutureOr<LatLng?> build() async {
@@ -49,38 +57,37 @@ class MapController extends _$MapController {
 
   /// **Fetch current location**
   Future<LatLng?> _fetchCurrentLocation() async {
-  try {
-    debugPrint("🟠 Fetching current location...");
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    debugPrint("✅ Got location: ${position.latitude}, ${position.longitude}");
+    try {
+      debugPrint("🟠 Fetching current location...");
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      debugPrint("✅ Got location: ${position.latitude}, ${position.longitude}");
 
-    LatLng latLng = LatLng(position.latitude, position.longitude);
+      LatLng latLng = LatLng(position.latitude, position.longitude);
 
-    // Only animate camera if controller is ready
-    if (mapController != null) {
-      try {
-        await mapController!.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: latLng, zoom: 17),
-        ));
-      } catch (e) {
-        debugPrint("⚠️ animateCamera failed: $e");
-        // Still return location even if animation failed
+      // Only animate camera if controller is ready
+      if (mapController != null) {
+        try {
+          await mapController!.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: latLng, zoom: 17),
+          ));
+        } catch (e) {
+          debugPrint("⚠️ animateCamera failed: $e");
+          // Still return location even if animation failed
+        }
+      } else {
+        debugPrint("⚠️ mapController is null, skipping camera animation");
       }
-    } else {
-      debugPrint("⚠️ mapController is null, skipping camera animation");
+
+      firstPoint = latLng;
+      firstPointAddress = await _getAddressFromLatLng(latLng);
+      return latLng;
+    } catch (e) {
+      debugPrint("❌ Error fetching location: $e");
+      return null;
     }
-
-    firstPoint = latLng;
-    firstPointAddress = await _getAddressFromLatLng(latLng);
-    return latLng;
-  } catch (e) {
-    debugPrint("❌ Error fetching location: $e");
-    return null;
   }
-}
-
 
   /// **Manually update location**
   Future<void> updateLocation() async {
@@ -130,11 +137,15 @@ class MapController extends _$MapController {
 
   void setMapController(GoogleMapController controller) {
     mapController = controller;
+    _isMapReady = true;
+    _refreshState();
+    // state = AsyncValue.data(mapController?.cameraPosition.target);
   }
 
   void resetPoints() {
     firstPoint = null;
     secondPoint = null;
+    driverPoint = null;
     isFirstPointSelected = false;
     polylineCoordinates = [];
     firstPointAddress = null;
@@ -143,8 +154,8 @@ class MapController extends _$MapController {
 
   Future<void> getPolylinePoints() async {
     // if (firstPoint == null || secondPoint == null) return;
-    debugPrint("❌ First polyline: ${firstPoint?.latitude ?? "nukk"}");
-    debugPrint("❌ second polyline: ${secondPoint?.latitude ?? "nukki"}");
+    debugPrint("📍 First polyline 📍: ${firstPoint?.latitude ?? "nukk"}");
+    debugPrint("📍 second polyline 📍: ${secondPoint?.latitude ?? "nukki"}");
 
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       ServicesUrls.mapApiKey,
@@ -164,6 +175,106 @@ class MapController extends _$MapController {
     }
   }
 
+  bool get isReady => mapController != null && _isMapReady;
+
+  Future<void> safeAnimateCamera(CameraUpdate update) async {
+    if (!isReady) {
+      debugPrint("⚠️ Map not ready");
+      return;
+    }
+
+    try {
+      await Future.delayed(Duration(milliseconds: 150));
+      await mapController!.animateCamera(update);
+      debugPrint("✅ Camera animated");
+    } catch (e) {
+      debugPrint("❌ animateCamera failed: $e");
+
+      try {
+        await mapController!.moveCamera(update);
+        debugPrint("✅ moveCamera fallback success");
+      } catch (fallback) {
+        debugPrint("❌ Fallback failed: $fallback");
+      }
+    }
+  }
+
+  // Future<void> updateDriverLocation(LatLng latLng) async {
+  //   debugPrint("📍 Driver point: ${latLng.latitude}, ${latLng.longitude}");
+  //   driverPoint = latLng;
+
+  //   // Ensure everything is ready
+  //   if (!_isMapReady || mapController == null) {
+  //     debugPrint("🛑 Map not ready for driver location update");
+  //     _refreshState();
+  //     return;
+  //   }
+
+  //   // Simple approach: just center on driver location
+  //   // await safeAnimateCamera(CameraUpdate.newCameraPosition(
+  //   //   CameraPosition(target: latLng, zoom: 17),
+  //   // ));
+
+  //   _refreshState();
+  // }
+
+  void _refreshState() {
+    state = AsyncValue.data(firstPoint ?? driverPoint ?? const LatLng(0, 0));
+  }
+
+// Future<void> safeAnimateCamera(CameraUpdate update) async {
+//   if (mapController == null) return;
+
+//   try {
+//     await mapController!.animateCamera(update);
+//   } catch (e) {
+//     debugPrint("❌ Camera animation failed: $e");
+//   }
+// }
+
+  Future<void> updateDriverLocation(LatLng latLng) async {
+    debugPrint("📍 Driver point: ${latLng.latitude}, ${latLng.longitude}");
+    driverPoint = latLng;
+
+    // Ensure mapController and points are ready
+    if (mapController == null || firstPoint == null || secondPoint == null) {
+      debugPrint("🛑 Map or points not ready");
+      return;
+    }
+
+    try {
+      final allLatLngs = [driverPoint!, firstPoint!, secondPoint!];
+
+      final southWest = LatLng(
+        allLatLngs.map((p) => p.latitude).reduce((a, b) => a < b ? a : b),
+        allLatLngs.map((p) => p.longitude).reduce((a, b) => a < b ? a : b),
+      );
+
+      final northEast = LatLng(
+        allLatLngs.map((p) => p.latitude).reduce((a, b) => a > b ? a : b),
+        allLatLngs.map((p) => p.longitude).reduce((a, b) => a > b ? a : b),
+      );
+
+      final bounds = LatLngBounds(southwest: southWest, northeast: northEast);
+
+      // ✅ Delay to ensure map is rendered before animating
+      await Future.delayed(Duration(milliseconds: 500));
+
+      if (mapController != null) {
+        await mapController!.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: latLng, zoom: 17),
+        ));
+        // await mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 80));
+      } else {
+        debugPrint("❌ mapController is null during animation");
+      }
+    } catch (e) {
+      debugPrint("❌ Camera animation failed: $e");
+    }
+
+    _refreshState();
+  }
+
   /// **Capture Screenshot and Save it**
   Future<void> captureScreenshot() async {
     if (mapController == null) {
@@ -174,14 +285,25 @@ class MapController extends _$MapController {
     final imageBytes = await mapController!.takeSnapshot();
     if (imageBytes != null) {
       cachedMapScreenshot = imageBytes;
+      saveMapScreenshot(imageBytes);
       debugPrint("✅ Screenshot Captured & Saved!");
     } else {
       debugPrint("❌ Screenshot Failed: ImageBytes is null");
     }
   }
 
-  void saveMapScreenshot(Uint8List image) {
-    cachedMapScreenshot = image;
+  Future<void> saveMapScreenshot(Uint8List imageBytes) async {
+    try {
+      final directory = await getTemporaryDirectory();
+      final path =
+          '${directory.path}/map_screenshot_${DateTime.now().millisecondsSinceEpoch}.png';
+      final file = File(path);
+      await file.writeAsBytes(imageBytes);
+      mapScreenshotFile = file;
+      debugPrint("📁 Screenshot saved at: $path");
+    } catch (e) {
+      debugPrint("❌ Failed to save screenshot: $e");
+    }
   }
 
   Uint8List? getMapScreenshot() {

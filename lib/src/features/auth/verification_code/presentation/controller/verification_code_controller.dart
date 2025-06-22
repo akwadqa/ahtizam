@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:ahtizam/src/features/auth/regestration/data/repository/auth_repository.dart';
 import 'package:ahtizam/src/features/auth/regestration/domain/entity/login_params.dart';
 import 'package:ahtizam/src/features/auth/verification_code/domain/model/verification_code_params.dart';
+import 'package:ahtizam/src/network/services/dio_client.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,6 +68,8 @@ class VerificationCodeController extends _$VerificationCodeController {
       await ref.read(userDataProvider.notifier).setData(userData.data!.token);
       await ref.read(userDataProvider.notifier).saveUserInfo(userData.data!);
       stopCountdown();
+      ref.invalidate(dioProvider);
+
       (err) => AsyncError(err.toString(), StackTrace.current);
 
     });
