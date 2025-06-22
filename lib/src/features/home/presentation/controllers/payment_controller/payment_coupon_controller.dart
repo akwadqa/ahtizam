@@ -21,12 +21,12 @@ class PaymentCouponController extends _$PaymentCouponController {
     );
   }
 
-  Future<void >applyCoupon(String coupon)async {
+  Future<void >applyCoupon(String coupon,BuildContext context)async {
     final orderState = ref.watch(quickOrderControllerProvider);
     if (coupon.isNotEmpty) {
    await   ref
           .read(quickOrderControllerProvider.notifier)
-          .createOrder(couponCode: coupon);
+          .createOrder(couponCode: coupon,);
       final currentState = state.value;
       state = AsyncData(currentState!.copyWith(
         isCouponApplied: true,

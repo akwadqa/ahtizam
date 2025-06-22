@@ -66,27 +66,31 @@ final countdown = verificationController.countdown;
 
   Widget _buildOtpInputField(
       VerificationCodeController verificationController, BuildContext context) {
-    return Pinput(
-      length: 6,
-      controller: pinController,
-      keyboardType: TextInputType.number,
-      defaultPinTheme: PinTheme(
-        height: 60,
-        width: 60,
-        textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: AppColors.white,
-          border: Border.all(color: AppColors.grayBorder),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Pinput(
+        length: 6,
+        controller: pinController,
+        keyboardType: TextInputType.number,
+        
+        defaultPinTheme: PinTheme(
+          height: 60,
+          width: 60,
+          textStyle: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: AppColors.white,
+            border: Border.all(color: AppColors.grayBorder),
+          ),
         ),
-      ),
-      validator: (value) => value == null || value.isEmpty
-          ? context.tr("VerificationCodeValidatorMessage")
-          : null,
-      onCompleted: (s) => verificationController.verifyOtp(
-        pinController.text,
-        inputedPhone,
-        context,
+        validator: (value) => value == null || value.isEmpty
+            ? context.tr("VerificationCodeValidatorMessage")
+            : null,
+        onCompleted: (s) => verificationController.verifyOtp(
+          pinController.text,
+          inputedPhone,
+          context,
+        ),
       ),
     );
   }

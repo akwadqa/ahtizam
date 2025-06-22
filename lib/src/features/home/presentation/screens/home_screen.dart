@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/service_types_controller/service_types_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_car.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
+import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_card.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -31,6 +31,9 @@ class HomeScreen extends ConsumerWidget {
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
     final hideWidgetsDuringOrder =
         ref.watch(hideLayersDuringOrderControllerProvider);
+    final asyncOrder = ref.watch(quickOrderControllerProvider);
+    final showSheet =
+        asyncOrder is AsyncData && asyncOrder.value?.orderDetails != null;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,7 +49,20 @@ class HomeScreen extends ConsumerWidget {
                     ? const _RequestOrderBottomActionCard()
                     : const _BottomActionCard(),
             if (isThirdWidgetVisible) _orderButton(context, ref),
-          ]
+          ],
+          if (showSheet) ...[
+            // SHOW DRIVER SHEET WHEN THE DRIVE ACCEPT THE ORDER AND RECEIVE THE dat in socket
+
+            AnimatedSlide(
+              duration: const Duration(seconds: 1),
+              offset: showSheet ? Offset(0, 0) : Offset(0, 1),
+              curve: Curves.easeOut,
+              child: const Align(
+                alignment: Alignment.bottomCenter,
+                child: DriverDetailsBottomSheet(),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -74,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
           if (next is AsyncLoading) {
             debugPrint("loading🌀");
             WidgetsBinding.instance.addPostFrameCallback((_) {
-            FadeCircleLoadingIndicator();
+              FadeCircleLoadingIndicator();
             });
           }
           if (next is AsyncError) {

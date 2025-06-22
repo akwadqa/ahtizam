@@ -111,7 +111,8 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                             .selectServiceType(truck);
                         ref
                             .read(quickOrderControllerProvider.notifier)
-                            .createOrder();
+                            .createOrder(
+                            );
                       },
                       child: Stack(
                         children: [

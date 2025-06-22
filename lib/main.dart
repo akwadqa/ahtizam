@@ -15,6 +15,7 @@ Future<void> main() async {
 
   final container = await initializeProviders();
   await handleSplashScreen(container);
+  
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -22,7 +23,6 @@ Future<void> main() async {
         container: container,
         child: EasyLocalization(
           supportedLocales: const [Locale('en'), Locale('ar')],
-
           useOnlyLangCode: true, // Reduces logs and warnings
           path: 'assets/translations',
           child: const App(),

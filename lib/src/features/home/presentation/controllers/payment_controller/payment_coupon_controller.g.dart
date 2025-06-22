@@ -7,7 +7,7 @@ part of 'payment_coupon_controller.dart';
 // **************************************************************************
 
 String _$paymentCouponControllerHash() =>
-    r'3311a63556dd6b55fb9f7378d453390f20f593e2';
+    r'7f4a9c0648782ae4c3757318c97ba579c71cb551';
 
 /// See also [PaymentCouponController].
 @ProviderFor(PaymentCouponController)

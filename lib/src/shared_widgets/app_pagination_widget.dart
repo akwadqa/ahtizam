@@ -75,18 +75,19 @@ class _AppPaginationWidgetState extends State<AppPaginationWidget> {
             );
           },
         ),
-        header: CustomHeader(
-          builder: (context, mode) {
-            return SizedBox(
-              height: 55.0,
-              child: Center(
-                child: mode == RefreshStatus.***REMOVED***ing
-                    ? const CircularProgressIndicator.adaptive()
-                    : const SizedBox.shrink(),
-              ),
-            );
-          },
-        ),
+    
+        // header: CustomHeader(
+        //   builder: (context, mode) {
+        //     return SizedBox(
+        //       height: 55.0,
+        //       child: Center(
+        //         child: mode == RefreshStatus.***REMOVED***ing
+        //             ? const CircularProgressIndicator()
+        //             : const SizedBox.shrink(),
+        //       ),
+        //     );
+        //   },
+        // ),
         controller: _***REMOVED***Controller,
         onLoading: widget.enableLoadingOnScrollStart ? null : _onLoading,
         onRefresh: widget.enablePullDown ? _onRefresh : null,

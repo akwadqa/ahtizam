@@ -96,19 +96,19 @@ class WalletScreen extends StatelessWidget {
             width: MediaQuery.sizeOf(context).width,
           ),
         ),
-        20.horizontalSpace,
-        Expanded(
-          child: CustomButtonWidget(
-            text: context.tr('withdraw_money'),
-            onTap: () {},
-            backgroundColor: AppColors.black,
-            isFiled: true,
-            height: 52,
-            radius: 12,
-            fontSize: 18,
-            width: MediaQuery.sizeOf(context).width,
-          ),
-        ),
+        // 20.horizontalSpace,
+        // Expanded(
+        //   child: CustomButtonWidget(
+        //     text: context.tr('withdraw_money'),
+        //     onTap: () {},
+        //     backgroundColor: AppColors.black,
+        //     isFiled: true,
+        //     height: 52,
+        //     radius: 12,
+        //     fontSize: 18,
+        //     width: MediaQuery.sizeOf(context).width,
+        //   ),
+        // ),
       ],
     );
   }

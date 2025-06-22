@@ -4,6 +4,7 @@ import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/localization/current_language.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,9 @@ class TopNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final currentLanguage = ref.watch(currentLanguageProvider);
+    final currentLanguageNotifier = ref.read(currentLanguageProvider.notifier);
+    final String isArabicLanguage = currentLanguage == 'ar' ? 'en' : 'ar';
+    final String myLanguage = currentLanguage == 'en' ? 'en' : 'عربي';
 
     return Positioned(
       top: 0,
@@ -36,15 +40,22 @@ class TopNavigationBar extends ConsumerWidget {
               children: [
                 GestureDetector(
                     onTap: () {
-                      final currentLanguageNotifier =
-                          ref.read(currentLanguageProvider.notifier);
-
                       currentLanguageNotifier.changeLanguage(
-                          context, currentLanguage == 'ar' ? 'en' : 'ar');
+                        context,isArabicLanguage
+                      );
                       // Navigator.of(context).push(
                       //     MaterialPageRoute(builder: (context) => ChatScreen()));
                     },
-                    child: Assets.icons.settings.svg(height: 30, width: 30)),
+                    child:Text(myLanguage.toUpperCase(),
+                    
+                       style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                  fontSize: 15,
+                  color:  AppColors.primary,
+                  
+                  fontWeight: FontWeight.bold,
+                ),
+                    )),
+                    //  Assets.icons.settings.svg(height: 30, width: 30)),
                 Assets.icons.logo
                     .svg(fit: BoxFit.scaleDown)
                     .onlyPadding(top: 5),

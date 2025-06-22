@@ -1,13 +1,7 @@
 import 'dart:async';
 import 'package:ahtizam/src/features/home/data/repositories/home_repository.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/service_types_controller/service_types_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../auth/verification_code/domain/model/truck_model.dart';
 import '../../domain/models/service_types/service_types_model.dart';
 import '../widgets/truck_selection_bottom_sheet.dart';
 import 'location_searching_controller/select_location_from_map_controller.dart';
@@ -59,10 +53,6 @@ class SelectServiceTypeController extends _$SelectServiceTypeController {
         debugPrint(
             "📍 Location: ${currentLocation.value?.latitude}, ${currentLocation.value?.longitude}");
       }
-
-      // Simulate API or Firebase call
-      // await Future.delayed(const Duration(seconds: 2));
-   
       final repo = ref.read(homeRepositoryProvider);
       final result = await repo.getServiceTypes();
       // final slom = await ref
