@@ -1,26 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'payment_controller.dart';
+part of 'wallet_repository.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$paymentControllerHash() => r'9edc0cd344a35367a6c8d3b46b66e8e98010d04f';
+String _$walletRepositoryHash() => r'a64d5f5f0db046bf4f4d1fc4e1b29590ba1b8efd';
 
-/// See also [PaymentController].
-@ProviderFor(PaymentController)
-final paymentControllerProvider =
-    AutoDisposeAsyncNotifierProvider<PaymentController, PaymentState>.internal(
-  PaymentController.new,
-  name: r'paymentControllerProvider',
+/// See also [walletRepository].
+@ProviderFor(walletRepository)
+final walletRepositoryProvider = Provider<WalletRepository>.internal(
+  walletRepository,
+  name: r'walletRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$paymentControllerHash,
+      : _$walletRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PaymentController = AutoDisposeAsyncNotifier<PaymentState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef WalletRepositoryRef = ProviderRef<WalletRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

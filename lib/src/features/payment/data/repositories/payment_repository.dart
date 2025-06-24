@@ -19,11 +19,11 @@ class PaymentRepository {
   PaymentRepository(this._remoteDataSource);
 
 Future<ApiResponse<String>> getPaymentUrl({
-  required String quickOrderId,
+  required String orderId,
   required String language,
 }) async {
   final result = await _remoteDataSource.getPaymentUrl(
-    quickOrderId: quickOrderId,
+    orderId: orderId,
     language: language,
   );
 
@@ -38,6 +38,22 @@ Future<ApiResponse<void>> confirmPayment() async {
   final result = await _remoteDataSource.confirmPayment();
 
   if (result.status == 200) {
+    return result;
+  } else {
+    return ApiResponse.error(
+        message: result.message ?? 'Failed to confirm payment');
+  }
+}
+
+Future<ApiResponse<void>> payByWallet({
+  required String orderId,
+
+}) async {
+  final result = await _remoteDataSource.payByWallet(
+    orderId: orderId
+  );
+
+  if (result.hasSucceeded) {
     return result;
   } else {
     return ApiResponse.error(

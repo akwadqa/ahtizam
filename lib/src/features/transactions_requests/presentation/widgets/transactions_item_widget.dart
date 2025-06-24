@@ -1,16 +1,18 @@
 import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/extenssions/numbers_extension.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/wallet/domain/model/transaction_history_model.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart' as local;
 
 class WithdrawItemWidget extends StatelessWidget {
-  final Map<String, dynamic> data;
+  final TransactionHistory transaction;
   final bool isOrdered;
 
   const WithdrawItemWidget(
-      {super.key, required this.data, required this.isOrdered});
+      {super.key, required this.transaction, required this.isOrdered});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,11 @@ class WithdrawItemWidget extends StatelessWidget {
         textDirection: TextDirection.rtl,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Icon inside gray circular box
+          CircleAvatar(
+            radius: 5,
+            backgroundColor:transaction.logType=="Credit"?Colors.green:Colors.red ,
+          ),
+          8.horizontalSpace,
           Container(
               height: 40,
               width: 40,
@@ -45,7 +51,7 @@ class WithdrawItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      context.tr('order_number', args: [data['order']]),
+                      context.tr('order_number', args: [transaction.referenceName]),
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontSize: 14,
                           color: AppColors.dark,
@@ -53,7 +59,7 @@ class WithdrawItemWidget extends StatelessWidget {
                     ),
                     4.verticalSpace,
                     Text(
-                      "${data['date']}\n12/2023",
+                      transaction.transactionDate.toArabicDate(Localizations.localeOf(context).languageCode),
                       textAlign: TextAlign.right,
                       style: Theme.of(context)
                           .textTheme
@@ -67,20 +73,20 @@ class WithdrawItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${context.tr('currency')} ${data['amount']}",
+                      "${context.tr('currency')} ${transaction.amount.toString()}",
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontSize: 14,
                           color: AppColors.dark,
                           fontWeight: FontWeight.w500),
                     ),
                     4.verticalSpace,
-                    if (isOrdered)
+                    // if (isOrdered)
                       Text(
-                        data['status'],
+                        transaction.logType,
                         style: Theme.of(context)
                             .textTheme
                             .labelSmall!
-                            .copyWith(fontSize: 12, color: AppColors.primary),
+                            .copyWith(fontSize: 12, color: AppColors.primary,fontWeight: FontWeight.w700),
                       ),
                   ],
                 ),

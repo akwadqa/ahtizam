@@ -9,13 +9,15 @@ class MyOrderDetailsDatasource {
 
   MyOrderDetailsDatasource(this._networkService);
 
-  
   Future<ApiResponse<MyOrderDetailsModel>> getOrderDetails(
       String quickOrderId) async {
     try {
       final response = await _networkService.get(
         EndPoints.orderDetailsApi,
-        queryParameters: {'quick_order_id': quickOrderId},
+        queryParameters: {
+          'quick_order_id': quickOrderId,
+          "action": "passenger"
+        },
       );
       return ApiResponse.fromJson(
         response.data,
@@ -25,5 +27,4 @@ class MyOrderDetailsDatasource {
       return ApiResponse.error(message: e.toString());
     }
   }
-
 }

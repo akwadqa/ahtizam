@@ -28,7 +28,7 @@ mixin _$DriverDetails {
   String get assignedDriver => throw _privateConstructorUsedError;
   @JsonKey(name: "full_name")
   String get fullName => throw _privateConstructorUsedError;
-  @JsonKey(name: "driver_phone")
+  @JsonKey(name: "phone")
   String get driverPhone => throw _privateConstructorUsedError;
   @JsonKey(name: "profile_image")
   String? get profileImage => throw _privateConstructorUsedError;
@@ -55,7 +55,7 @@ abstract class $DriverDetailsCopyWith<$Res> {
       @JsonKey(name: "assigned_time") String assignedTime,
       @JsonKey(name: "assigned_driver") String assignedDriver,
       @JsonKey(name: "full_name") String fullName,
-      @JsonKey(name: "driver_phone") String driverPhone,
+      @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage,
       int rating});
 }
@@ -129,7 +129,7 @@ abstract class _$$DriverDetailsImplCopyWith<$Res>
       @JsonKey(name: "assigned_time") String assignedTime,
       @JsonKey(name: "assigned_driver") String assignedDriver,
       @JsonKey(name: "full_name") String fullName,
-      @JsonKey(name: "driver_phone") String driverPhone,
+      @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage,
       int rating});
 }
@@ -196,7 +196,7 @@ class _$DriverDetailsImpl implements _DriverDetails {
       @JsonKey(name: "assigned_time") required this.assignedTime,
       @JsonKey(name: "assigned_driver") required this.assignedDriver,
       @JsonKey(name: "full_name") required this.fullName,
-      @JsonKey(name: "driver_phone") required this.driverPhone,
+      @JsonKey(name: "phone") required this.driverPhone,
       @JsonKey(name: "profile_image") this.profileImage,
       required this.rating});
 
@@ -216,7 +216,7 @@ class _$DriverDetailsImpl implements _DriverDetails {
   @JsonKey(name: "full_name")
   final String fullName;
   @override
-  @JsonKey(name: "driver_phone")
+  @JsonKey(name: "phone")
   final String driverPhone;
   @override
   @JsonKey(name: "profile_image")
@@ -276,7 +276,7 @@ abstract class _DriverDetails implements DriverDetails {
       @JsonKey(name: "assigned_time") required final String assignedTime,
       @JsonKey(name: "assigned_driver") required final String assignedDriver,
       @JsonKey(name: "full_name") required final String fullName,
-      @JsonKey(name: "driver_phone") required final String driverPhone,
+      @JsonKey(name: "phone") required final String driverPhone,
       @JsonKey(name: "profile_image") final String? profileImage,
       required final int rating}) = _$DriverDetailsImpl;
 
@@ -296,7 +296,7 @@ abstract class _DriverDetails implements DriverDetails {
   @JsonKey(name: "full_name")
   String get fullName;
   @override
-  @JsonKey(name: "driver_phone")
+  @JsonKey(name: "phone")
   String get driverPhone;
   @override
   @JsonKey(name: "profile_image")

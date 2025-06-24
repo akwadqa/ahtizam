@@ -11,6 +11,7 @@ _$PassengerDetailsImpl _$$PassengerDetailsImplFromJson(
     _$PassengerDetailsImpl(
       passenger: json['passenger'] as String,
       fullName: json['full_name'] as String,
+      driverPhone: json['phone'] as String,
       profileImage: json['profile_image'] as String?,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$PassengerDetailsImplToJson(
     <String, dynamic>{
       'passenger': instance.passenger,
       'full_name': instance.fullName,
+      'phone': instance.driverPhone,
       'profile_image': instance.profileImage,
     };

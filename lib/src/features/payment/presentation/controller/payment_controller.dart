@@ -13,6 +13,7 @@ import 'package:ahtizam/src/features/payment/presentation/pages/payment_web_view
 import 'package:ahtizam/src/localization/current_language.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,7 +23,7 @@ part 'payment_controller.g.dart';
 class PaymentController extends _$PaymentController {
   @override
   Future<PaymentState> build() async {
-    final orderInfo=ref.watch(quickOrderControllerProvider);
+    final orderInfo = ref.watch(quickOrderControllerProvider);
     return PaymentState(
       selectedMethod: null,
       totalAmount: orderInfo.value!.orderModel!.finalFee,
@@ -58,70 +59,195 @@ class PaymentController extends _$PaymentController {
   void clearSelectedMethod() {
     state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
   }
+
   Future<void> processPayment(BuildContext context) async {
-  if (state.requireValue.selectedMethod == null) return;
+    if (state.requireValue.selectedMethod == null) return;
 
-  // Show loading dialog
-  // showDialog(
-  //   context: context,
-  //   barrierDismissible: false,
-  //   builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
-  // );
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
+    );
 
-  try {
-    final orderData=ref.watch(quickOrderControllerProvider);
-    final lang=ref.watch(currentLanguageProvider);
-    final quickOrderId = orderData.requireValue?.orderModel?.quickOrderId;
-    if (quickOrderId == null) throw "Missing order ID";
+    try {
+      final orderData = ref.watch(quickOrderControllerProvider);
+      final lang = ref.watch(currentLanguageProvider);
+      final orderId = orderData.requireValue?.orderModel?.quickOrderId;
+      final paymentRepo = ref.read(paymentRepositoryProvider);
+      if (orderId == null) throw "Missing order ID";
 
-    // /// 1. Get payment URL from your backend
-    // final response = await ref.read(paymentRepositoryProvider).getPaymentUrl(
-    //   quickOrderId: quickOrderId,
-    //   language: lang,
-    // );
+      switch (state.requireValue.selectedMethod!.id) {
+        case "wallet":
+                  await _payWithWallet(paymentRepo: paymentRepo,orderId: orderId);
 
-    // final url = response.data;
-    // if (url == null) throw "Failed to get payment link";
 
-    // // Close loading before opening payment page
-    // if (Navigator.of(context).canPop()) Navigator.pop(context);
+          break;
+        case "credit_card":
+        final completed = await _payWithCard(
+          context: context,
+          paymentRepo: paymentRepo,
+          orderId: orderId,
+          lang: lang,
+        );
 
-    // /// 2. Open the URL in browser or WebView and wait
-    // final paymentCompleted = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (_) => PaymentWebViewPage(redirectUrl: url),
-    //   ),
-    // );
+        if (!completed) {
+          showErrorDialog(context, "payment_cancelled".tr());
+          return;
+        }
 
-    // /// 3. If user cancelled
-    // if (paymentCompleted != true) {
-    //   showErrorDialog(context, "Payment was not completed");
-    //   return;
-    // }
+        default:
+                throw "Unsupported payment method";
 
-   
+      }
+          await _completePaymentFlow(context);
 
-    /// 4. Payment succeeded → show success
-    showSuccessPayment(context: context);
-      await  ref.read(mapControllerProvider.notifier).captureScreenshot();
-
-    await Future.delayed(const Duration(seconds: 3), () async{
-      Navigator.pop(context); // Close success popup
-    });
-
-    /// 5. Start driver search (socket)
-    showSearchingTruckLoading(context: context);
-    await ref
-        .read(quickOrderControllerProvider.notifier)
-        .startOpenNewOrderSocket(context, showLoading: true,paymentMethod: state.requireValue.selectedMethod!.id);
-  } catch (e) {
-    debugPrint("ERRRROOOOOOOOR HERE ON FIRE PAYMENT CONTROLLER ");
-    if (Navigator.of(context).canPop()) Navigator.pop(context);
-    showErrorDialog(context, e.toString().replaceFirst("Exception: ", ""));
+    } catch (e) {
+      debugPrint("ERRRROOOOOOOOR HERE ON FIRE PAYMENT CONTROLLER ");
+      if (Navigator.of(context).canPop()) Navigator.pop(context);
+      showErrorDialog(context, e.toString().replaceFirst("Exception: ", ""));
+    }
   }
+
+
+Future<void> _payWithWallet({required PaymentRepository paymentRepo,
+  required String orderId,
+  }) async {
+  await paymentRepo.payByWallet(orderId: orderId);
 }
 
+Future<bool> _payWithCard({
+  required BuildContext context,
+  required PaymentRepository paymentRepo,
+  required String orderId,
+  required String lang,
+}) async {
+  // Get payment URL from backend
+  final response = await paymentRepo.getPaymentUrl(
+    orderId: orderId,
+    language: lang,
+  );
+
+  final url = response.data;
+  if (url == null) throw "Failed to get payment link";
+
+  // Close loading dialog before opening WebView
+  if (Navigator.of(context).canPop()) Navigator.pop(context);
+
+  // Open payment WebView and wait for completion
+  final result = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => PaymentWebViewPage(redirectUrl: url),
+    ),
+  );
+
+  return result == true;
+}
+
+Future<void> _completePaymentFlow(BuildContext context) async {
+  await ref.read(mapControllerProvider.notifier).captureScreenshot();
+        showSuccessPayment(context: context);
+
+  // Optional delay before closing dialog
+  await Future.delayed(const Duration(seconds: 2));
+
+  if (Navigator.of(context).canPop()) {
+    Navigator.pop(context); // Close success dialog
+  }
+
+  // Start driver search and socket communication
+  showSearchingTruckLoading(context: context);
+
+  final methodId = state.requireValue.selectedMethod!.id;
+  await ref.read(quickOrderControllerProvider.notifier).startOpenNewOrderSocket(
+        context,
+        showLoading: true,
+        paymentMethod: methodId,
+      );
+
+
+
+}
+// /////
+//  Future<void> processPayment(BuildContext context) async {
+//     if (state.requireValue.selectedMethod == null) return;
+
+//     // Show loading dialog
+//     showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
+//     );
+
+//     try {
+//       final orderData = ref.watch(quickOrderControllerProvider);
+//       final lang = ref.watch(currentLanguageProvider);
+//       final orderId = orderData.requireValue?.orderModel?.quickOrderId;
+//       final paymentRepo = ref.read(paymentRepositoryProvider);
+//       if (orderId == null) throw "Missing order ID";
+
+//       switch (state.requireValue.selectedMethod!.id) {
+//         case "wallet":
+//           await paymentRepo.payByWallet(
+//             orderId: orderId,
+
+//           );
+
+//           break;
+//         case "credit_card":
+
+//           // /// 1. Get payment URL from your backend
+//           final response = await paymentRepo.getPaymentUrl(
+//             orderId: orderId,
+//             language: lang,
+//           );
+
+//           final url = response.data;
+//           if (url == null) throw "Failed to get payment link";
+
+//           // Close loading before opening payment page
+//           if (Navigator.of(context).canPop()) Navigator.pop(context);
+
+//           /// 2. Open the URL in browser or WebView and wait
+//           final paymentCompleted = await Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (_) => PaymentWebViewPage(redirectUrl: url),
+//             ),
+//           );
+
+//           /// 3. If user cancelled
+//           if (paymentCompleted != true) {
+//             showErrorDialog(context, "Payment was not completed");
+//             return;
+//           }
+
+//           /// 4. Payment succeeded → show success
+//           showSuccessPayment(context: context);
+//         default:
+//       }
+//       await ref.read(mapControllerProvider.notifier).captureScreenshot();
+
+//       await Future.delayed(const Duration(seconds: 3), () async {
+//         Navigator.pop(context); // Close success popup
+//       });
+
+//       /// 5. Start driver search (socket)
+//       showSearchingTruckLoading(context: context);
+//       await ref
+//           .read(quickOrderControllerProvider.notifier)
+//           .startOpenNewOrderSocket(context,
+//               showLoading: true,
+//               paymentMethod: state.requireValue.selectedMethod!.id);
+//     } catch (e) {
+//       debugPrint("ERRRROOOOOOOOR HERE ON FIRE PAYMENT CONTROLLER ");
+//       if (Navigator.of(context).canPop()) Navigator.pop(context);
+//       showErrorDialog(context, e.toString().replaceFirst("Exception: ", ""));
+//     }
+//   }
+
+///////////////////////////////////////////////////////
 // Future<void> processPayment(BuildContext context) async {
 //   if (state.requireValue.selectedMethod == null) return;
 
@@ -134,7 +260,7 @@ class PaymentController extends _$PaymentController {
 
 //   try {
 //     // here need handle payment logic
-    
+
 //     showSuccessPayment(context: context);
 //      await Future.delayed(const Duration(seconds: 3), () {
 //       Navigator.pop(context); // Close success dialog
@@ -146,8 +272,6 @@ class PaymentController extends _$PaymentController {
 //         .startOpenNewOrderSocket(context, showLoading: true);
 
 //     // Success flow
-
-   
 
 //     // showSearchingTruckLoading(context: context);
 //   } catch (e) {
@@ -185,7 +309,6 @@ class PaymentController extends _$PaymentController {
 
 //   // Show truck loading dialog only if `showLoading` is true
 //     await showSearchingTruckLoading(context: context);
-  
 
 //   // Connect to the socket
 //   await socketService.connect(driverData.token).then((_) async {
@@ -223,7 +346,6 @@ class PaymentController extends _$PaymentController {
 //     });
 //   });
 // }
-
 }
 
 class PaymentState {
