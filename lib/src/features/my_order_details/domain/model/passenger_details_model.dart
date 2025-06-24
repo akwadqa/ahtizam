@@ -7,6 +7,8 @@ class PassengerDetails with _$PassengerDetails {
   const factory PassengerDetails({
     required String passenger,
     @JsonKey(name: "full_name") required String fullName,
+
+    @JsonKey(name: "phone") required String driverPhone,
     @JsonKey(name: "profile_image")  String? profileImage,
   }) = _PassengerDetails;
 

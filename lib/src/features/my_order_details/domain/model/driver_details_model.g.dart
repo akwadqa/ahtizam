@@ -12,7 +12,7 @@ _$DriverDetailsImpl _$$DriverDetailsImplFromJson(Map<String, dynamic> json) =>
       assignedTime: json['assigned_time'] as String,
       assignedDriver: json['assigned_driver'] as String,
       fullName: json['full_name'] as String,
-      driverPhone: json['driver_phone'] as String,
+      driverPhone: json['phone'] as String,
       profileImage: json['profile_image'] as String?,
       rating: (json['rating'] as num).toInt(),
     );
@@ -23,7 +23,7 @@ Map<String, dynamic> _$$DriverDetailsImplToJson(_$DriverDetailsImpl instance) =>
       'assigned_time': instance.assignedTime,
       'assigned_driver': instance.assignedDriver,
       'full_name': instance.fullName,
-      'driver_phone': instance.driverPhone,
+      'phone': instance.driverPhone,
       'profile_image': instance.profileImage,
       'rating': instance.rating,
     };

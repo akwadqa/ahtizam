@@ -1,47 +1,59 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/features/withdraw_requests/presentation/widgets/withdraw_item_widget.dart';
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/wallet/presentation/controller/wallet_controller.dart';
+import 'package:ahtizam/src/features/transactions_requests/presentation/widgets/transactions_item_widget.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:ahtizam/src/shared_widgets/app_pagination_widget.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../shared_widgets/custom_button_widget.dart';
 
 @RoutePage()
-class WalletScreen extends StatelessWidget {
+class WalletScreen extends ConsumerWidget {
   const WalletScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final walletAsync = ref.watch(walletControllerProvider);
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
         child: CustomAppbar(title: context.tr('wallet')),
       ),
-      body: _buildBody(context),
+      body: walletAsync.when(
+        data: (wallet) => _buildBody(context, wallet.walletBalance, wallet.transactionHistory,ref),
+        loading: () => const FadeCircleLoadingIndicator().centered(),
+        error: (err, _) => Center(child: Text(err.toString())),
+      ),
     );
   }
 
-  Widget _buildBody(BuildContext context) {
+  Widget _buildBody(BuildContext context, int walletBalance, List transactionHistory,WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildBalanceSection(context),
+          _buildBalanceSection(context, walletBalance),
           24.verticalSpace,
           _buildBalanceButtonsSection(context),
           36.verticalSpace,
           _buildTransactionHeader(context),
           16.verticalSpace,
-          _buildTransactionList(context),
+          _buildTransactionList(context, transactionHistory,ref),
         ],
       ),
     );
   }
 
-  Widget _buildBalanceSection(BuildContext context) {
+  Widget _buildBalanceSection(BuildContext context, int balance) {
     return Card(
       color: AppColors.replayGrey,
       elevation: 0,
@@ -53,7 +65,7 @@ class WalletScreen extends StatelessWidget {
           children: [
             _buildBalanceLabel(context),
             8.verticalSpace,
-            _buildBalanceAmount(context),
+            _buildBalanceAmount(context, balance),
           ],
         ),
       ),
@@ -70,9 +82,9 @@ class WalletScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBalanceAmount(BuildContext context) {
+  Widget _buildBalanceAmount(BuildContext context, int balance) {
     return Text(
-      '1000 ${context.tr('currency')}',
+      '$balance ${context.tr('currency')}',
       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w500,
             color: AppColors.black,
@@ -86,7 +98,9 @@ class WalletScreen extends StatelessWidget {
         Expanded(
           child: CustomButtonWidget(
             text: context.tr('add_money'),
-            onTap: () {},
+            onTap: () {
+              showWithdrawingDialog(context,);
+            },
             backgroundColor: AppColors.primary,
             isFiled: true,
             color: AppColors.black,
@@ -96,19 +110,6 @@ class WalletScreen extends StatelessWidget {
             width: MediaQuery.sizeOf(context).width,
           ),
         ),
-        // 20.horizontalSpace,
-        // Expanded(
-        //   child: CustomButtonWidget(
-        //     text: context.tr('withdraw_money'),
-        //     onTap: () {},
-        //     backgroundColor: AppColors.black,
-        //     isFiled: true,
-        //     height: 52,
-        //     radius: 12,
-        //     fontSize: 18,
-        //     width: MediaQuery.sizeOf(context).width,
-        //   ),
-        // ),
       ],
     );
   }
@@ -121,25 +122,31 @@ class WalletScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransactionList(BuildContext context) {
-    final List<Map<String, dynamic>> data = List.generate(
-      10,
-      (index) => {
-        "amount": "326.800",
-        "order": "1515",
-        "date": context.tr('transaction_date', args: ['1 ديسمبر']),
-        "status": context.tr('pending'),
-      },
-    );
-    return Expanded(
-      child: ListView.separated(
-        itemCount: data.length,
-        separatorBuilder: (context, index) => const Divider(),
-        itemBuilder: (context, index) => WithdrawItemWidget(
-          data: data[index],
-          isOrdered: false,
-        ),
-      ),
-    );
+  Widget _buildTransactionList(BuildContext context, List transactionHistory,WidgetRef ref) {
+    return 
+     Expanded(
+       child: AppPaginationWidget(
+            enablePullDown: true,
+            onRefresh: () async {
+              await ref.read(walletControllerProvider.notifier).***REMOVED***Wallet();
+              return true;
+            },
+            onLoading: (page) async {
+              return await ref.read(walletControllerProvider.notifier).loadNextPage();
+            },
+            child: ListView.separated(
+              itemCount: transactionHistory.length,
+              separatorBuilder: (context, index) => const Divider(),
+              itemBuilder: (context, index) => WithdrawItemWidget(
+                 transaction: transactionHistory[index],
+                   
+                isOrdered: false,
+              ),
+            )
+          ),
+     );
+    
+    
+    
   }
 }

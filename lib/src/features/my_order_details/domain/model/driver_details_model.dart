@@ -9,7 +9,7 @@ class DriverDetails with _$DriverDetails {
     @JsonKey(name: "assigned_time") required String assignedTime,
     @JsonKey(name: "assigned_driver") required String assignedDriver,
     @JsonKey(name: "full_name") required String fullName,
-    @JsonKey(name: "driver_phone") required String driverPhone,
+    @JsonKey(name: "phone") required String driverPhone,
     @JsonKey(name: "profile_image")  String? profileImage,
     required int rating,
   }) = _DriverDetails;

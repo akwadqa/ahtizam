@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/wallet/presentation/controller/wallet_controller.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -627,6 +630,211 @@ Future<void> showPaymentDialog(
             ),
           );
         },
+      );
+    },
+  );
+}
+
+
+Future<void> showWithdrawingDialog(
+  BuildContext context,) {
+  TextEditingController amountAddedController = TextEditingController();
+
+  return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Consumer(
+        builder: (context, ref, _) {
+          // final paymentState =
+          //     ref.watch(paymentCouponControllerProvider(totalCost));
+          // final paymentController =
+          //     ref.read(paymentCouponControllerProvider(totalCost).notifier);
+
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+              child: Dialog(
+                insetPadding: EdgeInsets.symmetric(horizontal: 12),
+                backgroundColor: Colors.white.withOpacity(0.9),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // **Title**
+                          Text(
+                            "enter_amount_need_to_add".tr(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                          ).centered(),
+
+                          20.verticalSpace,
+                          SizedBox(
+                            height: 54,
+                            child: TextFormField(
+                              controller: amountAddedController,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                focusColor: Colors.white,
+
+                                hintText: "enter_amount_number".tr(),
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                        fontSize: 11, color: AppColors.grey600),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                      color: AppColors.gray, width: 1),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                      color: AppColors.gray, width: 1),
+                                ),
+
+                                // ✅ Border when the field is focused (user clicked inside)
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                  borderSide: BorderSide(
+                                      color: AppColors.gray, width: 1),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          10.verticalSpace,
+
+                          // Text(
+                          //   "available_amount".tr(args: [availableAmount.toString()]),
+                          //   style: Theme.of(context)
+                          //       .textTheme
+                          //       .bodySmall!
+                          //       .copyWith(
+                          //           fontSize: 14,
+                          //           color: AppColors.dark,
+                          //           fontWeight: FontWeight.w500),
+                          // ),
+
+                          20.verticalSpace,
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: CustomButtonWidget(
+                                  text: context.tr("add"),
+                                  onTap: () {
+                                   ref.read(walletControllerProvider.notifier).processAddStock(amountAddedController.text, context);
+                                  },
+                                  backgroundColor: AppColors.black,
+                                  isFiled: true,
+                                  height: 50,
+                                  radius: 12,
+                                  width: MediaQuery.sizeOf(context).width,
+                                ),
+                              ),
+                              20.horizontalSpace,
+                              Flexible(
+                                child: CustomButtonWidget(
+                                  text: context.tr("cancel"),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  color: AppColors.black,
+                                  backgroundColor: AppColors.white,
+                                  isFiled: false,
+                                  borderColor: AppColors.darkGray,
+                                  height: 50,
+                                  radius: 12,
+                                  width: MediaQuery.sizeOf(context).width,
+                                ),
+                              ),
+                            ],
+                          ).onlyPadding(bottom: 10),
+                        ],
+                      ),
+                    ),
+                  ],
+                ).allPadding(20),
+              ),
+            ),
+          );
+        },
+      );
+    },
+  );
+}
+
+Future<void> showSuccessWiwthdrawingDialog({
+  required BuildContext context,
+}) {
+  return showDialog(
+    context: context,
+    useSafeArea: false,
+    builder: (BuildContext context) {
+      return Dialog(
+        insetPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Spacer(),
+            Icon(
+              Icons.check_circle_rounded,
+              color: AppColors.primary,
+              size: 175,
+            ),
+            28.verticalSpace,
+            Text(
+              "the request has been successfully sent",
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayLarge!
+                  .copyWith(fontSize: 22),
+            ),
+            20.verticalSpace,
+            Text(
+              "your request is being processed",
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .copyWith(fontSize: 16),
+            ),
+            Spacer(),
+            CustomButtonWidget(
+              text: context.tr("main screen"),
+              onTap: () {
+                Navigator.pop(context);
+              },
+              backgroundColor: AppColors.black,
+              color: AppColors.white,
+              isFiled: false,
+              borderColor: AppColors.darkGray,
+              height: 50,
+              radius: 12,
+              width: MediaQuery.sizeOf(context).width,
+            ).onlyPadding(bottom: 25, start: 16, end: 16),
+          ],
+        ),
       );
     },
   );

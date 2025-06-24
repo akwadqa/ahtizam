@@ -137,9 +137,9 @@ class __$$PaginationImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PaginationImpl implements _Pagination {
   const _$PaginationImpl(
-      {@JsonKey(name: 'total_items') this.totalItems = 0,
-      @JsonKey(name: 'total_pages') this.totalPages = 1,
-      @JsonKey(name: 'page') this.currentPage = 1});
+      {@JsonKey(name: 'total_items') required this.totalItems,
+      @JsonKey(name: 'total_pages') required this.totalPages,
+      @JsonKey(name: 'page') required this.currentPage});
 
   factory _$PaginationImpl.fromJson(Map<String, dynamic> json) =>
       _$$PaginationImplFromJson(json);
@@ -195,9 +195,10 @@ class _$PaginationImpl implements _Pagination {
 
 abstract class _Pagination implements Pagination {
   const factory _Pagination(
-      {@JsonKey(name: 'total_items') final int totalItems,
-      @JsonKey(name: 'total_pages') final int totalPages,
-      @JsonKey(name: 'page') final int currentPage}) = _$PaginationImpl;
+          {@JsonKey(name: 'total_items') required final int totalItems,
+          @JsonKey(name: 'total_pages') required final int totalPages,
+          @JsonKey(name: 'page') required final int currentPage}) =
+      _$PaginationImpl;
 
   factory _Pagination.fromJson(Map<String, dynamic> json) =
       _$PaginationImpl.fromJson;

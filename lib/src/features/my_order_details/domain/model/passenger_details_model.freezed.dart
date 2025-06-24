@@ -23,6 +23,8 @@ mixin _$PassengerDetails {
   String get passenger => throw _privateConstructorUsedError;
   @JsonKey(name: "full_name")
   String get fullName => throw _privateConstructorUsedError;
+  @JsonKey(name: "phone")
+  String get driverPhone => throw _privateConstructorUsedError;
   @JsonKey(name: "profile_image")
   String? get profileImage => throw _privateConstructorUsedError;
 
@@ -45,6 +47,7 @@ abstract class $PassengerDetailsCopyWith<$Res> {
   $Res call(
       {String passenger,
       @JsonKey(name: "full_name") String fullName,
+      @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage});
 }
 
@@ -65,6 +68,7 @@ class _$PassengerDetailsCopyWithImpl<$Res, $Val extends PassengerDetails>
   $Res call({
     Object? passenger = null,
     Object? fullName = null,
+    Object? driverPhone = null,
     Object? profileImage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,6 +79,10 @@ class _$PassengerDetailsCopyWithImpl<$Res, $Val extends PassengerDetails>
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      driverPhone: null == driverPhone
+          ? _value.driverPhone
+          : driverPhone // ignore: cast_nullable_to_non_nullable
               as String,
       profileImage: freezed == profileImage
           ? _value.profileImage
@@ -95,6 +103,7 @@ abstract class _$$PassengerDetailsImplCopyWith<$Res>
   $Res call(
       {String passenger,
       @JsonKey(name: "full_name") String fullName,
+      @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage});
 }
 
@@ -113,6 +122,7 @@ class __$$PassengerDetailsImplCopyWithImpl<$Res>
   $Res call({
     Object? passenger = null,
     Object? fullName = null,
+    Object? driverPhone = null,
     Object? profileImage = freezed,
   }) {
     return _then(_$PassengerDetailsImpl(
@@ -123,6 +133,10 @@ class __$$PassengerDetailsImplCopyWithImpl<$Res>
       fullName: null == fullName
           ? _value.fullName
           : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      driverPhone: null == driverPhone
+          ? _value.driverPhone
+          : driverPhone // ignore: cast_nullable_to_non_nullable
               as String,
       profileImage: freezed == profileImage
           ? _value.profileImage
@@ -138,6 +152,7 @@ class _$PassengerDetailsImpl implements _PassengerDetails {
   const _$PassengerDetailsImpl(
       {required this.passenger,
       @JsonKey(name: "full_name") required this.fullName,
+      @JsonKey(name: "phone") required this.driverPhone,
       @JsonKey(name: "profile_image") this.profileImage});
 
   factory _$PassengerDetailsImpl.fromJson(Map<String, dynamic> json) =>
@@ -149,12 +164,15 @@ class _$PassengerDetailsImpl implements _PassengerDetails {
   @JsonKey(name: "full_name")
   final String fullName;
   @override
+  @JsonKey(name: "phone")
+  final String driverPhone;
+  @override
   @JsonKey(name: "profile_image")
   final String? profileImage;
 
   @override
   String toString() {
-    return 'PassengerDetails(passenger: $passenger, fullName: $fullName, profileImage: $profileImage)';
+    return 'PassengerDetails(passenger: $passenger, fullName: $fullName, driverPhone: $driverPhone, profileImage: $profileImage)';
   }
 
   @override
@@ -166,6 +184,8 @@ class _$PassengerDetailsImpl implements _PassengerDetails {
                 other.passenger == passenger) &&
             (identical(other.fullName, fullName) ||
                 other.fullName == fullName) &&
+            (identical(other.driverPhone, driverPhone) ||
+                other.driverPhone == driverPhone) &&
             (identical(other.profileImage, profileImage) ||
                 other.profileImage == profileImage));
   }
@@ -173,7 +193,7 @@ class _$PassengerDetailsImpl implements _PassengerDetails {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, passenger, fullName, profileImage);
+      Object.hash(runtimeType, passenger, fullName, driverPhone, profileImage);
 
   /// Create a copy of PassengerDetails
   /// with the given fields replaced by the non-null parameter values.
@@ -196,6 +216,7 @@ abstract class _PassengerDetails implements PassengerDetails {
   const factory _PassengerDetails(
           {required final String passenger,
           @JsonKey(name: "full_name") required final String fullName,
+          @JsonKey(name: "phone") required final String driverPhone,
           @JsonKey(name: "profile_image") final String? profileImage}) =
       _$PassengerDetailsImpl;
 
@@ -207,6 +228,9 @@ abstract class _PassengerDetails implements PassengerDetails {
   @override
   @JsonKey(name: "full_name")
   String get fullName;
+  @override
+  @JsonKey(name: "phone")
+  String get driverPhone;
   @override
   @JsonKey(name: "profile_image")
   String? get profileImage;
