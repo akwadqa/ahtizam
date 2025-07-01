@@ -14,7 +14,7 @@ _$DriverDetailsImpl _$$DriverDetailsImplFromJson(Map<String, dynamic> json) =>
       fullName: json['full_name'] as String,
       driverPhone: json['driver_phone'] as String,
       profileImage: json['profile_image'] as String?,
-      rating: (json['rating'] as num).toInt(),
+      rating: (json['rating'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$DriverDetailsImplToJson(_$DriverDetailsImpl instance) =>

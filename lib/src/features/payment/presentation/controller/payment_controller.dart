@@ -1,18 +1,16 @@
-import 'package:ahtizam/src/core/services/socket_service.dart';
-import 'package:ahtizam/src/features/auth/regestration/application/auth_service.dart';
-import 'package:ahtizam/src/features/home/application/home_service.dart';
+import 'dart:async';
+import 'dart:io';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
-import 'package:ahtizam/src/features/home/data/repositories/home_repository.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/quick_order_details_model.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/location_search_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
 import 'package:ahtizam/src/features/payment/data/repositories/payment_repository.dart';
 import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
 import 'package:ahtizam/src/features/payment/presentation/pages/payment_web_view.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/localization/current_language.dart';
+import 'package:ahtizam/src/network/exception/dio_exceptions.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -22,16 +20,20 @@ part 'payment_controller.g.dart';
 class PaymentController extends _$PaymentController {
   @override
   Future<PaymentState> build() async {
-    final orderInfo=ref.watch(quickOrderControllerProvider);
+    final orderInfo = ref.watch(quickOrderControllerProvider);
     return PaymentState(
       selectedMethod: null,
       totalAmount: orderInfo.value!.orderModel!.finalFee,
+      baseAmount: orderInfo.value!.orderModel!.baseFee,
+      discountAmount: orderInfo.value!.orderModel!.discountCost,
+      taxFee: orderInfo.value!.orderModel!.taxFee,
       paymentMethods: [
-        PaymentMethod(
-          id: 'apple_pay',
-          icon: 'assets/icons/apple_ic.svg',
-          title: 'Apple Pay',
-        ),
+        if (Platform.isIOS)
+          PaymentMethod(
+            id: 'apple_pay',
+            icon: 'assets/icons/apple_ic.svg',
+            title: 'Apple Pay',
+          ),
         PaymentMethod(
           id: 'credit_card',
           icon: 'assets/icons/credit_card_ic.svg',
@@ -42,11 +44,12 @@ class PaymentController extends _$PaymentController {
           icon: 'assets/icons/wallet_ic.svg',
           title: 'Wallet',
         ),
-        PaymentMethod(
-          id: 'google_pay',
-          icon: 'assets/icons/google_ic.svg',
-          title: 'Google Pay',
-        ),
+        if (Platform.isAndroid)
+          PaymentMethod(
+            id: 'google_pay',
+            icon: 'assets/icons/google_ic.svg',
+            title: 'Google Pay',
+          ),
       ],
     );
   }
@@ -58,193 +61,234 @@ class PaymentController extends _$PaymentController {
   void clearSelectedMethod() {
     state = AsyncData(state.requireValue.copyWith(selectedMethod: null));
   }
+
   Future<void> processPayment(BuildContext context) async {
-  if (state.requireValue.selectedMethod == null) return;
+    if (state.requireValue.selectedMethod == null) return;
 
-  // Show loading dialog
-  // showDialog(
-  //   context: context,
-  //   barrierDismissible: false,
-  //   builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
-  // );
-
-  try {
-    final orderData=ref.watch(quickOrderControllerProvider);
-    final lang=ref.watch(currentLanguageProvider);
-    final quickOrderId = orderData.requireValue?.orderModel?.quickOrderId;
-    if (quickOrderId == null) throw "Missing order ID";
-
-    // /// 1. Get payment URL from your backend
-    // final response = await ref.read(paymentRepositoryProvider).getPaymentUrl(
-    //   quickOrderId: quickOrderId,
-    //   language: lang,
+    // Show loading dialog
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
     // );
 
-    // final url = response.data;
-    // if (url == null) throw "Failed to get payment link";
+    try {
+      state = AsyncLoading();
 
-    // // Close loading before opening payment page
+      final orderData = ref.watch(quickOrderControllerProvider);
+      final lang = ref.watch(currentLanguageProvider);
+      final orderId = orderData.requireValue?.orderModel?.quickOrderId;
+      final paymentRepo = ref.read(paymentRepositoryProvider);
+
+      if (orderId == null) throw "Missing order ID";
+
+      switch (state.requireValue.selectedMethod!.id) {
+        case "wallet":
+          await _payWithWallet(paymentRepo: paymentRepo, orderId: orderId);
+          break;
+
+        case "credit_card":
+          final completed = await _payWithCard(
+            context: context,
+            paymentRepo: paymentRepo,
+            orderId: orderId,
+            lang: lang,
+          );
+
+          if (!completed) {
+            state = AsyncData(state.value!); // Reset state so UI updates
+            showErrorDialog(context, "payment_cancelled".tr());
+            return;
+          }
+          break;
+
+        default:
+          throw "Unsupported payment method";
+      }
+
+      await _completePaymentFlow(context);
+    } catch (e) {
+      debugPrint("ERRRROOOOOOOOR HERE ON FIRE PAYMENT CONTROLLER: $e");
+
+      if (e is WalletPaymentException && e.isInsufficient) {
+        state = AsyncData(state.value!);
+        showWalletRechargeDialog(context, e.message);
+      } else {
+        showErrorDialog(context, e.toString().replaceFirst("Exception: ", ""));
+        state = AsyncError(e, StackTrace.current);
+      }
+    }
+  }
+
+  Future<bool> _payWithWallet({
+    required PaymentRepository paymentRepo,
+    required String orderId,
+  }) async {
+    final result = await paymentRepo.payByWallet(orderId: orderId);
+    if (result.hasSucceeded) {
+      return true;
+    } else {
+      if ((result.message ?? "").toLowerCase().contains("insufficient")) {
+        throw WalletPaymentException.insufficientBalance(result.message!);
+      }
+      throw WalletPaymentException.general(
+          result.message ?? "Wallet payment failed");
+    }
+  }
+
+  Future<bool> _payWithCard({
+    required BuildContext context,
+    required PaymentRepository paymentRepo,
+    required String orderId,
+    required String lang,
+  }) async {
+    final response = await paymentRepo.getPaymentUrl(
+      orderId: orderId,
+      language: lang,
+    );
+
+    final url = response.data;
+    if (url == null) throw "Failed to get payment link";
+
+    // Don't pop loading here if not open
     // if (Navigator.of(context).canPop()) Navigator.pop(context);
 
-    // /// 2. Open the URL in browser or WebView and wait
-    // final paymentCompleted = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (_) => PaymentWebViewPage(redirectUrl: url),
-    //   ),
-    // );
+    // Use a Completer to ensure you handle response once
+    final completer = Completer<bool>();
 
-    // /// 3. If user cancelled
-    // if (paymentCompleted != true) {
-    //   showErrorDialog(context, "Payment was not completed");
-    //   return;
-    // }
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PaymentWebViewPage(
+          redirectUrl: url,
+          onResult: (success) {
+            if (!completer.isCompleted) {
+              completer.complete(success);
+            }
+          },
+        ),
+      ),
+    );
 
-   
+    // In case onResult wasn't triggered (e.g., user backs out)
+    if (!completer.isCompleted) {
+      completer.complete(result == true);
+    }
 
-    /// 4. Payment succeeded → show success
+    return completer.future;
+  }
+
+  void isOrderPaied() {
+    state = AsyncData(state.requireValue.copyWith(isPaid: true));
+  }
+
+  Future<void> _completePaymentFlow(BuildContext context) async {
+    state = AsyncData(state.requireValue.copyWith(isPaid: true));
+
+    await ref.read(mapControllerProvider.notifier).moveCameraToIncludeRoute();
+    await Future.delayed(const Duration(milliseconds: 500));
+    await ref.read(mapControllerProvider.notifier).captureScreenshot();
+
     showSuccessPayment(context: context);
-      await  ref.read(mapControllerProvider.notifier).captureScreenshot();
+    state = AsyncData(state.value!);
 
-    await Future.delayed(const Duration(seconds: 3), () async{
-      Navigator.pop(context); // Close success popup
-    });
+    // Optional delay before closing dialog
+    await Future.delayed(const Duration(seconds: 2));
 
-    /// 5. Start driver search (socket)
-    showSearchingTruckLoading(context: context);
+    if (Navigator.of(context).canPop()) {
+      Navigator.pop(context); // Close success dialog
+    }
+    final isDriverKnown =
+        ref.read(scanDriverQrControllerProvider).value?.scanned ?? false;
+    if (isDriverKnown) {
+      // ✅ Show a different loading or skip entirely
+      showCustomConnectingToDriverDialog(context); // 👈 your own UI
+    } else {
+      showSearchingTruckLoading(context: context); // ⛔ normal truck search
+    }
+    // Start driver search and socket communication
+    // showSearchingTruckLoading(context: context);
+
+    final methodId = state.requireValue.selectedMethod!.id;
+
+    try {
+      await ref
+          .read(quickOrderControllerProvider.notifier)
+          .startOpenNewOrderSocket(
+            context,
+            paymentMethod: methodId,
+          );
+    } catch (e) {
+      // 👇 Catch "No driver" and set flag
+      // if (e.toString().contains("No available drivers")) {
+      //   state = AsyncData(state.requireValue.copyWith(noDriverFound: true));
+      // } else {
+      state = AsyncError(e, StackTrace.current);
+      // await Future.delayed(const Duration(seconds: 2)).then((_) {
+      //   // if (Navigator.of(context).canPop()) Navigator.pop(context);
+      // });
+      // }
+    }
+  }
+
+  void retryWithoutPayment(BuildContext context) async {
+    final methodId = state.requireValue.selectedMethod?.id;
+    if (methodId == null) return;
+
+    final isDriverKnown =
+        ref.read(scanDriverQrControllerProvider).value?.scanned ?? false;
+    if (isDriverKnown) {
+      // ✅ Show a different loading or skip entirely
+      showCustomConnectingToDriverDialog(context); // 👈 your specific truck driver
+    } else {
+      showSearchingTruckLoading(context: context); // ⛔ normal truck search
+    }
     await ref
         .read(quickOrderControllerProvider.notifier)
-        .startOpenNewOrderSocket(context, showLoading: true,paymentMethod: state.requireValue.selectedMethod!.id);
-  } catch (e) {
-    debugPrint("ERRRROOOOOOOOR HERE ON FIRE PAYMENT CONTROLLER ");
-    if (Navigator.of(context).canPop()) Navigator.pop(context);
-    showErrorDialog(context, e.toString().replaceFirst("Exception: ", ""));
+        .startOpenNewOrderSocket(
+          context,
+          paymentMethod: methodId,
+        );
   }
-}
-
-// Future<void> processPayment(BuildContext context) async {
-//   if (state.requireValue.selectedMethod == null) return;
-
-//   // Show loading dialog
-//   showDialog(
-//     context: context,
-//     barrierDismissible: false,
-//     builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
-//   );
-
-//   try {
-//     // here need handle payment logic
-    
-//     showSuccessPayment(context: context);
-//      await Future.delayed(const Duration(seconds: 3), () {
-//       Navigator.pop(context); // Close success dialog
-//     });
-//     // Start the order + socket logic
-
-//     await ref
-//         .read(quickOrderControllerProvider.notifier)
-//         .startOpenNewOrderSocket(context, showLoading: true);
-
-//     // Success flow
-
-   
-
-//     // showSearchingTruckLoading(context: context);
-//   } catch (e) {
-//     // Close loading dialog before showing error
-//     if (Navigator.of(context).canPop()) Navigator.pop(context);
-
-//     // Show popup with error message
-//     showErrorDialog(context, e.toString());
-//   }
-// }
-
-//  Future<void> startOpenNewOrderSocket(BuildContext context, ) async {
-//     state = const AsyncLoading();
-
-//   final homeRepo = ref.read(homeRepositoryProvider);
-//   final socketService = ref.read(socketServiceProvider);
-//   final driverData = ref.read(userDataProvider.notifier).userinformation;
-//   final coordinates = ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
-//   final currentOrder = ref.read(quickOrderControllerProvider).value?.orderModel;
-
-//   if (currentOrder == null) {
-//     debugPrint("❌ Unable to Open socket: no order model");
-//     throw Exception("Unable to Open socket");
-//   }
-
-//   if (coordinates == null) {
-//     state = AsyncError('Invalid coordinates', StackTrace.current);
-//     return;
-//   }
-
-//   // Process the quick order
-//   await homeRepo.processQuickOrder(
-//     quickOrderId: currentOrder.quickOrderId
-//   );
-
-//   // Show truck loading dialog only if `showLoading` is true
-//     await showSearchingTruckLoading(context: context);
-  
-
-//   // Connect to the socket
-//   await socketService.connect(driverData.token).then((_) async {
-//     debugPrint("🎛️ currentOrder.quickOrderId,: ${currentOrder.quickOrderId}");
-
-//     socketService.on(currentOrder.quickOrderId, (data) {
-//       debugPrint("🎛️ Received order details: $data");
-
-//       if (data == null) return;
-
-//       final result = QuickOrderDetailsModel.fromJson(data);
-
-//       if (result.status == "No Driver Found" || result.driverData?.driverId == null) {
-//         state = AsyncError("No Driver Found", StackTrace.current);
-//         return;
-//       }
-
-//       // Update the state with the order details
-//        ref.read(quickOrderControllerProvider.notifier).setNewOrderDetails(result);
-
-//       // final current = state.value;
-//       // state = AsyncData(
-//       //   current?.copyWith(orderDetails: result) ?? OrderState(orderDetails: result),
-//       // );
-
-//       // Close loading dialog (if any)
-//       // if (showLoading) {
-//         // Navigator.of(context, rootNavigator: true).pop(); // Close loading
-//       // }
-
-//       // Show driver details bottom sheet
-//       Future.microtask(() {
-//         showDriverDetailsBottomSheet(context);
-//       });
-//     });
-//   });
-// }
-
 }
 
 class PaymentState {
   final PaymentMethod? selectedMethod;
   final double totalAmount;
+  final double baseAmount;
+  final double? discountAmount;
+  final double taxFee;
+  final bool isPaid;
   final List<PaymentMethod> paymentMethods;
 
   const PaymentState({
     this.selectedMethod,
     required this.totalAmount,
+    required this.baseAmount,
+    this.discountAmount,
+    required this.taxFee,
+    this.isPaid = false, // 👈 default false
+
     required this.paymentMethods,
   });
 
   PaymentState copyWith({
     PaymentMethod? selectedMethod,
     double? totalAmount,
+    double? baseAmount,
+    double? discountAmount,
+    double? taxFee,
+    bool? isPaid,
     List<PaymentMethod>? paymentMethods,
   }) {
     return PaymentState(
       selectedMethod: selectedMethod ?? this.selectedMethod,
       totalAmount: totalAmount ?? this.totalAmount,
+      baseAmount: baseAmount ?? this.baseAmount,
+      discountAmount: discountAmount ?? this.discountAmount,
+      taxFee: taxFee ?? this.taxFee,
+      isPaid: isPaid ?? this.isPaid, // 👈 assign
+
       paymentMethods: paymentMethods ?? this.paymentMethods,
     );
   }

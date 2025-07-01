@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
@@ -18,11 +19,15 @@ class RequestDetailsForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isSelectLocationFromMap =
         ref.watch(selectLocationFromMapControllerProvider);
+    final showMap =
+        ref.watch(showMapControllerProvider);
 
     // Check if the keyboard is visible
     final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Positioned(
+    return 
+    showMap?SizedBox.expand():
+    Positioned(
       top: isSelectLocationFromMap ? 90 : null,
       bottom: isSelectLocationFromMap
           ? null
@@ -58,7 +63,7 @@ class RequestDetailsForm extends ConsumerWidget {
                     10.verticalSpace,
                     const LocationSearchFields(),
                     20.verticalSpace,
-                    if (!isSelectLocationFromMap)
+                    // if (!isSelectLocationFromMap)
                       const SelectLocationButton().onlyPadding(bottom: 12),
                   ],
                 ),

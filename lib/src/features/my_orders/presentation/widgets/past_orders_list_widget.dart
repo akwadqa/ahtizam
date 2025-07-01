@@ -6,6 +6,7 @@ import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/shared_widgets/app_pagination_widget.dart';
@@ -20,13 +21,13 @@ class PastOrdersList extends ConsumerWidget {
     return asyncOrders.when(
       data: (orders) {
         if (orders.isEmpty) {
-          return const Center(child: Text('No orders found'));
+          return  Center(child: Text('no_orders_found'.tr()));
         }
 
         final pastOrders = orders.where((order) => order.status != 'Accepted').toList();
 
         if (pastOrders.isEmpty) {
-          return const Center(child: Text('No orders found'));
+          return  Center(child: Text('no_orders_found'.tr()));
         }
 
         return AppPaginationWidget(

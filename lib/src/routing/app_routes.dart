@@ -11,6 +11,7 @@ class AppRoutes {
   // 🟩 Main/Home
   static const main = '/main';
   static const home = '/home';
+  static const scanQrDriver = '/scanQrDriver';
 
   // 🟨 Profile & Settings
   static const profileDetails = '/profile-details';

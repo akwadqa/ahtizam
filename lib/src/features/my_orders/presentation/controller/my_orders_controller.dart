@@ -101,9 +101,9 @@ class MyOrdersController extends _$MyOrdersController {
     return await fetchOrders(page: 1);
   }
 
-  Future<List<MyOrderDetailsModel>> fetchOrders({required int page}) async {
+  Future<List<MyOrderDetailsModel>> fetchOrders({required int page, bool showLoading = true}) async {
     try {
-          state = const AsyncLoading();
+    if (showLoading) state = const AsyncLoading();
 
       final repo = ref.read(myOrdersRepositoryProvider);
       final response = await repo.getAllOrders(page: page);
@@ -131,7 +131,7 @@ class MyOrdersController extends _$MyOrdersController {
   Future<bool> loadNextPage() async {
     if (_currentPage >= _totalPages) return false;
     final nextPage = _currentPage + 1;
-    final result = await fetchOrders(page: nextPage);
+    final result = await fetchOrders(page: nextPage,showLoading: false);
     return result.isNotEmpty;
   }
 

@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
@@ -21,11 +23,33 @@ import '../controllers/location_searching_controller/location_search_controller.
 import '../widgets/map/google_map_widget.dart';
 
 @RoutePage()
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  DateTime? _lastBackPressed;
+
+  Future<bool> _onWillPop() async {
+    final now = DateTime.now();
+    final backGap = now.difference(_lastBackPressed ?? DateTime(2000));
+
+    if (backGap > const Duration(seconds: 2)) {
+      _lastBackPressed = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('press_back_again_to_exit'.tr())),
+      );
+      return false; // Don't pop
+    }
+
+    return true; // Exit app
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isSecondWidgetVisible =
         ref.watch(changeRequestOrderStateServiceProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
@@ -34,9 +58,24 @@ class HomeScreen extends ConsumerWidget {
     final asyncOrder = ref.watch(quickOrderControllerProvider);
     final showSheet =
         asyncOrder is AsyncData && asyncOrder.value?.orderDetails != null;
-
+    final showMap = ref.watch(showMapControllerProvider);
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      floatingActionButton: showMap
+          ? Padding(
+              padding: EdgeInsetsDirectional.only(end: 15, bottom: 120),
+              child: FloatingActionButton(
+                backgroundColor: AppColors.primary,
+                onPressed: () {
+                  ref
+                      .read(showMapControllerProvider.notifier)
+                      .toggleSelection();
+                },
+                child: const Icon(Icons.remove_red_eye,
+                    color: Colors.white, size: 25),
+              ),
+            )
+          : null,
       // extendBody: true,
       body: Stack(
         children: [
@@ -230,6 +269,7 @@ class _RequestOrderBottomActionCard extends ConsumerWidget {
                 children: [
                   CustomButtonWidget(
                     text: context.tr("request_now"),
+                    // isDisabled: ref.watch(mapControllerProvider.notifier).mapController==null,
                     onTap: () {
                       ref
                           .read(showOrderFormControllerProvider.notifier)

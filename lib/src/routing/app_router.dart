@@ -39,6 +39,7 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: SignupRoute.page, path: AppRoutes.signup),
       AutoRoute(page: VerificationRoute.page, path: AppRoutes.verify),
       AutoRoute(page: HomeRoute.page, path: AppRoutes.home),
+      AutoRoute(page: ScanDriverQrRoute.page, path: AppRoutes.scanQrDriver),
       AutoRoute(page: NotificationsRoute.page, path: AppRoutes.notifications),
       AutoRoute(page: PaymentMethodRoute.page, path: AppRoutes.payment),
       AutoRoute(page: AddCardRoute.page, path: AppRoutes.addCard),

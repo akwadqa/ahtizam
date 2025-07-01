@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
 import 'package:ahtizam/src/shared_widgets/circle_image_widget.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,16 +23,20 @@ void showDriverDetailsBottomSheet(BuildContext context) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    // enableDrag: false,
-    // isDismissible: false,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
-    backgroundColor: Colors.white.withOpacity(0.99),
+    backgroundColor: Colors.transparent, // important
     builder: (context) {
-      return const DriverDetailsBottomSheet()
-          // .onlyPadding(bottom: MediaQuery.of(context).viewInsets.bottom)
-          ;
+      return DraggableScrollableSheet(
+        initialChildSize: 0.5,
+        minChildSize: 0.3,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return const DriverDetailsBottomSheet();
+        },
+      );
     },
   );
 }
@@ -40,19 +47,30 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncDriverInfo = ref.watch(quickOrderControllerProvider);
+    final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
+    final hideDriverBottomSheet = ref.watch(showMapControllerProvider);
+
     return asyncDriverInfo.when(
       data: (data) {
         if (data?.orderDetails == null) return SizedBox();
         // if (data?.orderDetails != null) {
         final orderDetailsData = data?.orderDetails?.driverData;
         // }
-        return GestureDetector(
+        return 
+        hideDriverBottomSheet?
+        SizedBox.expand():
+        GestureDetector(
           onTap: () {
             FocusScope.of(context)
                 .requestFocus(FocusNode()); // Dismiss keyboard
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 25),
+            // margin: EdgeInsets.only(bottom: 100),
+            padding: EdgeInsets.only(
+                left: 22,
+                right: 22,
+                top: 25,
+                bottom: isThirdWidgetVisible ? 125 : 25),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.99),
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -60,6 +78,17 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                GestureDetector(
+                    onTap: () {
+                      // Navigator.pop(context);
+                      ref
+                          .read(showMapControllerProvider.notifier)
+                          .toggleSelection();
+                    },
+                    child: Icon(
+                      Icons.keyboard_double_arrow_down_sharp,
+                      color: Colors.grey,
+                    ).centered()),
                 // **Truck & Driver Details Row**
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -227,7 +256,8 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                             Assets.icons.phoneIc.svg(),
                             10.horizontalSpace,
                             Text(
-                              context.tr("call_by", args: ["user"]),
+                              context.tr("call_by",
+                                  args: [orderDetailsData?.name ?? ""]),
                               style: Theme.of(context)
                                   .textTheme
                                   .displaySmall!
@@ -268,7 +298,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
         );
       },
       loading: () => FadeCircleLoadingIndicator(),
-      error: (error, stackTrace) => showErrorDialog(context, error.toString()),
+      error: (error, stackTrace) => AppErrorWidget(),
     );
   }
 }

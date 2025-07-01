@@ -7,7 +7,7 @@ part of 'quick_order_controller.dart';
 // **************************************************************************
 
 String _$quickOrderControllerHash() =>
-    r'c4184af08aa387bb94f8a18f65c0f27d677a9f3c';
+    r'5baf3470cbf2b486b9ed067acef5a92b44a72f8c';
 
 /// See also [QuickOrderController].
 @ProviderFor(QuickOrderController)

@@ -111,13 +111,13 @@ class ProfileScreen extends ConsumerWidget {
               context.pushRoute(WalletRoute());
             },
           ),
-          // _buildMenuItem(
-          //   context,
-          //   context.tr('recommended_questions'),
-          //   onTap: () {
-          //     context.pushRoute(RecomendedQuestionRoute());
-          //   },
-          // ),
+          _buildMenuItem(
+            context,
+            context.tr('How_use_app'),
+            onTap: () {
+              context.pushRoute(RecomendedQuestionRoute());
+            },
+          ),
           _buildMenuItem(
             context,
             context.tr('privacy_policy'),
@@ -125,18 +125,18 @@ class ProfileScreen extends ConsumerWidget {
               context.pushRoute(PrivacyPolicyRoute());
             },
           ),
-          _buildMenuItem(
-            context,
-            context.tr('withdraw_requests'),
-            onTap: () {
-              context.pushRoute(WithdrawRequestsRoute());
-            },
-          ),
           // _buildMenuItem(
           //   context,
-          //   context.tr('help_center'),
-          //   onTap: () {},
+          //   context.tr('withdraw_requests'),
+          //   onTap: () {
+          //     context.pushRoute(WithdrawRequestsRoute());
+          //   },
           // ),
+          _buildMenuItem(
+            context,
+            context.tr('call_us'),
+            onTap: () {},
+          ),
           _buildMenuItem(
             context,
             context.tr('notifications'),
