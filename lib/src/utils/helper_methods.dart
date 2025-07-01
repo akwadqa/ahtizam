@@ -168,3 +168,64 @@ Future<void> createCollection() async {
     print('Error creating collection: $e');
   }
 }
+class DottedDivider extends StatelessWidget {
+  final double height;
+  final Color color;
+  final double dashWidth;
+  final double dashSpacing;
+
+  const DottedDivider({
+    this.height = 1,
+    this.color = Colors.black26,
+    this.dashWidth = 5,
+    this.dashSpacing = 3,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _DottedLinePainter(
+        color: color,
+        dashWidth: dashWidth,
+        dashSpacing: dashSpacing,
+        height: height,
+      ),
+      size: Size(double.infinity, height),
+    );
+  }
+}
+
+class _DottedLinePainter extends CustomPainter {
+  final Color color;
+  final double dashWidth;
+  final double dashSpacing;
+  final double height;
+
+  _DottedLinePainter({
+    required this.color,
+    required this.dashWidth,
+    required this.dashSpacing,
+    required this.height,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = height;
+
+    double startX = 0;
+    while (startX < size.width) {
+      canvas.drawLine(
+        Offset(startX, 0),
+        Offset(startX + dashWidth, 0),
+        paint,
+      );
+      startX += dashWidth + dashSpacing;
+    }
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}

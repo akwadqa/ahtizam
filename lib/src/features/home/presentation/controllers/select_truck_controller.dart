@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:ahtizam/src/features/home/data/repositories/home_repository.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/models/service_types/service_types_model.dart';
@@ -62,7 +64,20 @@ class SelectServiceTypeController extends _$SelectServiceTypeController {
       state = AsyncData(currentState);
       //  AsyncData(
       //     ServiceTypesState(trucks: trucks, selectedServiceType: null));
+      // ✅ After loading trucks, check for scanned serviceId
+      final scannedServiceId =
+          ref.watch(scanDriverQrControllerProvider).value?.driverInfoModel?.serviceType;
+      debugPrint(" scanned serviceId => $scannedServiceId");
+      if (scannedServiceId != null) {
+        final matchedTruck = result.data?.firstWhere(
+          (t) => t.serviceId == scannedServiceId,
+          orElse: () => throw Exception("No truck found for scanned serviceId"),
+        );
 
+        await selectServiceType(matchedTruck!); // ✅ Auto-select truck
+          await ref.read(quickOrderControllerProvider.notifier).createOrder();
+
+      }
       await Future.delayed(const Duration(milliseconds: 300));
       showTruckSelectionBottomSheet(
         context: context,

@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
+import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,11 +26,13 @@ class CustomBottomNavigationBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
-    final hideBootNavigationBar = ref.watch(hideLayersDuringOrderControllerProvider);
+    final showBottomBar = ref.watch(hideLayersDuringOrderControllerProvider);
 
-    return isThirdWidgetVisible 
+    return 
+    isThirdWidgetVisible &&!showBottomBar
         ? Container()
-        : ClipRRect(
+        :
+         ClipRRect(
             clipBehavior: Clip.hardEdge,
             borderRadius: BorderRadius.circular(20),
             child: BackdropFilter(
@@ -56,7 +60,7 @@ class CustomBottomNavigationBar extends ConsumerWidget {
                     _buildNavItem(Assets.icons.home, "home", 0, context),
                     _buildNavItem(
                         Assets.icons.category, "category", 1, context),
-                    _buildCentralItem(ref),
+                  if(!showBottomBar)  _buildCentralItem(ref,context),
                     _buildNavItem(
                         Assets.icons.messages, "messages", 2, context),
                     _buildNavItem(Assets.icons.profile, "profile", 3, context),
@@ -92,11 +96,10 @@ class CustomBottomNavigationBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildCentralItem(WidgetRef ref) {
+  Widget _buildCentralItem(WidgetRef ref,BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await ref.read(userDataProvider.notifier).removeData();
-        debugPrint(await ref.read(userDataProvider));
+      context.router.push(ScanDriverQrRoute());
       },
       child: Container(
         height: 50,

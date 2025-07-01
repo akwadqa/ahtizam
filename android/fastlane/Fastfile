@@ -8,11 +8,13 @@ platform :android do
 
     firebase_app_distribution(
       ***REMOVED*** "1:438670902644:android:fbc2c6245d27f601dcd821",
-      ***REMOVED***: "1//09RZYAFtFdl-9CgYIARAAGAkSNwF-L9Ir6oYCbfCN3o0OhaC7pjqakSwgvukLOyGberZsojXCz3W9cbeIkWwuqSzSEJO-RkBDoWE",
+      ***REMOVED***: "1//0e-Y4CVs1Fh7lCgYIARAAGA4SNwF-L9IrEn3ioxUoP3KIHlCszL8477Kg_0ko9y6-0ldWoJp9YSGcFW6Vx03Ks8y0U8Vb8xtLFBA",
       android_artifact_type: "APK",
       android_artifact_path: "../build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk",
       testers: "mouazhariry5@gmail.com,moh.allaaadeen@gmail.com",
-      release_notes: "Handle payment before order."
+      release_notes: "Handle Payment by wallet and not paied again"
     )
   end
 end
+
+# ENV["FIREBASE_TOKEN"]

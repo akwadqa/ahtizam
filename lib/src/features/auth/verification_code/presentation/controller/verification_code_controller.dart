@@ -76,7 +76,7 @@ class VerificationCodeController extends _$VerificationCodeController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
 
     if (state is AsyncData && _hasSubmitted) {
-      
+      debugPrint("HERE WE GO TO MAIN PAGE");
       context.router.replaceAll([const MainRoute()]);
     } else if (state is AsyncError) {
       showErrorDialog(context, (state as AsyncError).error.toString());

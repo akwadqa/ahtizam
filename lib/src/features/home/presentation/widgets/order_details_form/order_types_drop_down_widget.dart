@@ -1,3 +1,4 @@
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,12 +15,18 @@ class OrdersTypeDropDownWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ["request_now", "request_offer"];
+        final orderFormController = ref.read(showOrderFormControllerProvider.notifier);
+
+    final scanned = ref.watch(scanDriverQrControllerProvider).value?.scanned??false ;
 
     return FormField<String>(
-      initialValue:
-          ref.read(showOrderFormControllerProvider.notifier).initiallValue,
+      initialValue: orderFormController.initiallValue,
+
+          
       builder: (FormFieldState<String> state) {
+        
         return DropdownButtonFormField<String>(
+        
           value: state.value,
           decoration: InputDecoration(
             filled: true,
@@ -31,12 +38,12 @@ class OrdersTypeDropDownWidget extends ConsumerWidget {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           ),
-          onChanged: (value) {
-            ref
-                .read(showOrderFormControllerProvider.notifier)
-                .intialValueToOrder(value!);
-            state.didChange(value);
-          },
+            onChanged: scanned
+              ? null 
+              : (value) {
+                  orderFormController.intialValueToOrder(value!);
+                  state.didChange(value);
+                },
           items: items.map((e) {
             return DropdownMenuItem(
               value: e,

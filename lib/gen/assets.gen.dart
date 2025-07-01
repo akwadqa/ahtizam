@@ -86,6 +86,10 @@ class $AssetsIconsGen {
   AssetGenImage get myMarker =>
       const AssetGenImage('assets/icons/my_marker.png');
 
+  /// File path: assets/icons/notifications_ic.svg
+  SvgGenImage get notificationsIc =>
+      const SvgGenImage('assets/icons/notifications_ic.svg');
+
   /// File path: assets/icons/order_ic.svg
   SvgGenImage get orderIc => const SvgGenImage('assets/icons/order_ic.svg');
 
@@ -150,6 +154,7 @@ class $AssetsIconsGen {
         messages,
         mobileIc,
         myMarker,
+        notificationsIc,
         orderIc,
         phoneIc,
         polyline,
