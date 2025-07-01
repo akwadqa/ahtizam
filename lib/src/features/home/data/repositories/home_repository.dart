@@ -5,6 +5,7 @@ import 'package:ahtizam/src/features/home/data/datasources/home_data_source.dart
 import 'package:ahtizam/src/features/home/domain/models/coordinates_params.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
 import 'package:ahtizam/src/features/home/domain/models/service_types/service_types_model.dart';
+import 'package:ahtizam/src/network/exception/dio_exceptions.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -73,7 +74,7 @@ class HomeRepository {
             message: result.message ?? 'Unknown error');
       }
     } catch (e) {
-      throw Exception('Failed to create order: $e');
+      throw AppException('Failed to create order: $e');
     }
   }
 
@@ -81,7 +82,7 @@ class HomeRepository {
     try {
       final result = await _remoteDataSource.getServiceTypes();
       if (result.hasFailed) {
-        throw Exception(
+        throw AppException(
           result.message ?? 'Failed to fetch service types',
         );
       }
@@ -89,7 +90,7 @@ class HomeRepository {
       return result;
       // }
     } catch (e) {
-      throw Exception('❌ Failed to Get Service Types: $e');
+      throw AppException('❌ Failed to Get Service Types: $e');
     }
   }
 }

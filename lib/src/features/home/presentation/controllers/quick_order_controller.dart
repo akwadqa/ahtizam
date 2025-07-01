@@ -7,8 +7,12 @@ import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
+import 'package:ahtizam/src/features/payment/presentation/controller/payment_controller.dart';
+import 'package:ahtizam/src/routing/app_routes.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -38,6 +42,7 @@ class OrderState {
 class QuickOrderController extends _$QuickOrderController {
   String? _couponCode;
   bool _hasResetLayersAndOpenedSheet = false;
+  bool _handledNoDriverOnce = false;
 
   @override
   FutureOr<OrderState?> build() => null;
@@ -85,7 +90,7 @@ class QuickOrderController extends _$QuickOrderController {
     }
   }
 
-  void setNewOrderDetails(QuickOrderDetailsModel? order) {
+  Future<void> setNewOrderDetails(QuickOrderDetailsModel? order) async {
     final current = state.value;
     state = AsyncData(current?.copyWith(orderDetails: order) ??
         OrderState(orderDetails: order));
@@ -93,7 +98,6 @@ class QuickOrderController extends _$QuickOrderController {
 
   Future<void> startOpenNewOrderSocket(
     BuildContext context, {
-    bool showLoading = false,
     required String paymentMethod,
   }) async {
     final repo = ref.read(homeRepositoryProvider);
@@ -103,6 +107,7 @@ class QuickOrderController extends _$QuickOrderController {
         ref.read(locationSearchControllerProvider.notifier).sendCoordinates();
     final mapScreenshotFile =
         ref.watch(mapControllerProvider.notifier).mapScreenshotFile;
+    final paymentController = ref.read(paymentControllerProvider.notifier);
 
     final order = state.value?.orderModel;
 
@@ -115,10 +120,13 @@ class QuickOrderController extends _$QuickOrderController {
         quickOrderId: order.quickOrderId,
         paymentMethod: paymentMethod,
         mapImage: mapScreenshotFile);
-    if (process.error == 1 || process.data == null) {
-      throw Exception(process.message ?? "No available drivers");
-    }
+// ✅ Always mark as paid first!
+    paymentController.isOrderPaied();
 
+    if (process.error == 1 || process.data == null) {
+      showNoDriverException(context, process.message);
+      return;
+    }
     await connectSocketAndListen(
         socketService, order.quickOrderId, user.***REMOVED***, context);
   }
@@ -130,15 +138,24 @@ class QuickOrderController extends _$QuickOrderController {
     BuildContext context,
   ) async {
     try {
+      final mapService = ref.read(mapControllerProvider.notifier);
       await socketService.connect(***REMOVED***);
-
       socketService.on(quickOrderId, (data) async {
         if (data == null) return;
         debugPrint("🎛️ Received order details: $data");
         final result = QuickOrderDetailsModel.fromJson(data);
         final driverLat = result.driverData?.lat;
         final driverLng = result.driverData?.lng;
+        // if (_handledNoDriverOnce) return;
 
+        if (result.status == "No Driver Found" ||
+            result.driverData?.driverId == null) {
+          socketService.disconnect();
+
+          showNoDriverException(context, result.status);
+
+          return;
+        }
         if (driverLat != null && driverLng != null) {
           final driverLocation = LatLng(driverLat, driverLng);
           // final mapCtrl = ref.read(mapControllerProvider.notifier);
@@ -146,10 +163,8 @@ class QuickOrderController extends _$QuickOrderController {
           // await mapCtrl.safeAnimateCamera(CameraUpdate.newCameraPosition(
           //   CameraPosition(target: driverLocation, zoom: 17),
           // ));
-
-          await ref
-              .read(mapControllerProvider.notifier)
-              .updateDriverLocation(driverLocation);
+          await mapService.updateDriverLocation(driverLocation);
+          await mapService.getPolylineDriverToMePoints();
         }
 
         // ✅ Only first time: reset layers & open bottom sheet
@@ -161,35 +176,21 @@ class QuickOrderController extends _$QuickOrderController {
           await ref
               .read(homeServiceProvider.notifier)
               .resetLayers(context); // ensure layers reset
-
-// Delay to ensure navigator has popped cleanly
-// await Future.delayed(const Duration(milliseconds: 100));
-// if (context.mounted) {
-//   showDriverDetailsBottomSheet(context);
-// }
-          // Future.microtask(() {
-          //   WidgetsBinding.instance.addPostFrameCallback((_) {
-          //     if (context.mounted) {
-          //       showDriverDetailsBottomSheet(context);
-          //     }
-          //   });
-          // });
+          await setNewOrderDetails(result);
         }
-
-        // ❌ Handle missing driver
-        if (result.status == "No Driver Found" ||
-            result.driverData?.driverId == null) {
-          context.maybePop(); // Close bottom sheet
-          state = AsyncError("No Driver Found", StackTrace.current);
-          return;
-        }
-
-        // ✅ Update order details every time
-        setNewOrderDetails(result);
       });
     } catch (e) {
       state = AsyncError("Error connecting to socket", StackTrace.current);
     }
+  }
+
+  Future<void> showNoDriverException(
+      BuildContext context, String? message) async {
+    if (Navigator.canPop(context)) Navigator.pop(context);
+    await showAutoClosingDialog(
+      context,
+      "${message ?? "No available drivers."}\n${"try_again".tr(context: context)}",
+    );
   }
 
   void resetOrderDetails() {

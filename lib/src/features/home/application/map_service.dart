@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_polyline_points_plus/flutter_polyline_points_plus.dart';
@@ -41,6 +42,7 @@ class MapController extends _$MapController {
   String? firstPointAddress;
   String? secondPointAddress;
   bool _isMapReady = false; // Add this flag
+  bool orderActive=false;
 
   @override
   FutureOr<LatLng?> build() async {
@@ -151,6 +153,10 @@ class MapController extends _$MapController {
     firstPointAddress = null;
     secondPointAddress = null;
   }
+  void changeOrderActiveStatus(){
+    orderActive=!orderActive;
+    debugPrint("Order active status changed to: $orderActive");
+  }
 
   Future<void> getPolylinePoints() async {
     // if (firstPoint == null || secondPoint == null) return;
@@ -170,6 +176,30 @@ class MapController extends _$MapController {
           .toList();
       debugPrint("✅ Polyline fetched: ${polylineCoordinates.length} points");
       state = AsyncValue.data(secondPoint!);
+    } else {
+      debugPrint("❌ Failed to fetch polyline: ${result.errorMessage}");
+    }
+  }
+
+
+  Future<void> getPolylineDriverToMePoints() async {
+    // if (firstPoint == null || secondPoint == null) return;
+    debugPrint("📍 First polyline 📍: ${driverPoint?.latitude ?? "UNKNOWN"}");
+    debugPrint("📍 second polyline 📍: ${firstPoint?.latitude ?? "UNKNOWN"}");
+
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+      ServicesUrls.mapApiKey,
+      PointLatLng(driverPoint!.latitude, driverPoint!.longitude),
+      PointLatLng(firstPoint!.latitude, firstPoint!.longitude),
+      travelMode: TravelMode.driving,
+    );
+
+    if (result.points.isNotEmpty) {
+      polylineCoordinates = result.points
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+      debugPrint("✅ Polyline fetched: ${polylineCoordinates.length} points");
+      state = AsyncValue.data(firstPoint!);
     } else {
       debugPrint("❌ Failed to fetch polyline: ${result.errorMessage}");
     }
@@ -243,19 +273,22 @@ class MapController extends _$MapController {
     }
 
     try {
-      final allLatLngs = [driverPoint!, firstPoint!, secondPoint!];
+      if(orderActive==false) {
+        changeOrderActiveStatus();
+      }
+      // final allLatLngs = [driverPoint!, firstPoint!, secondPoint!];
 
-      final southWest = LatLng(
-        allLatLngs.map((p) => p.latitude).reduce((a, b) => a < b ? a : b),
-        allLatLngs.map((p) => p.longitude).reduce((a, b) => a < b ? a : b),
-      );
+      // final southWest = LatLng(
+      //   allLatLngs.map((p) => p.latitude).reduce((a, b) => a < b ? a : b),
+      //   allLatLngs.map((p) => p.longitude).reduce((a, b) => a < b ? a : b),
+      // );
 
-      final northEast = LatLng(
-        allLatLngs.map((p) => p.latitude).reduce((a, b) => a > b ? a : b),
-        allLatLngs.map((p) => p.longitude).reduce((a, b) => a > b ? a : b),
-      );
+      // final northEast = LatLng(
+      //   allLatLngs.map((p) => p.latitude).reduce((a, b) => a > b ? a : b),
+      //   allLatLngs.map((p) => p.longitude).reduce((a, b) => a > b ? a : b),
+      // );
 
-      final bounds = LatLngBounds(southwest: southWest, northeast: northEast);
+      // final bounds = LatLngBounds(southwest: southWest, northeast: northEast);
 
       // ✅ Delay to ensure map is rendered before animating
       await Future.delayed(Duration(milliseconds: 500));
@@ -291,6 +324,55 @@ class MapController extends _$MapController {
       debugPrint("❌ Screenshot Failed: ImageBytes is null");
     }
   }
+Future<void> moveCameraToIncludeRoute() async {
+  if (mapController == null || firstPoint == null || secondPoint == null) return;
+
+  // Ensure the bounds are valid by calculating min/max
+  final southwest = LatLng(
+    min(firstPoint!.latitude, secondPoint!.latitude),
+    min(firstPoint!.longitude, secondPoint!.longitude),
+  );
+
+  final northeast = LatLng(
+    max(firstPoint!.latitude, secondPoint!.latitude),
+    max(firstPoint!.longitude, secondPoint!.longitude),
+  );
+
+  final bounds = LatLngBounds(southwest: southwest, northeast: northeast);
+  final cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 80); 
+
+  try {
+    await mapController!.animateCamera(cameraUpdate);
+  } catch (e) {
+    debugPrint("❌ Camera animation failed: $e");
+
+    // Workaround for known Android bounds crash bug
+    await Future.delayed(const Duration(milliseconds: 300));
+    await mapController!.moveCamera(cameraUpdate);
+  }
+}
+
+//   Future<void> captureAndResizeScreenshot({int targetWidth = 1080, int targetHeight = 200}) async {
+//   if (mapController == null) return;
+
+//   final originalImageBytes = await mapController!.takeSnapshot();
+//   if (originalImageBytes == null) return;
+
+//   final codec = await instantiateImageCodec(
+//     originalImageBytes,
+//     targetWidth: targetWidth,
+//     targetHeight: targetHeight,
+//   );
+//   final frame = await codec.getNextFrame();
+//   final resized = await frame.image.toByteData(format: ImageByteFormat.png);
+
+//   if (resized != null) {
+//     final resizedBytes = resized.buffer.asUint8List();
+//     cachedMapScreenshot = resizedBytes;
+//     saveMapScreenshot(resizedBytes);
+//   }
+// }
+
 
   Future<void> saveMapScreenshot(Uint8List imageBytes) async {
     try {

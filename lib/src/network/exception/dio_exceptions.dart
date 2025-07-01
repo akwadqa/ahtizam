@@ -49,6 +49,21 @@ class AppException implements Exception {
   @override
   String toString() => message ?? 'Something went wrong';
 }
+class WalletPaymentException implements Exception {
+  final String message;
+  final bool isInsufficient;
+
+  WalletPaymentException._(this.message, this.isInsufficient);
+
+  factory WalletPaymentException.insufficientBalance(String message) =>
+      WalletPaymentException._(message, true);
+
+  factory WalletPaymentException.general(String message) =>
+      WalletPaymentException._(message, false);
+
+  @override
+  String toString() => message;
+}
 
 // Dio-based API exception
 class ApiException extends DioException {

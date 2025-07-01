@@ -71,7 +71,8 @@ class OrderCardWidget extends ConsumerWidget {
                         Icon(Icons.star, size: 16, color: Colors.amber),
                         SizedBox(width: 4),
                         Text(
-                          order.driverDetails.rating.toString(),
+                           order.driverDetails.rating != null
+                                  ? order.driverDetails.rating.toString():"no_rating_yet".tr(),
                           style: Theme.of(context)
                               .textTheme
                               .labelMedium!

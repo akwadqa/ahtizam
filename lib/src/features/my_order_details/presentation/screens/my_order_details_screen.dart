@@ -8,6 +8,7 @@ import 'package:ahtizam/src/features/my_order_details/presentation/controller/my
 import 'package:ahtizam/src/localization/current_language.dart';
 import 'package:ahtizam/src/shared_widgets/app_cached_network_image.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
 import 'package:ahtizam/src/shared_widgets/dotted_path_with_circles.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
@@ -54,7 +55,7 @@ class MyOrderDetailsScreen extends ConsumerWidget {
             );
           },
           error: (error, stackTrace) =>
-              showErrorDialog(context, error.toString()),
+            AppErrorWidget(),
           loading: () => FadeCircleLoadingIndicator().centered(),
         ));
   }
@@ -96,7 +97,9 @@ class MyOrderDetailsScreen extends ConsumerWidget {
                       Icon(Icons.star, size: 16, color: Colors.amber),
                       SizedBox(width: 4),
                       Text(
-                        orderDetails.driverDetails.rating.toString(),
+                        
+                           orderDetails.driverDetails.rating != null
+                                  ? orderDetails.driverDetails.rating.toString():"no_rating_yet".tr(),
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium!
@@ -292,7 +295,8 @@ class MapSection extends StatelessWidget {
       child: mapImage != null
           ? AppCachedNetworkImage(
               imageUrl: ServicesUrls.imageUrl + mapImage!,
-              fit: BoxFit.fitWidth,
+              
+              fit: BoxFit.cover,
             )
           : Center(child: Text("Map goes here")),
     );

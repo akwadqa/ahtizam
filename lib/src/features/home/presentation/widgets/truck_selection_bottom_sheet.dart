@@ -1,4 +1,5 @@
-import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
+
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/utils/functions.dart';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -6,13 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
+
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import '../../../../../gen/assets.gen.dart';
 import '../../../../shared_widgets/app_dialogs.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../theme/app_colors.dart';
-import '../controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import '../controllers/quick_order_controller.dart';
 
 /// **Bottom Sheet for Truck Selection**
@@ -34,7 +34,6 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
             showDialog(
               context: context,
               barrierDismissible: false,
-              
               builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
             );
           });
@@ -48,6 +47,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (Navigator.of(context, rootNavigator: true).canPop()) {
+              Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context, rootNavigator: true).pop();
             }
             // ref.read(selectServiceTypeControllerProvider.notifier).clearSelection();
@@ -81,6 +81,9 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
         ),
         data: (state) {
           final selectedTruck = state?.selectedServiceType;
+          final scanState = ref.watch(scanDriverQrControllerProvider);
+          final selectionLocked = scanState.value?.scanned ?? false;
+          final scannedServiceId = scanState.value?.driverInfoModel?.serviceType;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,82 +107,100 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                   children: state!.trucks.map((truck) {
                     final isSelected =
                         selectedTruck?.serviceId == truck.serviceId;
-                    return GestureDetector(
-                      onTap: () {
-                        ref
-                            .read(selectServiceTypeControllerProvider.notifier)
-                            .selectServiceType(truck);
-                        ref
-                            .read(quickOrderControllerProvider.notifier)
-                            .createOrder(
-                            );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 110,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color:
-                                  isSelected ? AppColors.primary : Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
+                    // final isDisabled = selectedTruck != null && !isSelected;
+                    // final isMatched = selectedTruck?.serviceId == truck.serviceId;
+final isDisabled = selectionLocked && !isSelected;
+                    final isMatchedByScan = truck.serviceId == scannedServiceId;
+                    // final isDisabled =
+                    //     selectionLocked; // ✅ all disabled if locked
+                    // final isSelected =
+                    //     selectedTruck?.serviceId == truck.serviceId ||
+                    //         isMatchedByScan;
+
+                    return Opacity(
+                      opacity: isDisabled ? 0.4 : 1.0,
+                      child: GestureDetector(
+                        onTap: isDisabled||isMatchedByScan
+                            ? null
+                            : () {
+                                ref
+                                    .read(selectServiceTypeControllerProvider
+                                        .notifier)
+                                    .selectServiceType(truck);
+                                ref
+                                    .read(quickOrderControllerProvider.notifier)
+                                    .createOrder();
+                              },
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 110,
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.primary
-                                    : AppColors.gray,
-                                width: isSelected ? 2 : 1,
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : AppColors.gray,
+                                  width: isSelected ? 2 : 1,
+                                ),
+                              ),
+                              child: Column(
+                                children: [
+                                  Assets.icons.truck.svg(),
+                                  10.verticalSpace,
+                                  Text(truck.serviceItem,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                  Text(
+                                      "with_currency".tr(args: [
+                                        truck.serviceCostPerKm.toString()
+                                      ]),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall),
+                                ],
                               ),
                             ),
-                            child: Column(
-                              children: [
-                                Assets.icons.truck.svg(),
-                                10.verticalSpace,
-                                Text(truck.serviceItem,
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
-                                Text(
-                                    "with_currency".tr(args: [
-                                      truck.serviceCostPerKm.toString()
-                                    ]),
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
-                              ],
-                            ),
-                          ),
-                          if (isSelected)
-                            PositionedDirectional(
-                                end: 0,
-                                top: -5,
-                                child: IconButton(
-                                    onPressed: () {
-                                      showTruckDetailsDialog(
-                                        context: context,
-                                        serviceTypeName: truck.serviceItem,
-                                        weight: truck.vehicleCapacity,
-                                        scales: truck.vehiclesSize,
-                                      );
-                                    },
-                                    icon: ClipOval(
-                                      child: Container(
-                                        height: 18,
-                                        width: 18,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          // color: Colors.grey.shade300,
-                                          border: Border.all(
-                                            color: Colors.black,
-                                            width: 1,
+                            if (isSelected)
+                              PositionedDirectional(
+                                  end: 0,
+                                  top: -5,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        showTruckDetailsDialog(
+                                          context: context,
+                                          serviceTypeName: truck.serviceItem,
+                                          weight: truck.vehicleCapacity,
+                                          scales: truck.vehiclesSize,
+                                        );
+                                      },
+                                      icon: ClipOval(
+                                        child: Container(
+                                          height: 18,
+                                          width: 18,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            // color: Colors.grey.shade300,
+                                            border: Border.all(
+                                              color: Colors.black,
+                                              width: 1,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.more_vert,
+                                            size: 15,
                                           ),
                                         ),
-                                        child: Icon(
-                                          Icons.more_vert,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    )))
-                        ],
+                                      )))
+                          ],
+                        ),
                       ),
                     );
                   }).toList(),
