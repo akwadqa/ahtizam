@@ -9,7 +9,7 @@ import '../../../application/map_service.dart';
 
 part 'location_search_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class LocationSearchController extends _$LocationSearchController {
   final TextEditingController myLocationController = TextEditingController();
   final TextEditingController workShopLocationController =
@@ -50,20 +50,16 @@ class LocationSearchController extends _$LocationSearchController {
     state = newState;
   }
 
-  // Update location from map selection
   void updateLocationFromMap() {
     final mapController = ref.read(mapControllerProvider.notifier);
-    // final newState = {...state};
     if (mapController.firstPointAddress != null) {
       myLocationController.text = mapController.firstPointAddress!;
       debugPrint("Updated My Location: ${myLocationController.text}");
-      // state = newState;
     }
     if (mapController.secondPointAddress != null) {
       workShopLocationController.text = mapController.secondPointAddress!;
       debugPrint(
           "Updated Workshop Location: ${workShopLocationController.text}");
-      // state = newState;
     }
   }
 
@@ -85,15 +81,15 @@ class LocationSearchController extends _$LocationSearchController {
       myLocationController.text = mapController.firstPointAddress!;
 
       // إعادة رسم المسار إن وُجدت النقطة الثانية
-
-      await mapController.getPolylinePoints();
-      await mapController.mapController
+   await mapController.mapController
           ?.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: latLng,
           zoom: 17,
         ),
       ));
+      await mapController.getPolylinePoints();
+   
       debugPrint("📍 Updated First Point: ${mapController.firstPointAddress}");
     }
   }
@@ -116,14 +112,21 @@ class LocationSearchController extends _$LocationSearchController {
       workShopLocationController.text = mapController.secondPointAddress!;
 
       // إعادة رسم المسار إن وُجدت النقطة الأولى
-      await mapController.mapController
+      // await mapController.mapController
+      //     ?.animateCamera(CameraUpdate.newCameraPosition(
+      //   CameraPosition(
+      //     target: latLng,
+      //     zoom: 17,
+      //   ),
+      // ));
+      await mapController.getPolylinePoints();
+        await mapController.mapController
           ?.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: latLng,
           zoom: 17,
         ),
       ));
-      await mapController.getPolylinePoints();
 
       debugPrint(
           "📍 Updated Second Point: ${mapController.secondPointAddress}");
@@ -157,7 +160,5 @@ class LocationSearchController extends _$LocationSearchController {
       CoordinatesParams(
           lat: workshopLocation.latitude, lng: workshopLocation.longitude,address: mapController.secondPointAddress??"")
     ];
-    // Example: pass to your API service
-    // ref.read(yourApiServiceProvider).sendCoordinates(data);
   }
 }

@@ -7,11 +7,11 @@ part of 'location_search_controller.dart';
 // **************************************************************************
 
 String _$locationSearchControllerHash() =>
-    r'78abc3530e4b54eb36929d411f13b8e1de1c08fd';
+    r'4dafb097983d0f2fe9b649abd93595fc6e40c602';
 
 /// See also [LocationSearchController].
 @ProviderFor(LocationSearchController)
-final locationSearchControllerProvider = AutoDisposeNotifierProvider<
+final locationSearchControllerProvider = NotifierProvider<
     LocationSearchController, Map<String, List<Prediction>>>.internal(
   LocationSearchController.new,
   name: r'locationSearchControllerProvider',
@@ -22,7 +22,6 @@ final locationSearchControllerProvider = AutoDisposeNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$LocationSearchController
-    = AutoDisposeNotifier<Map<String, List<Prediction>>>;
+typedef _$LocationSearchController = Notifier<Map<String, List<Prediction>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

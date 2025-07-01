@@ -32,7 +32,7 @@ mixin _$DriverDetails {
   String get driverPhone => throw _privateConstructorUsedError;
   @JsonKey(name: "profile_image")
   String? get profileImage => throw _privateConstructorUsedError;
-  int get rating => throw _privateConstructorUsedError;
+  int? get rating => throw _privateConstructorUsedError;
 
   /// Serializes this DriverDetails to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,7 +57,7 @@ abstract class $DriverDetailsCopyWith<$Res> {
       @JsonKey(name: "full_name") String fullName,
       @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage,
-      int rating});
+      int? rating});
 }
 
 /// @nodoc
@@ -81,7 +81,7 @@ class _$DriverDetailsCopyWithImpl<$Res, $Val extends DriverDetails>
     Object? fullName = null,
     Object? driverPhone = null,
     Object? profileImage = freezed,
-    Object? rating = null,
+    Object? rating = freezed,
   }) {
     return _then(_value.copyWith(
       assignedDate: null == assignedDate
@@ -108,10 +108,10 @@ class _$DriverDetailsCopyWithImpl<$Res, $Val extends DriverDetails>
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      rating: null == rating
+      rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ) as $Val);
   }
 }
@@ -131,7 +131,7 @@ abstract class _$$DriverDetailsImplCopyWith<$Res>
       @JsonKey(name: "full_name") String fullName,
       @JsonKey(name: "phone") String driverPhone,
       @JsonKey(name: "profile_image") String? profileImage,
-      int rating});
+      int? rating});
 }
 
 /// @nodoc
@@ -153,7 +153,7 @@ class __$$DriverDetailsImplCopyWithImpl<$Res>
     Object? fullName = null,
     Object? driverPhone = null,
     Object? profileImage = freezed,
-    Object? rating = null,
+    Object? rating = freezed,
   }) {
     return _then(_$DriverDetailsImpl(
       assignedDate: null == assignedDate
@@ -180,10 +180,10 @@ class __$$DriverDetailsImplCopyWithImpl<$Res>
           ? _value.profileImage
           : profileImage // ignore: cast_nullable_to_non_nullable
               as String?,
-      rating: null == rating
+      rating: freezed == rating
           ? _value.rating
           : rating // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
     ));
   }
 }
@@ -222,7 +222,7 @@ class _$DriverDetailsImpl implements _DriverDetails {
   @JsonKey(name: "profile_image")
   final String? profileImage;
   @override
-  final int rating;
+  final int? rating;
 
   @override
   String toString() {
@@ -278,7 +278,7 @@ abstract class _DriverDetails implements DriverDetails {
       @JsonKey(name: "full_name") required final String fullName,
       @JsonKey(name: "phone") required final String driverPhone,
       @JsonKey(name: "profile_image") final String? profileImage,
-      required final int rating}) = _$DriverDetailsImpl;
+      required final int? rating}) = _$DriverDetailsImpl;
 
   factory _DriverDetails.fromJson(Map<String, dynamic> json) =
       _$DriverDetailsImpl.fromJson;
@@ -302,7 +302,7 @@ abstract class _DriverDetails implements DriverDetails {
   @JsonKey(name: "profile_image")
   String? get profileImage;
   @override
-  int get rating;
+  int? get rating;
 
   /// Create a copy of DriverDetails
   /// with the given fields replaced by the non-null parameter values.

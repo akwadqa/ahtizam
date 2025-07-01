@@ -93,7 +93,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
         return GoogleMap(
           mapType: MapType.normal,
           zoomControlsEnabled: false,
-          onTap: isSelectLocationFromMap
+          onTap: isSelectLocationFromMap&&!mapController.orderActive
               ? (LatLng latLng) async {
                   await mapController.setCurrentLocation(latLng);
                   mapController.mapController?.animateCamera(

@@ -14,7 +14,7 @@ class HomeService extends _$HomeService {
   void build() {}
 Future<void> resetLayers(BuildContext context) async {
   final navigator = Navigator.of(context, rootNavigator: true);
-  int maxPops = 4;
+  int maxPops = 3;
   int pops = 0;
 
   while (navigator.canPop() && pops < maxPops) {

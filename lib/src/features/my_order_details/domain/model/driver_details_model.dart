@@ -11,7 +11,7 @@ class DriverDetails with _$DriverDetails {
     @JsonKey(name: "full_name") required String fullName,
     @JsonKey(name: "phone") required String driverPhone,
     @JsonKey(name: "profile_image")  String? profileImage,
-    required int rating,
+    required int? rating,
   }) = _DriverDetails;
 
   factory DriverDetails.fromJson(Map<String, dynamic> json) =>
