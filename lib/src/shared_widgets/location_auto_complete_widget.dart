@@ -1,3 +1,7 @@
+import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/localization/current_language.dart';
+import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -37,7 +41,7 @@ class LocationAutoCompleteField extends ConsumerWidget {
 
     final result = await places.autocomplete(
       input,
-      language: 'en',
+      language: ref.watch(currentLanguageProvider),
       region: "QA",
         components: [Component(Component.country, "QA")], 
 
@@ -87,7 +91,32 @@ class LocationAutoCompleteField extends ConsumerWidget {
                   .labelSmall!
                   .copyWith(fontSize: 12, color: AppColors.grey600),
               suffixIcon:
-                  const Icon(Icons.search, size: 20, color: Colors.black),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                    if(fieldId=="myLocation")
+                     ref.watch(mapControllerProvider).isLoading?
+                     FadeCircleLoadingIndicator()
+                     : SizedBox(
+                        height: 30,
+                        width: 35,
+                        child: FloatingActionButton(
+                          
+                          mini: true,
+                                        backgroundColor: AppColors.black,
+                                        
+                                        onPressed: () async{
+                                        await ref.read(mapControllerProvider.notifier).updateLocation(enableLoading: true);
+                                        controller.text=ref.watch(mapControllerProvider.notifier).firstPointAddress??"";
+                                        },
+                                        child: const Icon(Icons.my_location,
+                                            color: Colors.white, size: 15),
+                                      ).onlyPadding(end: 4),
+                      ),
+                       Icon(Icons.search, size: 20, color: Colors.black),
+                    ],
+                  ).symmetricPadding(horizontal: 8),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: const BorderSide(color: Colors.grey, width: 1),

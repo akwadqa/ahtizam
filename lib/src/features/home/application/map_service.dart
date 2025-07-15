@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:ahtizam/src/routing/app_router_provider.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points_plus/flutter_polyline_points_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -42,7 +44,7 @@ class MapController extends _$MapController {
   String? firstPointAddress;
   String? secondPointAddress;
   bool _isMapReady = false; // Add this flag
-  bool orderActive=false;
+  bool orderActive = false;
 
   @override
   FutureOr<LatLng?> build() async {
@@ -61,6 +63,7 @@ class MapController extends _$MapController {
   Future<LatLng?> _fetchCurrentLocation() async {
     try {
       debugPrint("🟠 Fetching current location...");
+
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -81,8 +84,10 @@ class MapController extends _$MapController {
       } else {
         debugPrint("⚠️ mapController is null, skipping camera animation");
       }
+      if (firstPoint != latLng) {
+        firstPoint = latLng;
+      }
 
-      firstPoint = latLng;
       firstPointAddress = await _getAddressFromLatLng(latLng);
       return latLng;
     } catch (e) {
@@ -92,8 +97,10 @@ class MapController extends _$MapController {
   }
 
   /// **Manually update location**
-  Future<void> updateLocation() async {
-    state = const AsyncValue.loading();
+  Future<void> updateLocation({bool enableLoading = false}) async {
+    if (enableLoading) {
+      state = const AsyncValue.loading();
+    }
     state = await AsyncValue.guard(() async => await _fetchCurrentLocation());
   }
 
@@ -144,44 +151,59 @@ class MapController extends _$MapController {
     // state = AsyncValue.data(mapController?.cameraPosition.target);
   }
 
-  void resetPoints() {
-    firstPoint = null;
+  Future<void> resetPoints() async {
+    final latLng = await _fetchCurrentLocation();
+    if (latLng != firstPoint) {
+      firstPointAddress = null;
+
+      firstPoint = null;
+    }
+
     secondPoint = null;
     driverPoint = null;
     isFirstPointSelected = false;
     polylineCoordinates = [];
-    firstPointAddress = null;
     secondPointAddress = null;
   }
-  void changeOrderActiveStatus(){
-    orderActive=!orderActive;
+
+  void changeOrderActiveStatus() {
+    orderActive = !orderActive;
     debugPrint("Order active status changed to: $orderActive");
   }
 
-  Future<void> getPolylinePoints() async {
+  Future<void> getPolylinePoints({
+    bool fromUserToSource = true,
+    bool fromDriverToUser = false,
+  }) async {
     // if (firstPoint == null || secondPoint == null) return;
-    debugPrint("📍 First polyline 📍: ${firstPoint?.latitude ?? "nukk"}");
-    debugPrint("📍 second polyline 📍: ${secondPoint?.latitude ?? "nukki"}");
-
+    debugPrint("📍 First polyline 📍: ${firstPoint?.latitude ?? "none"}");
+    debugPrint("📍 second polyline 📍: ${secondPoint?.latitude ?? "none"}");
+    final LatLng? fromPoint = fromUserToSource ? firstPoint : driverPoint;
+    final LatLng? toPoint = fromDriverToUser ? firstPoint : secondPoint;
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       ServicesUrls.mapApiKey,
-      PointLatLng(firstPoint!.latitude, firstPoint!.longitude),
-      PointLatLng(secondPoint!.latitude, secondPoint!.longitude),
+      PointLatLng(fromPoint!.latitude, fromPoint.longitude),
+      PointLatLng(toPoint!.latitude, toPoint.longitude),
       travelMode: TravelMode.driving,
     );
-
+    moveCameraToIncludeRoute(
+        fromDriverToUser: fromDriverToUser, fromUserToSource: fromUserToSource);
     if (result.points.isNotEmpty) {
       polylineCoordinates = result.points
           .map((point) => LatLng(point.latitude, point.longitude))
           .toList();
       debugPrint("✅ Polyline fetched: ${polylineCoordinates.length} points");
-      state = AsyncValue.data(secondPoint!);
+      // final locationType=fromUserToSource?firstPoint:driverPoint;
+      state = AsyncValue.data(fromPoint);
     } else {
       debugPrint("❌ Failed to fetch polyline: ${result.errorMessage}");
     }
   }
-
-
+  void changeUserLocation() {
+    firstPoint = driverPoint;
+    // polylineCoordinates.clear();
+    state = AsyncValue.data(firstPoint);
+  }
   Future<void> getPolylineDriverToMePoints() async {
     // if (firstPoint == null || secondPoint == null) return;
     debugPrint("📍 First polyline 📍: ${driverPoint?.latitude ?? "UNKNOWN"}");
@@ -273,7 +295,7 @@ class MapController extends _$MapController {
     }
 
     try {
-      if(orderActive==false) {
+      if (orderActive == false) {
         changeOrderActiveStatus();
       }
       // final allLatLngs = [driverPoint!, firstPoint!, secondPoint!];
@@ -294,8 +316,9 @@ class MapController extends _$MapController {
       await Future.delayed(Duration(milliseconds: 500));
 
       if (mapController != null) {
-        await mapController!.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: latLng, zoom: 17),
+        
+        await mapController!.animateCamera(CameraUpdate.newLatLng(
+         latLng,
         ));
         // await mapController!.animateCamera(CameraUpdate.newLatLngBounds(bounds, 80));
       } else {
@@ -324,33 +347,45 @@ class MapController extends _$MapController {
       debugPrint("❌ Screenshot Failed: ImageBytes is null");
     }
   }
-Future<void> moveCameraToIncludeRoute() async {
-  if (mapController == null || firstPoint == null || secondPoint == null) return;
 
-  // Ensure the bounds are valid by calculating min/max
-  final southwest = LatLng(
-    min(firstPoint!.latitude, secondPoint!.latitude),
-    min(firstPoint!.longitude, secondPoint!.longitude),
-  );
+  Future<void> moveCameraToIncludeRoute({
+    bool fromUserToSource = true,
+    bool fromDriverToUser = false,
+  }) async {
+    if (mapController == null || firstPoint == null || secondPoint == null)
+      return;
+    final LatLng? fromPoint = fromUserToSource ? firstPoint : driverPoint;
+    final LatLng? toPoint = fromDriverToUser ? firstPoint : secondPoint;
+    // Ensure the bounds are valid by calculating min/max
+    final southwest = LatLng(
+      min(fromPoint!.latitude, toPoint!.latitude),
+      min(fromPoint.longitude, toPoint.longitude),
+    );
 
-  final northeast = LatLng(
-    max(firstPoint!.latitude, secondPoint!.latitude),
-    max(firstPoint!.longitude, secondPoint!.longitude),
-  );
+    final northeast = LatLng(
+      max(fromPoint.latitude, toPoint.latitude),
+      max(fromPoint.longitude, toPoint.longitude),
+    );
+final router=ref.watch(appRouterProvider);
+    final bounds = LatLngBounds(southwest: southwest, northeast: northeast);
+    final screenHeight =router.navigatorKey.currentContext==null?740: MediaQuery.of(router.navigatorKey.currentContext!).size.height;
+    final top = 100.0;
+    final bottom = 150.0 + 300;
 
-  final bounds = LatLngBounds(southwest: southwest, northeast: northeast);
-  final cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 80); 
+    final visibleHeight = screenHeight - (top + bottom);
+    final dynamicPadding = visibleHeight * 0.05;
 
-  try {
-    await mapController!.animateCamera(cameraUpdate);
-  } catch (e) {
-    debugPrint("❌ Camera animation failed: $e");
+    final cameraUpdate = CameraUpdate.newLatLngBounds(bounds, dynamicPadding);
+    try {
+      await mapController!.animateCamera(cameraUpdate);
+    } catch (e) {
+      debugPrint("❌ Camera animation failed: $e");
 
-    // Workaround for known Android bounds crash bug
-    await Future.delayed(const Duration(milliseconds: 300));
-    await mapController!.moveCamera(cameraUpdate);
+      // Workaround for known Android bounds crash bug
+      await Future.delayed(const Duration(milliseconds: 300));
+      await mapController!.moveCamera(cameraUpdate);
+    }
   }
-}
 
 //   Future<void> captureAndResizeScreenshot({int targetWidth = 1080, int targetHeight = 200}) async {
 //   if (mapController == null) return;
@@ -372,7 +407,6 @@ Future<void> moveCameraToIncludeRoute() async {
 //     saveMapScreenshot(resizedBytes);
 //   }
 // }
-
 
   Future<void> saveMapScreenshot(Uint8List imageBytes) async {
     try {

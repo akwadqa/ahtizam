@@ -15,18 +15,18 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_controller.g.dart';
-
 @riverpod
 class PaymentController extends _$PaymentController {
   @override
   Future<PaymentState> build() async {
-    final orderInfo = ref.watch(quickOrderControllerProvider);
+    //? This makes build() wait for the async state to be fully ready.
+final orderInfo = await ref.watch(quickOrderControllerProvider.future);
     return PaymentState(
       selectedMethod: null,
-      totalAmount: orderInfo.value!.orderModel!.finalFee,
-      baseAmount: orderInfo.value!.orderModel!.baseFee,
-      discountAmount: orderInfo.value!.orderModel!.discountCost,
-      taxFee: orderInfo.value!.orderModel!.taxFee,
+  totalAmount: orderInfo?.orderModel?.finalFee ?? 0,
+  baseAmount: orderInfo?.orderModel?.baseFee ?? 0,
+  discountAmount: orderInfo?.orderModel?.discountCost ?? 0,
+  taxFee: orderInfo?.orderModel?.taxFee ?? 0,
       paymentMethods: [
         if (Platform.isIOS)
           PaymentMethod(
@@ -183,11 +183,14 @@ class PaymentController extends _$PaymentController {
   }
 
   Future<void> _completePaymentFlow(BuildContext context) async {
-    state = AsyncData(state.requireValue.copyWith(isPaid: true));
 
-    await ref.read(mapControllerProvider.notifier).moveCameraToIncludeRoute();
+    await ref.read(mapControllerProvider.notifier).moveCameraToIncludeRoute(
+    fromUserToSource: true,
+    );
     await Future.delayed(const Duration(milliseconds: 500));
     await ref.read(mapControllerProvider.notifier).captureScreenshot();
+
+    state = AsyncData(state.requireValue.copyWith(isPaid: true));
 
     showSuccessPayment(context: context);
     state = AsyncData(state.value!);

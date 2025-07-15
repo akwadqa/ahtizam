@@ -122,12 +122,12 @@ final isDisabled = selectionLocked && !isSelected;
                       child: GestureDetector(
                         onTap: isDisabled||isMatchedByScan
                             ? null
-                            : () {
+                            : () async{
                                 ref
                                     .read(selectServiceTypeControllerProvider
                                         .notifier)
                                     .selectServiceType(truck);
-                                ref
+                              await  ref
                                     .read(quickOrderControllerProvider.notifier)
                                     .createOrder();
                               },

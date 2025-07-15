@@ -6,7 +6,7 @@ part of 'rate_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$rateControllerHash() => r'770b4f6475263f235af8b30a766ef36ec75b1281';
+String _$rateControllerHash() => r'1878d284c1d831d61af0a9d579acf4ad10255f18';
 
 /// See also [RateController].
 @ProviderFor(RateController)

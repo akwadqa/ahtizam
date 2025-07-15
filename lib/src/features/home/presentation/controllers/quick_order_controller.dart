@@ -1,17 +1,19 @@
-import 'dart:io';
-
+import 'package:ahtizam/src/constants/socket_events.dart';
+import 'package:ahtizam/src/core/enums/order_status.dart';
 import 'package:ahtizam/src/core/services/socket_service.dart';
 import 'package:ahtizam/src/features/auth/regestration/application/auth_service.dart';
 import 'package:ahtizam/src/features/home/application/home_service.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/messages/presentation/controller/chat_controller.dart';
 import 'package:ahtizam/src/features/payment/presentation/controller/payment_controller.dart';
-import 'package:ahtizam/src/routing/app_routes.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
+import 'package:ahtizam/src/routing/app_router_provider.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
-
-import 'package:auto_route/auto_route.dart';
+import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -43,11 +45,13 @@ class QuickOrderController extends _$QuickOrderController {
   String? _couponCode;
   bool _hasResetLayersAndOpenedSheet = false;
   bool _handledNoDriverOnce = false;
+  late QuickOrderModel _quickOrderModel;
+  String? _previousStatus;
 
   @override
   FutureOr<OrderState?> build() => null;
 
-  Future<void> createOrder({String? couponCode}) async {
+  Future<QuickOrderModel?> createOrder({String? couponCode}) async {
     state = const AsyncLoading();
     try {
       final repo = ref.read(homeRepositoryProvider);
@@ -58,7 +62,7 @@ class QuickOrderController extends _$QuickOrderController {
 
       if (coords == null) {
         state = AsyncError('Invalid coordinates', StackTrace.current);
-        return;
+        return null; 
       }
 
       final response = await repo.createQuickOrder(
@@ -82,18 +86,43 @@ class QuickOrderController extends _$QuickOrderController {
         throw Exception(response.message ?? "No available drivers.");
       }
 
-      final current = state.value;
-      state = AsyncData(current?.copyWith(orderModel: response.data) ??
-          OrderState(orderModel: response.data));
+      // final current = state.value;
+      state = AsyncData(OrderState(orderModel: response.data));
+      debugPrint(
+          "✅ createOrder success => orderModel: ${response.data?.quickOrderId}");
+      return response.data;
+
     } catch (e, st) {
       state = AsyncError(e, st);
     }
   }
 
-  Future<void> setNewOrderDetails(QuickOrderDetailsModel? order) async {
+  setNewOrderDetails(QuickOrderDetailsModel? order) async {
     final current = state.value;
-    state = AsyncData(current?.copyWith(orderDetails: order) ??
-        OrderState(orderDetails: order));
+
+    if (current == null) {
+      debugPrint(
+          "⚠️ state.value is null — fallback to create dummy orderModel");
+      // final fallbackOrderModel = state.value?.orderModel?.copyWith(
+      //   quickOrderId: order?. ?? 'UNKNOWN-ID',
+      // );
+      state = AsyncData(OrderState(
+        orderModel: _quickOrderModel,
+        orderDetails: order,
+      ));
+
+      debugPrint(
+          "❌ setNewOrderDetails => koko: ${state.value?.orderModel?.quickOrderId}");
+      debugPrint(
+          "❌ setNewOrderDetails => orderModel: ${_quickOrderModel.quickOrderId}");
+
+      return;
+    }
+
+    final updated = current.copyWith(orderDetails: order);
+    state = AsyncData(updated);
+    debugPrint(
+        "✅ setNewOrderDetails => orderModel: ${updated.orderModel?.quickOrderId}");
   }
 
   Future<void> startOpenNewOrderSocket(
@@ -108,18 +137,19 @@ class QuickOrderController extends _$QuickOrderController {
     final mapScreenshotFile =
         ref.watch(mapControllerProvider.notifier).mapScreenshotFile;
     final paymentController = ref.read(paymentControllerProvider.notifier);
-
+    final driverId = ref.watch(scanDriverQrControllerProvider).value?.driverId;
     final order = state.value?.orderModel;
 
     if (order == null || coords == null) {
       state = AsyncError('Missing order or location data', StackTrace.current);
       return;
     }
-
     final process = await repo.processQuickOrder(
         quickOrderId: order.quickOrderId,
+        driverId: driverId,
         paymentMethod: paymentMethod,
         mapImage: mapScreenshotFile);
+
 // ✅ Always mark as paid first!
     paymentController.isOrderPaied();
 
@@ -127,6 +157,7 @@ class QuickOrderController extends _$QuickOrderController {
       showNoDriverException(context, process.message);
       return;
     }
+    _quickOrderModel = process.data!;
     await connectSocketAndListen(
         socketService, order.quickOrderId, user.***REMOVED***, context);
   }
@@ -135,9 +166,14 @@ class QuickOrderController extends _$QuickOrderController {
     SocketService socketService,
     String quickOrderId,
     String ***REMOVED***,
-    BuildContext context,
-  ) async {
+    BuildContext context, {
+    bool isFirstRecieved = true,
+  }) async {
+    final appRouter = ref.watch(appRouterProvider);
+
     try {
+      // final currentContext = appRouter.navigatorKey.currentContext;
+
       final mapService = ref.read(mapControllerProvider.notifier);
       await socketService.connect(***REMOVED***);
       socketService.on(quickOrderId, (data) async {
@@ -147,36 +183,191 @@ class QuickOrderController extends _$QuickOrderController {
         final driverLat = result.driverData?.lat;
         final driverLng = result.driverData?.lng;
         // if (_handledNoDriverOnce) return;
-
-        if (result.status == "No Driver Found" ||
+        final status = OrderStatusExtension.fromString(result.status);
+        if (status == OrderStatus.noDriverFound ||
             result.driverData?.driverId == null) {
-          socketService.disconnect();
-
+          if (isFirstRecieved) {
+            socketService.disconnect();
+            isFirstRecieved = false;
+          }
           showNoDriverException(context, result.status);
-
           return;
         }
+      socketService.on(SocketEvents.chatMessage, (data) {
+  debugPrint("chatMessage => $data");
+  // if (data == null || data is! List) return;
+
+ if (data is List) {
+    debugPrint("📥 chatMessage orginal");
+
+    final messages = List<Map<String, dynamic>>.from(data);
+    ref.read(chatControllerProvider.notifier).handleIncomingMessages(messages);
+  }
+});
+
         if (driverLat != null && driverLng != null) {
           final driverLocation = LatLng(driverLat, driverLng);
-          // final mapCtrl = ref.read(mapControllerProvider.notifier);
-
-          // await mapCtrl.safeAnimateCamera(CameraUpdate.newCameraPosition(
-          //   CameraPosition(target: driverLocation, zoom: 17),
-          // ));
           await mapService.updateDriverLocation(driverLocation);
-          await mapService.getPolylineDriverToMePoints();
         }
+
+        /// Handle status-specific dialogs
+        final currentContext = appRouter.navigatorKey.currentContext;
 
         // ✅ Only first time: reset layers & open bottom sheet
         if (!_hasResetLayersAndOpenedSheet &&
-            result.status != "No Driver Found" &&
+            status != OrderStatus.noDriverFound &&
             result.driverData?.driverId != null) {
-          _hasResetLayersAndOpenedSheet = true;
+          // state=AsyncData(state.copyWithPrevious(state.value.orderModel))
+          if (currentContext != null) {
+            await ref
+                .read(homeServiceProvider.notifier)
+                .resetLayers(currentContext);
+          } // ensure layers reset
 
-          await ref
-              .read(homeServiceProvider.notifier)
-              .resetLayers(context); // ensure layers reset
-          await setNewOrderDetails(result);
+          _hasResetLayersAndOpenedSheet = true;
+        }
+       // Skip if the order status hasn't changed
+        if (_previousStatus != status?.name) {
+          // Update the order model, but don't show a message or dialog
+        _previousStatus = status.toString();
+          debugPrint("Order status hasn't changed, just updating order details.${status.toString()}");
+          debugPrint("Order status hasn't changed, just updating order details.$_previousStatus");
+          debugPrint("Order status hasn't changed, just updating order details.${status?.name}");
+          // return;
+        }
+          debugPrint("Order status hasn't changed, $_previousStatus");
+
+        // // Update the previous status to the current one
+        // _previousStatus = status.toString();
+
+        // Always update the order details
+        // await setNewOrderDetails(result);
+        // String currentStatus = result.status;
+        await setNewOrderDetails(result);
+        // if (_previousStatus != currentStatus) {
+        // _previousStatus = currentStatus;
+        // }
+        // Update the previous status
+        // updateStateIfStatusChanged(status!.name, result);
+
+        // final currentContext = appRouter.navigatorKey.currentContext;
+        if (currentContext == null) {
+          debugPrint("❗ Current context is null — cannot show UI.");
+          return;
+        }
+
+        switch (status) {
+          case OrderStatus.accepted:
+            debugPrint("✅ Order Status: Accepted by driver");
+            await mapService.getPolylinePoints(fromUserToSource: true);
+            if (_previousStatus != OrderStatus.accepted.toString()) {
+              showAutoClosingDialog(
+                currentContext,
+                "accepted".tr(),
+                icon: const Icon(Icons.check_circle, color: AppColors.green),
+              );
+            }
+            // ScaffoldMessenger.of(currentContext).showSnackBar(
+            //    SnackBar(content: Text("Driver has accepted your order".tr())),
+            // );
+            break;
+
+          case OrderStatus.driverOnTheWay:
+            debugPrint("🚗 Driver is on the way");
+            await mapService.getPolylinePoints(
+                fromDriverToUser: true, fromUserToSource: false);
+
+            await mapService.getPolylineDriverToMePoints();
+            // mapService.changeUserLocation();
+            if (_previousStatus != OrderStatus.driverOnTheWay.toString()) {
+              ScaffoldMessenger.of(currentContext).showSnackBar(
+                SnackBar(
+                    backgroundColor: AppColors.primary,
+                    content: Text(
+                      "driver_on_the_way".tr(),
+                      style: TextStyle(color: Colors.white),
+                    )),
+                snackBarAnimationStyle: AnimationStyle(
+                    duration: Duration(milliseconds: 1500),
+                    curve: Curves.easeInOut),
+              );
+            }
+            break;
+          case OrderStatus.driverArrived:
+            debugPrint("📍 Driver has arrived");
+           await mapService.getPolylinePoints(
+                fromDriverToUser: true, fromUserToSource: false);
+            final currentContext = appRouter.navigatorKey.currentContext;
+            if (currentContext != null) {
+              if (_previousStatus != OrderStatus.driverArrived.toString()) {
+                showAutoClosingDialog(
+                  currentContext,
+                  "driver_arrived".tr(),
+                  icon: const Icon(Icons.check_circle, color: AppColors.green),
+                );
+              }
+            } else {
+              debugPrint(
+                  "❗ Cannot show UI — context is null or widget is gone.");
+            }
+            break;
+
+          case OrderStatus.onTrip:
+            debugPrint("🚚 Trip in progress");
+            await mapService.getPolylinePoints(
+                fromDriverToUser: false, fromUserToSource: false);
+            if (_previousStatus != OrderStatus.onTrip.toString()) {
+              ScaffoldMessenger.of(currentContext).showSnackBar(
+                SnackBar(content: Text("on_trip".tr())),
+              );
+            }
+
+            break;
+
+          case OrderStatus.finished:
+            debugPrint("🏁 Trip finished");
+            if (_previousStatus != OrderStatus.finished.toString()) {
+              ScaffoldMessenger.of(currentContext).showSnackBar(
+                SnackBar(
+                    backgroundColor: AppColors.newRed,
+                    content: Text("finished_thank_you".tr())),
+              );
+              ref.read(mapControllerProvider.notifier)
+                ..resetPoints()
+                ..updateLocation();
+              await showRateDriverDialog(currentContext);
+
+              ref
+                  .read(hideLayersDuringOrderControllerProvider.notifier)
+                  .hideLayersDuringOrder();
+              ref
+                  .read(showOrderFormControllerProvider.notifier)
+                  .toggleVisibility();
+            }
+
+            // socketService.disconnect();
+
+            break;
+
+          case OrderStatus.completed:
+            socketService.disconnect();
+            ref.read(mapControllerProvider.notifier)
+              ..resetPoints()
+              ..updateLocation();
+            break;
+
+          case OrderStatus.noDriverFound:
+            debugPrint("❌ No driver found");
+            showNoDriverException(
+                currentContext, "No drivers available at the moment.");
+            break;
+
+          default:
+            debugPrint("⚠️ Unknown order status: $status");
+            ScaffoldMessenger.of(currentContext).showSnackBar(
+              const SnackBar(content: Text("Unknown order status received")),
+            );
+            break;
         }
       });
     } catch (e) {
@@ -191,6 +382,25 @@ class QuickOrderController extends _$QuickOrderController {
       context,
       "${message ?? "No available drivers."}\n${"try_again".tr(context: context)}",
     );
+  }
+
+  // Update state logic with status change check
+  void updateStateIfStatusChanged(
+      String currentStatus, QuickOrderDetailsModel? order) {
+    // Skip the update if the status hasn't changed
+    if (_previousStatus == currentStatus) {
+      return;
+    }
+    // Update the previous status
+    _previousStatus = currentStatus;
+
+    // Create a new state
+    // final newState = OrderState(
+    //   orderDetails: order,
+    //   orderModel: state.value?.orderModel,
+    // );
+
+    // state = AsyncData(newState); // Update state if the status changed
   }
 
   void resetOrderDetails() {

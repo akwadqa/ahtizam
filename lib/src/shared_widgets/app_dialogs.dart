@@ -139,65 +139,71 @@ Future<void> showRateDriverDialog(
   return showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Dialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 20),
-          backgroundColor: Colors.white.withOpacity(0.8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Stack(
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  20.verticalSpace,
+      return Consumer(builder: (context, ref, widget) {
+        return Dialog(
+            insetPadding: EdgeInsets.symmetric(horizontal: 20),
+            backgroundColor: Colors.white.withOpacity(0.9),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    20.verticalSpace,
 
-                  Assets.images.checkDoneImage.image(width: 150, height: 100),
-                  20.verticalSpace,
-                  Text(
-                    "trip_is_over".tr(),
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          // color: Colors.grey,
-                        ),
-                  ),
+                    Assets.images.checkDoneImage.image(width: 150, height: 100),
+                    20.verticalSpace,
+                    Text(
+                      "trip_is_over".tr(),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            // color: Colors.grey,
+                          ),
+                    ),
 
-                  20.verticalSpace,
+                    20.verticalSpace,
+                    // **Pay Button**
+                    CustomButtonWidget(
+                      text: context.tr("rate_drive"),
+                      onTap: () async {
+                        Navigator.pop(context);
+                        // await Future.delayed(Duration(milliseconds: 1000));
+                        context.pushRoute(RateRoute());
+                      },
+                      backgroundColor: AppColors.black,
+                      isFiled: true,
+                      height: 45,
+                      radius: 12,
+                      width: MediaQuery.sizeOf(context).width,
+                    ),
+                  ],
+                ).symmetricPadding(horizontal: 20, vertical: 15),
+                PositionedDirectional(
+                  start: 15,
+                  top: 15,
+                  child: IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        size: 22,
+                      ),
+                      splashColor: AppColors.black,
+                      padding: EdgeInsets.zero,
+                      alignment: AlignmentDirectional.topStart,
+                      onPressed: () {
+                        ref
+                            .read(quickOrderControllerProvider.notifier)
+                            .resetOrderDetails();
 
-                  // **Pay Button**
-                  CustomButtonWidget(
-                    text: context.tr("rate_drive"),
-                    onTap: () async {
-                      Navigator.pop(context);
-                      // await Future.delayed(Duration(milliseconds: 1000));
-                      context.pushRoute(RateRoute());
-                    },
-                    backgroundColor: AppColors.black,
-                    isFiled: true,
-                    height: 45,
-                    radius: 12,
-                    width: MediaQuery.sizeOf(context).width,
-                  ),
-                ],
-              ).symmetricPadding(horizontal: 20, vertical: 15),
-              PositionedDirectional(
-                start: 15,
-                top: 15,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.close,
-                    size: 22,
-                  ),
-                  splashColor: AppColors.black,
-                  padding: EdgeInsets.zero,
-                  alignment: AlignmentDirectional.topStart,
-                  onPressed: () => Navigator.pop(context),
+                        Navigator.pop(context);
+                      }),
                 ),
-              ),
-            ],
-          ));
+              ],
+            ));
+      });
     },
   );
 }
@@ -253,7 +259,8 @@ void showLogoutDialog(BuildContext context) {
       });
 }
 
-Future<void> showAutoClosingDialog(BuildContext context, String message) async {
+Future<void> showAutoClosingDialog(BuildContext context, String message,
+    {Widget? icon}) async {
   Timer timer;
 
   // Start timer to auto-close the dialog
@@ -273,20 +280,23 @@ Future<void> showAutoClosingDialog(BuildContext context, String message) async {
               // color: Colors.grey,
             ),
       ).centered(),
-      icon: Icon(
-        Icons.error,
-        color: AppColors.darkRed,
-        size: 50,
-      ),
+      icon: icon ??
+          Icon(
+            Icons.error,
+            color: AppColors.darkRed,
+            size: 50,
+          ),
       actions: [
         TextButton(
           onPressed: () {
-            if (timer.isActive)  timer.cancel();
+            if (timer.isActive) timer.cancel();
             Navigator.of(context).pop(); // User manually closes
           },
-          child:  Text("OK",style:  Theme.of(context).textTheme.displaySmall!.copyWith(
+          child: Text(
+            "OK",
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   fontSize: 16,
-                  color:  Colors.black,
+                  color: Colors.black,
                   fontWeight: FontWeight.w600,
                 ),
           ).centered(),
@@ -401,12 +411,13 @@ Future<void> showSearchingTruckLoading({
     },
   );
 }
+
 void showCustomConnectingToDriverDialog(BuildContext context) {
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (_) => BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -415,13 +426,15 @@ void showCustomConnectingToDriverDialog(BuildContext context) {
           children: [
             const FadeCircleLoadingIndicator(),
             const SizedBox(height: 16),
-            Text("connecting_to_driver".tr(), style: const TextStyle(fontSize: 16)),
+            Text("connecting_to_driver".tr(),
+                style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),
     ),
   );
 }
+
 Future<void> showSuccessPayment({
   required BuildContext context,
 }) {
@@ -492,7 +505,7 @@ Future<void> showPaymentDialog(
                                     null) // Show original price if discount applied
                               Text(
                                 "with_currency".tr(args: [
-                                  paymentStateValue.totalCost.toString()
+                                  paymentStateValue.baseCost.toString()
                                 ]),
                                 style: Theme.of(context)
                                     .textTheme
@@ -652,7 +665,7 @@ Future<void> showPaymentDialog(
                                       : context.tr("active"),
                                   onTap: couponValue.isEmpty
                                       ? null
-                                      : () {
+                                      : () async {
                                           if (paymentStateValue
                                               .isCouponApplied) {
                                             // Reset coupon
@@ -663,9 +676,24 @@ Future<void> showPaymentDialog(
                                             // Apply discount logic
                                             if (couponController
                                                 .text.isNotEmpty) {
-                                              paymentController.applyCoupon(
-                                                  couponController.text,
-                                                  context);
+                                              final result =
+                                                  await paymentController
+                                                      .applyCoupon(
+                                                          couponController.text,
+                                                          context);
+                                              if (!result) {
+                                                debugPrint(
+                                                    "not valid coupon code yet");
+                                                    if(!context.mounted) {
+                                                      ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                      content: Text(
+                                                          "not valid coupon code "
+                                                              .tr())),
+                                                );
+                                                    }
+                                              }
                                             }
                                           }
                                         },

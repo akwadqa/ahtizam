@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:ahtizam/src/core/enums/order_status.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
@@ -59,7 +60,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final showSheet =
         asyncOrder is AsyncData && asyncOrder.value?.orderDetails != null;
     final showMap = ref.watch(showMapControllerProvider);
-    return Scaffold(
+   return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: showMap
           ? Padding(
@@ -96,7 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               duration: const Duration(seconds: 1),
               offset: showSheet ? Offset(0, 0) : Offset(0, 1),
               curve: Curves.easeOut,
-              child: const Align(
+              child:  Align(
                 alignment: Alignment.bottomCenter,
                 child: DriverDetailsBottomSheet(),
               ),
@@ -270,13 +271,17 @@ class _RequestOrderBottomActionCard extends ConsumerWidget {
                   CustomButtonWidget(
                     text: context.tr("request_now"),
                     // isDisabled: ref.watch(mapControllerProvider.notifier).mapController==null,
-                    onTap: () {
+                    onTap: () async {
                       ref
                           .read(showOrderFormControllerProvider.notifier)
                           .toggleVisibility();
+
                       ref
                           .read(showOrderFormControllerProvider.notifier)
                           .intialValueToOrder("request_now");
+                      await ref
+                          .read(mapControllerProvider.notifier)
+                          .updateLocation();
                     },
                     backgroundColor: AppColors.black,
                     isFiled: true,

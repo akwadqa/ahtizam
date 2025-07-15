@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/location_search_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
@@ -79,16 +81,21 @@ class RequestDetailsForm extends ConsumerWidget {
     return InkWell(
       onTap: () {
         ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
+        ref.read(locationSearchControllerProvider.notifier).restoreSearchFields();
 
         if (isSelectLocationFromMap) {
           ref
               .read(selectLocationFromMapControllerProvider.notifier)
               .toggleSelection();
         }
+        ref
+      .read(scanDriverQrControllerProvider.notifier)
+      .resetScannedValue();
         ref.read(mapControllerProvider.notifier)
           ..resetPoints()
           ..updateLocation();
       },
+      
       child: Icon(
         Icons.arrow_back_ios,
         color: Colors.black,

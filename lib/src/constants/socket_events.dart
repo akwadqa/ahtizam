@@ -8,6 +8,7 @@ abstract class SocketEvents {
 // 🟩 ORDER 
 
   static const String newOreder = 'new_order';
-  static const String loginApi = 'ehtezam.api.authentication.send_otp';
+  static const String chatMessage = 'chat_message';
+
 
 }

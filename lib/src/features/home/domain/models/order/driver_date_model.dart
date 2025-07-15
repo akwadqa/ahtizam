@@ -7,6 +7,7 @@ part 'driver_date_model.g.dart';
 class DriverDateModel with _$DriverDateModel {
   factory DriverDateModel({
     @JsonKey(name: "driver_id") required String? driverId,
+    @JsonKey(name: "driver_email") required String? driverEmail,
     required String status,
     required int available,
     @JsonKey(name: "driver_name") required String name,

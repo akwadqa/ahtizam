@@ -18,6 +18,8 @@ abstract class EndPoints {
   // 🟪 ORDER INFO
   static const String orderDetailsApi =
       'ehtezam.api.quick_order.get_quick_order_details';
+  static const String ratingApi =
+      'ehtezam.api.review.driver_review';
 
   // 🟪 PAYMENT
 

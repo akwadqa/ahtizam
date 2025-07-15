@@ -509,6 +509,7 @@
 
 //////////////////////////////////////////////////////
 ///
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/messages/presentation/widgets/message_action_seet.dart';
 import 'package:ahtizam/src/utils/helper_methods.dart';
 import 'package:auto_route/auto_route.dart';
@@ -544,8 +545,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(chatControllerProvider);
+    final orderInfo = ref.watch(quickOrderControllerProvider).value;
     final controller = ref.read(chatControllerProvider.notifier);
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -584,8 +585,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         TextStyle(color: Colors.white),
                   ),
                   messages: state.filteredMessages,
+
                   user: state.currentUser,
-                  onSendPressed: controller.handleSend,
+                  onSendPressed: (msg)=>controller.handleSend(msg.text),
                   slidableMessageBuilder: (message, child) {
                     return Dismissible(
                       key: ValueKey(message.id),
@@ -612,12 +614,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           controller.deleteMessage(message);
                         },
                         onReact: (emoji) {
-
                           controller.reactToMessage(message, emoji);
                           Navigator.pop(context);
-
                         },
-                        currentReactions:  List<String>.from(message.metadata?['reactions'] ?? []),
+                        currentReactions: List<String>.from(
+                            message.metadata?['reactions'] ?? []),
                       ),
                     );
                   },
@@ -681,20 +682,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     child: Row(
                       children: [
                         Expanded(
-                          child:
-                          
-                          message.repliedMessage is types.TextMessage
-                                ?  Text(
-                            (message.repliedMessage as types.TextMessage)
-                                    .text,
-                                // : 'صورة أو ملف',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ):SizedBox(
-                            height: 20,
-                            width: 50,
-                          ),
+                          child: message.repliedMessage is types.TextMessage
+                              ? Text(
+                                  (message.repliedMessage as types.TextMessage)
+                                      .text,
+                                  // : 'صورة أو ملف',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                )
+                              : SizedBox(
+                                  height: 20,
+                                  width: 50,
+                                ),
                         ),
                       ],
                     ),
@@ -730,22 +730,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             bottom: 0,
             start: 5,
             child: (message.metadata?['reactions'] != null)
-                ?
-                message.metadata!['reactions'].toString().isNotEmpty
-                    ?  Wrap(
-                            children: List<Widget>.from(
-                              (message.metadata!['reactions'] as List)
-                                  .map((e) => ClipOval(
-                        child: Container(
-                          color: AppColors.white,
-                          padding: EdgeInsets.all(8),
-                          child:Text(e,
-                                            style: TextStyle(fontSize: 14)),
-                                      )),
-                            ),
+                ? message.metadata!['reactions'].toString().isNotEmpty
+                    ? Wrap(
+                        children: List<Widget>.from(
+                          (message.metadata!['reactions'] as List).map(
+                            (e) => ClipOval(
+                                child: Container(
+                              color: AppColors.white,
+                              padding: EdgeInsets.all(8),
+                              child: Text(e, style: TextStyle(fontSize: 14)),
+                            )),
                           ),
-                        )
-                      
+                        ),
+                      )
                     : SizedBox()
                 : SizedBox()),
       ],

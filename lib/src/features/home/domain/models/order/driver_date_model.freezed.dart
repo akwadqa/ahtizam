@@ -22,6 +22,8 @@ DriverDateModel _$DriverDateModelFromJson(Map<String, dynamic> json) {
 mixin _$DriverDateModel {
   @JsonKey(name: "driver_id")
   String? get driverId => throw _privateConstructorUsedError;
+  @JsonKey(name: "driver_email")
+  String? get driverEmail => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   int get available => throw _privateConstructorUsedError;
   @JsonKey(name: "driver_name")
@@ -56,6 +58,7 @@ abstract class $DriverDateModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "driver_id") String? driverId,
+      @JsonKey(name: "driver_email") String? driverEmail,
       String status,
       int available,
       @JsonKey(name: "driver_name") String name,
@@ -83,6 +86,7 @@ class _$DriverDateModelCopyWithImpl<$Res, $Val extends DriverDateModel>
   @override
   $Res call({
     Object? driverId = freezed,
+    Object? driverEmail = freezed,
     Object? status = null,
     Object? available = null,
     Object? name = null,
@@ -97,6 +101,10 @@ class _$DriverDateModelCopyWithImpl<$Res, $Val extends DriverDateModel>
       driverId: freezed == driverId
           ? _value.driverId
           : driverId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driverEmail: freezed == driverEmail
+          ? _value.driverEmail
+          : driverEmail // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _value.status
@@ -148,6 +156,7 @@ abstract class _$$DriverDateModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "driver_id") String? driverId,
+      @JsonKey(name: "driver_email") String? driverEmail,
       String status,
       int available,
       @JsonKey(name: "driver_name") String name,
@@ -173,6 +182,7 @@ class __$$DriverDateModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? driverId = freezed,
+    Object? driverEmail = freezed,
     Object? status = null,
     Object? available = null,
     Object? name = null,
@@ -187,6 +197,10 @@ class __$$DriverDateModelImplCopyWithImpl<$Res>
       driverId: freezed == driverId
           ? _value.driverId
           : driverId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      driverEmail: freezed == driverEmail
+          ? _value.driverEmail
+          : driverEmail // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _value.status
@@ -233,6 +247,7 @@ class __$$DriverDateModelImplCopyWithImpl<$Res>
 class _$DriverDateModelImpl implements _DriverDateModel {
   _$DriverDateModelImpl(
       {@JsonKey(name: "driver_id") required this.driverId,
+      @JsonKey(name: "driver_email") required this.driverEmail,
       required this.status,
       required this.available,
       @JsonKey(name: "driver_name") required this.name,
@@ -249,6 +264,9 @@ class _$DriverDateModelImpl implements _DriverDateModel {
   @override
   @JsonKey(name: "driver_id")
   final String? driverId;
+  @override
+  @JsonKey(name: "driver_email")
+  final String? driverEmail;
   @override
   final String status;
   @override
@@ -276,7 +294,7 @@ class _$DriverDateModelImpl implements _DriverDateModel {
 
   @override
   String toString() {
-    return 'DriverDateModel(driverId: $driverId, status: $status, available: $available, name: $name, image: $image, phone: $phone, vehicleType: $vehicleType, rate: $rate, lat: $lat, lng: $lng)';
+    return 'DriverDateModel(driverId: $driverId, driverEmail: $driverEmail, status: $status, available: $available, name: $name, image: $image, phone: $phone, vehicleType: $vehicleType, rate: $rate, lat: $lat, lng: $lng)';
   }
 
   @override
@@ -286,6 +304,8 @@ class _$DriverDateModelImpl implements _DriverDateModel {
             other is _$DriverDateModelImpl &&
             (identical(other.driverId, driverId) ||
                 other.driverId == driverId) &&
+            (identical(other.driverEmail, driverEmail) ||
+                other.driverEmail == driverEmail) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.available, available) ||
                 other.available == available) &&
@@ -301,8 +321,8 @@ class _$DriverDateModelImpl implements _DriverDateModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, driverId, status, available,
-      name, image, phone, vehicleType, rate, lat, lng);
+  int get hashCode => Object.hash(runtimeType, driverId, driverEmail, status,
+      available, name, image, phone, vehicleType, rate, lat, lng);
 
   /// Create a copy of DriverDateModel
   /// with the given fields replaced by the non-null parameter values.
@@ -324,6 +344,7 @@ class _$DriverDateModelImpl implements _DriverDateModel {
 abstract class _DriverDateModel implements DriverDateModel {
   factory _DriverDateModel(
       {@JsonKey(name: "driver_id") required final String? driverId,
+      @JsonKey(name: "driver_email") required final String? driverEmail,
       required final String status,
       required final int available,
       @JsonKey(name: "driver_name") required final String name,
@@ -340,6 +361,9 @@ abstract class _DriverDateModel implements DriverDateModel {
   @override
   @JsonKey(name: "driver_id")
   String? get driverId;
+  @override
+  @JsonKey(name: "driver_email")
+  String? get driverEmail;
   @override
   String get status;
   @override

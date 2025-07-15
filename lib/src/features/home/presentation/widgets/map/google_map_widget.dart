@@ -46,13 +46,13 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
       final Uint8List markerIcon =
           await Assets.icons.myMarker.path.toMarkerBytes(targetSize: 30);
       final Uint8List destinatioMarkerIcon =
-          await Assets.icons.destinationMarker.path.toMarkerBytes();
-      final Uint8List driverMarkerIcon =
-          await Assets.icons.truckMarker.path.toMarkerBytes();
+          await Assets.icons.destinationMarker.path.toMarkerBytes(targetSize: 75);
+      final String driverMarkerIcon =
+           Assets.icons.truckMarker.path;
 
       _customMarker = BitmapDescriptor.fromBytes(markerIcon);
       _destinationMarker = BitmapDescriptor.fromBytes(destinatioMarkerIcon);
-      _driverMarker = BitmapDescriptor.fromBytes(driverMarkerIcon);
+      _driverMarker =await BitmapDescriptor.asset( ImageConfiguration(),driverMarkerIcon);
       setState(() {}); // Trigger rebuild when marker is loaded
     } catch (e) {
       debugPrint('Error loading custom marker: $e');
@@ -90,7 +90,9 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
           );
         }
 
-        return GoogleMap(
+        return  Stack(
+  children: [
+     GoogleMap(
           mapType: MapType.normal,
           zoomControlsEnabled: false,
           onTap: isSelectLocationFromMap&&!mapController.orderActive
@@ -159,7 +161,35 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
             //   _loadCustomMarker();
             // }
           },
-        );
+        ),
+      
+
+    // ✅ Zoom buttons
+    Positioned(
+      right: 14,
+      top: 120, // adjust to appear above bottom widgets
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildZoomButton(
+            icon: Icons.add,
+            tooltip: "Zoom in",
+            onTap: _zoomIn,
+          ),
+          const SizedBox(height: 12),
+          _buildZoomButton(
+            icon: Icons.remove,
+            tooltip: "Zoom out",
+            onTap: _zoomOut,
+          ),
+        ],
+      ),
+    ),
+  ],
+);
+
+        
+        
       },
       loading: () {
         return const Center(child: FadeCircleLoadingIndicator());
@@ -179,4 +209,50 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
       ),
     );
   }
+  Widget _buildZoomButton({
+  required IconData icon,
+  required VoidCallback onTap,
+  required String tooltip,
+}) {
+  return Tooltip(
+    message: tooltip,
+    child: Material(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: Colors.white,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.white,
+          ),
+          child: Icon(icon, size: 24, color: Colors.black87),
+        ),
+      ),
+    ),
+  );
+}
+
+
+void _zoomIn() async {
+  final controller = ref.read(mapControllerProvider.notifier).mapController;
+  if (controller != null) {
+    final currentZoom = await controller.getZoomLevel();
+    controller.animateCamera(CameraUpdate.zoomTo(currentZoom + 1));
+  }
+}
+
+void _zoomOut() async {
+  final controller = ref.read(mapControllerProvider.notifier).mapController;
+  if (controller != null) {
+    
+    final currentZoom = await controller.getZoomLevel();
+    controller.animateCamera(CameraUpdate.zoomTo(currentZoom - 1));
+  }
+}
+
 }

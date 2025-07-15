@@ -1,9 +1,11 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../../shared_widgets/custom_appbar.dart';
 import '../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../shared_widgets/fade_circle_loading_indicator.dart';
@@ -20,6 +22,55 @@ class RatePage extends ConsumerWidget {
     final rateState = ref.watch(rateControllerProvider);
     final rateController = ref.read(rateControllerProvider.notifier);
 
+    ref.listen<RateState>(
+      rateControllerProvider,
+      (prev, next) {
+        // Show loading dialog
+        if (next.isLoading ) {
+          // WidgetsBinding.instance.addPostFrameCallback((_) {
+           Center(child: FadeCircleLoadingIndicator());
+            // showDialog(
+            //   context: context,
+            //   barrierDismissible: false,
+            //   builder: (_) => const Center(child: FadeCircleLoadingIndicator()),
+            // );
+          // });
+        }
+
+        // Handle error state
+        if (next.isError && next.message != null && next.message!.isNotEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            // Navigator.of(context, rootNavigator: true)
+            //     .maybePop(); // Close loading
+// Navigator.pop(context);
+            await showAutoClosingDialog(
+              context,
+              next.message!,
+            );
+            rateController.clearError();
+          });
+        }
+
+        // Handle success state
+        if (next.success && next.message != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            // Navigator.of(context, rootNavigator: true)
+            //     .maybePop(); // Close loading
+            Fluttertoast.showToast(
+              msg: next.message!,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: Colors.black87,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
+            if (Navigator.of(context, rootNavigator: true).canPop()) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+          });
+        }
+      },
+    );
     return Scaffold(
       backgroundColor: AppColors.offWhite,
       appBar: PreferredSize(
@@ -78,18 +129,19 @@ class RatePage extends ConsumerWidget {
             24.verticalSpace,
             SizedBox(
               width: double.infinity,
-              child: rateState.isLoading
+              child: 
+              rateState.isLoading
                   ? const FadeCircleLoadingIndicator()
-                  : CustomButtonWidget(
+                  :
+                   CustomButtonWidget(
                       text: "rate".tr(),
                       onTap: rateState.isLoading
                           ? null
                           : () async {
-                              final success =
-                                  await rateController.submitRating();
-                              if (success && context.mounted) {
-                                context.maybePop();
-                              }
+                              await rateController.submitRating();
+                              // if (success && context.mounted) {
+                              //   context.maybePop();
+                              // }
                             },
                       backgroundColor: AppColors.black,
                       isFiled: true,
