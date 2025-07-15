@@ -18,16 +18,23 @@ class OrdersTypeDropDownWidget extends ConsumerWidget {
         final orderFormController = ref.read(showOrderFormControllerProvider.notifier);
 
     final scanned = ref.watch(scanDriverQrControllerProvider).value?.scanned??false ;
+    final dropdownItems = List<String>.from(items);
 
+    if (scanned) {
+      dropdownItems.add("scan_code");
+    }else if(dropdownItems.contains("scan_code")){
+      dropdownItems.remove("scan_code");
+
+    }
     return FormField<String>(
-      initialValue: orderFormController.initiallValue,
+      initialValue:orderFormController.initiallValue,
 
           
       builder: (FormFieldState<String> state) {
         
         return DropdownButtonFormField<String>(
         
-          value: state.value,
+          value:scanned?"scan_code":  state.value,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,
@@ -44,10 +51,11 @@ class OrdersTypeDropDownWidget extends ConsumerWidget {
                   orderFormController.intialValueToOrder(value!);
                   state.didChange(value);
                 },
-          items: items.map((e) {
+          items: dropdownItems.map((item) {
             return DropdownMenuItem(
-              value: e,
-              child: Text(e.tr(), style: const TextStyle(fontSize: 14)),
+              value: item,
+              enabled: item != "scan_code",
+              child: Text(item.tr(), style: const TextStyle(fontSize: 14)),
             );
           }).toList(),
         );

@@ -62,7 +62,9 @@ class CustomBottomNavigationBar extends ConsumerWidget {
                         Assets.icons.category, "category", 1, context),
                   if(!showBottomBar)  _buildCentralItem(ref,context),
                     _buildNavItem(
-                        Assets.icons.messages, "messages", 2, context),
+                        Assets.icons.walletIc, "wallet", 2, context),
+                    // _buildNavItem(
+                    //     Assets.icons.messages, "messages", 2, context),
                     _buildNavItem(Assets.icons.profile, "profile", 3, context),
                   ],
                 ).symmetricPadding(

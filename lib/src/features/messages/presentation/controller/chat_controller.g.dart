@@ -6,12 +6,12 @@ part of 'chat_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatControllerHash() => r'21706056e0ccb430e4a1320c2f7991604a3b711c';
+String _$chatControllerHash() => r'c34efd29cdf22800b638007d84f9d16620882348';
 
 /// See also [ChatController].
 @ProviderFor(ChatController)
 final chatControllerProvider =
-    AutoDisposeNotifierProvider<ChatController, ChatState>.internal(
+    NotifierProvider<ChatController, ChatState>.internal(
   ChatController.new,
   name: r'chatControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,6 @@ final chatControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$ChatController = AutoDisposeNotifier<ChatState>;
+typedef _$ChatController = Notifier<ChatState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -53,12 +53,14 @@ class HomeRepository {
 
   Future<ApiResponse<QuickOrderModel>> processQuickOrder({
     required String quickOrderId,
+    required String? driverId,
     required String paymentMethod,
     required File? mapImage,
   }) async {
     try {
       final result = await _remoteDataSource.proccessQuickOrder(
         quickOrderId,
+        driverId,
         paymentMethod,
         mapImage,
       );

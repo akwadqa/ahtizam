@@ -10,6 +10,7 @@ _$DriverDateModelImpl _$$DriverDateModelImplFromJson(
         Map<String, dynamic> json) =>
     _$DriverDateModelImpl(
       driverId: json['driver_id'] as String?,
+      driverEmail: json['driver_email'] as String?,
       status: json['status'] as String,
       available: (json['available'] as num).toInt(),
       name: json['driver_name'] as String,
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$DriverDateModelImplToJson(
         _$DriverDateModelImpl instance) =>
     <String, dynamic>{
       'driver_id': instance.driverId,
+      'driver_email': instance.driverEmail,
       'status': instance.status,
       'available': instance.available,
       'driver_name': instance.name,

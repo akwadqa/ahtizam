@@ -28,7 +28,7 @@ class HomeRemoteDataSource {
           'destination_coordinates': destinationCoordinates.toJson(),
           'service_type': serviceItemId,
           'passenger_email': email,
-          if (couponCode != null) "coupun_code": couponCode,
+          if (couponCode != null) "coupon_code": couponCode,
         },
       );
 
@@ -43,6 +43,7 @@ class HomeRemoteDataSource {
 
  Future<ApiResponse<QuickOrderModel>> proccessQuickOrder(
   String quickOrderId,
+  String? driverId,
   String paymentMethod,
   File? mapScreenshotFile,
 ) async {
@@ -50,6 +51,7 @@ class HomeRemoteDataSource {
     // Prepare multipart form data
     final formData = FormData.fromMap({
       'quick_order_id': quickOrderId,
+     if(driverId!=null) 'driver_id': driverId,
       'payment_method': paymentMethod,
       if (mapScreenshotFile != null)
         'map_image_file': await MultipartFile.fromFile(

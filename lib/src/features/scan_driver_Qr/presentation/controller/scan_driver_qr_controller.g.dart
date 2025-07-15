@@ -7,7 +7,7 @@ part of 'scan_driver_qr_controller.dart';
 // **************************************************************************
 
 String _$scanDriverQrControllerHash() =>
-    r'9af5c9ca1595c60e76ee45dc7623194528348d25';
+    r'66e36bc502c33089cb6d8300fadb5ac5123e0d9d';
 
 /// See also [ScanDriverQrController].
 @ProviderFor(ScanDriverQrController)

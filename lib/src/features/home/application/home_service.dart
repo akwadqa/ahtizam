@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -26,12 +27,18 @@ Future<void> resetLayers(BuildContext context) async {
   ref
       .read(hideLayersDuringOrderControllerProvider.notifier)
       .hideLayersDuringOrder();
+    // final scanned = ref.watch(scanDriverQrControllerProvider).value?.scanned??false ;
+  //  if (scanned) {
+  // ref
+  //     .read(scanDriverQrControllerProvider.notifier)
+  //     .resetScannedValue();
+      // }
   ref
       .read(changeRequestOrderStateServiceProvider.notifier)
       .toggleWidget();
-  ref
-      .read(quickOrderControllerProvider.notifier)
-      .resetOrderDetails();
+  // ref
+  //     .read(quickOrderControllerProvider.notifier)
+  //     .resetOrderDetails();
 }
 
 }

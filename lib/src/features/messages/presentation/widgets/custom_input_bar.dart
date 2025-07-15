@@ -14,9 +14,9 @@ class CustomInputBar extends ConsumerWidget {
   CustomInputBar({super.key});
   final _controller = TextEditingController();
   void _sendMessage(ChatController controller) {
-    final text = _controller.text.trim();
+    final text = _controller.text;
     if (text.isEmpty) return;
-    controller.handleSend(types.PartialText(text: text));
+    controller.handleSend(text,);
     _controller.clear();
   }
 

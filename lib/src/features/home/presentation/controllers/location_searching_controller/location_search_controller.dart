@@ -18,7 +18,7 @@ class LocationSearchController extends _$LocationSearchController {
 
   @override
   Map<String, List<Prediction>> build() {
-    final mapController = ref.read(mapControllerProvider.notifier);
+    final mapController = ref.watch(mapControllerProvider.notifier);
     myLocationController.text = mapController.firstPointAddress ?? '';
 
     // ref.listen<AsyncValue<LatLng?>>(
@@ -81,7 +81,7 @@ class LocationSearchController extends _$LocationSearchController {
       myLocationController.text = mapController.firstPointAddress!;
 
       // إعادة رسم المسار إن وُجدت النقطة الثانية
-   await mapController.mapController
+      await mapController.mapController
           ?.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: latLng,
@@ -89,9 +89,14 @@ class LocationSearchController extends _$LocationSearchController {
         ),
       ));
       await mapController.getPolylinePoints();
-   
+
       debugPrint("📍 Updated First Point: ${mapController.firstPointAddress}");
     }
+  }
+
+  void restoreSearchFields() {
+    myLocationController.clear();
+    workShopLocationController.clear();
   }
 
   void onWorkshopLocationChanged(String value) async {
@@ -120,7 +125,7 @@ class LocationSearchController extends _$LocationSearchController {
       //   ),
       // ));
       await mapController.getPolylinePoints();
-        await mapController.mapController
+      await mapController.mapController
           ?.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: latLng,
@@ -130,7 +135,8 @@ class LocationSearchController extends _$LocationSearchController {
 
       debugPrint(
           "📍 Updated Second Point: ${mapController.secondPointAddress}");
-    }
+    }      
+
   }
 
   List<CoordinatesParams>? sendCoordinates() {
@@ -156,9 +162,13 @@ class LocationSearchController extends _$LocationSearchController {
     debugPrint("📤 Sending coordinates: $data");
     return [
       CoordinatesParams(
-          lat: userLocation.latitude, lng: userLocation.longitude,address: mapController.firstPointAddress??""),
+          lat: userLocation.latitude,
+          lng: userLocation.longitude,
+          address: mapController.firstPointAddress ?? ""),
       CoordinatesParams(
-          lat: workshopLocation.latitude, lng: workshopLocation.longitude,address: mapController.secondPointAddress??"")
+          lat: workshopLocation.latitude,
+          lng: workshopLocation.longitude,
+          address: mapController.secondPointAddress ?? "")
     ];
   }
 }

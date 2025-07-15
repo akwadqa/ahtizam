@@ -26,9 +26,9 @@ class WalletController extends _$WalletController {
     return await fetchWallet(page: 1);
   }
 
-  Future<WalletModel> fetchWallet({required int page}) async {
+  Future<WalletModel> fetchWallet({required int page,bool showLoading = true}) async {
     try {
-      state = const AsyncLoading();
+     if(showLoading) state = const AsyncLoading();
 
       final repo = ref.read(walletRepositoryProvider);
       final response = await repo.getWalletData(page);
@@ -37,7 +37,7 @@ class WalletController extends _$WalletController {
       _totalPages = response.pagination!.totalPages;
 
       if (page == 1) {
-        _history = response.data!.transactionHistory;
+        _history =List.from( response.data!.transactionHistory);
       } else {
         _history.addAll(response.data!.transactionHistory);
       }
@@ -58,12 +58,12 @@ class WalletController extends _$WalletController {
   Future<bool> loadNextPage() async {
     if (_currentPage >= _totalPages) return false;
     final nextPage = _currentPage + 1;
-    final result = await fetchWallet(page: nextPage);
+    final result = await fetchWallet(page: nextPage,showLoading: false);
     return result.transactionHistory.isNotEmpty;
   }
 
   Future<bool> refreshWallet() async {
-    _history=[];
+    _history.clear();
     _currentPage = 1;
     _totalPages = 1;
     await fetchWallet(page: 1);

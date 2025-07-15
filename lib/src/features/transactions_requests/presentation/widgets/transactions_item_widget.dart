@@ -73,7 +73,7 @@ class WithdrawItemWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${context.tr('currency')} ${transaction.amount.toString()}",
+                      "${context.tr('with_currency',args: [transaction.amount.toString()])} ",
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           fontSize: 14,
                           color: AppColors.dark,

@@ -24,6 +24,7 @@ class AppRoutes {
   // 🟪 Payment
   static const payment = '/payment';
   static const addCard = '/add-card';
+  static const chat = '/chat';
 
   // Others
   static const pricesOffer = '/prices-offer';

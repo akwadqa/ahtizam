@@ -45,6 +45,7 @@ class AppRouter extends RootStackRouter {
       AutoRoute(page: AddCardRoute.page, path: AppRoutes.addCard),
       AutoRoute(page: PricesOfferRoute.page, path: AppRoutes.pricesOffer),
       AutoRoute(page: RateRoute.page, path: AppRoutes.rate),
+      AutoRoute(page: ChatRoute.page, path: AppRoutes.chat),
       AutoRoute(page: ProfileDetailsRoute.page, path: AppRoutes.profileDetails),
       AutoRoute(page: WalletRoute.page, path: AppRoutes.wallet),
       AutoRoute(page: MyOrderDetailsRoute.page, path: AppRoutes.myOrderDetails),

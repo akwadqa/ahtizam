@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:ahtizam/src/features/wallet/presentation/screens/wallet_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   static final List<Widget> _pages = [
     HomeScreen(),
     OrdersScreen(),
-    MessagesScreen(),
+    WalletScreen(),
     ProfileScreen(),
   ];
   int _selectedIndex = 0;

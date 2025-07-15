@@ -54,7 +54,11 @@ class PaymentMethodPage extends ConsumerWidget {
           Navigator.of(context).pop();
         }
       },
+      
+
       child: Scaffold(
+        endDrawerEnableOpenDragGesture: true,
+        resizeToAvoidBottomInset: false,
         appBar: PreferredSize(
           preferredSize: const Size(double.infinity, 65),
           child: CustomAppbar(title: "payment_information"),
@@ -94,7 +98,7 @@ class PaymentMethodPage extends ConsumerWidget {
   Widget _buildPaymentContent(BuildContext context, WidgetRef ref,
       PaymentState state, PaymentController controller) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         PaymentMethodsList(
           paymentMethods: state.paymentMethods,
@@ -143,7 +147,17 @@ class PaymentMethodPage extends ConsumerWidget {
                 _buildSummaryRow("tax_fee".tr(),
                     "${state.taxFee.toStringAsFixed(2)} ${'currency'.tr()}"),
                 if (state.discountAmount != null && state.discountAmount! > 0)
-                  ...[]
+                  ...[
+                      const DottedDivider(
+                  height: 1,
+                  color: Colors.grey,
+                  dashWidth: 4,
+                  dashSpacing: 4,
+                ),
+                       _buildSummaryRow("discount".tr(),
+                    "${state.discountAmount?.toStringAsFixed(2)} - ${'currency'.tr()}"),
+              
+                  ]
               ],
             ),
           ),

@@ -2,7 +2,7 @@ name: ahtizam
 description: "This is A standard project to start all projects from here."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+6
+version: 1.0.0+7
 
 environment:
   sdk: ^3.6.1
@@ -67,7 +67,7 @@ dependencies:
   path_provider: ^2.1.5
   mobile_scanner: ^3.5.2
   fluttertoast: ^8.2.2
-
+  just_audio: ^0.10.4
 
 
 
@@ -93,6 +93,7 @@ flutter:
     - assets/images/
     - assets/translations/
     - assets/fonts/
+    - assets/sounds/
     - .env
     
   fonts:

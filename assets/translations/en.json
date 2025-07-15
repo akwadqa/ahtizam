@@ -115,6 +115,7 @@
     "rating": "Rating",
     "how_was_service": "How was the service",
     "excellent": "Excellent",
+    "very_good": "Very Good",
     "good": "Good",
     "normal": "Normal",
     "bad": "Bad",
@@ -250,7 +251,16 @@
     "alert_paided_title": "Are you sure you want to go back?",
     "alert_paided_description": "If you go back, you may have to pay again. Do you want to proceed?",
     "click_again_to_exit": "Click again to exit",
-
+    "accepted": "Driver has accepted your order",
+    "driver_on_the_way": "Driver is on the way to your location",
+    "driver_arrived": "Driver has arrived",
+    "on_trip": "Trip is now in progress",
+    "finished_title": "Confirm Trip Completion",
+    "finished_desc": "Did the driver complete the trip successfully?",
+    "finished_thank_you": "Thank you! Order marked as completed.",
+    "completed_order": "Trip was completed",
+    "no_driver": "No drivers available at the moment.",
+    "unknown": "Unknown order status received",
     "privacy_policy_title": "Privacy Policy",
     "privacy_policy_content": "At Ahtezam, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.\n\nWe reserve the right to make changes to this Privacy Policy at any time and for any reason. We will alert you about any changes by updating the 'Last updated' date of this Privacy Policy.\n\nYou are encouraged to periodically review this Privacy Policy to stay informed of updates. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy by your continued use of the application after the date such revised Privacy Policy is posted."
 }
