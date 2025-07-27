@@ -77,7 +77,8 @@ class VerificationCodeController extends _$VerificationCodeController {
 
     if (state is AsyncData && _hasSubmitted) {
       debugPrint("HERE WE GO TO MAIN PAGE");
-      context.router.replaceAll([const MainRoute()]);
+      context.router.pushAndPopUntil( MainRoute(),    predicate: (_) => false,
+);
     } else if (state is AsyncError) {
       showErrorDialog(context, (state as AsyncError).error.toString());
     }

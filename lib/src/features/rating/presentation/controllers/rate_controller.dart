@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_types_drop_down_widget.dart';
@@ -107,10 +108,11 @@ class RateController extends _$RateController {
           await ref.read(ratingRepositoryProvider).ratingDriver(ratingParams);
       if (result.hasSucceeded) {
         debugPrint(result.message);
+        // ref.read(showMapControllerProvider.notifier).toggleSelection();
         ref.read(quickOrderControllerProvider.notifier).resetOrderDetails();
-              ref.read(mapControllerProvider.notifier)
-              ..resetPoints()
-              ..updateLocation();
+              // ref.read(mapControllerProvider.notifier)
+              // ..resetPoints()
+              // ..updateLocation();
               
       }
       state = state.copyWith(

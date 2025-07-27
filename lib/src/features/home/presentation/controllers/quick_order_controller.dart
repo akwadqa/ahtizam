@@ -4,11 +4,15 @@ import 'package:ahtizam/src/core/services/socket_service.dart';
 import 'package:ahtizam/src/features/auth/regestration/application/auth_service.dart';
 import 'package:ahtizam/src/features/home/application/home_service.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/domain/models/order/driver_date_model.dart';
 import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/messages/presentation/controller/chat_controller.dart';
+import 'package:ahtizam/src/features/my_order_details/domain/model/my_order_details_model.dart';
 import 'package:ahtizam/src/features/payment/presentation/controller/payment_controller.dart';
 import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/routing/app_router_provider.dart';
@@ -62,7 +66,7 @@ class QuickOrderController extends _$QuickOrderController {
 
       if (coords == null) {
         state = AsyncError('Invalid coordinates', StackTrace.current);
-        return null; 
+        return null;
       }
 
       final response = await repo.createQuickOrder(
@@ -91,7 +95,6 @@ class QuickOrderController extends _$QuickOrderController {
       debugPrint(
           "✅ createOrder success => orderModel: ${response.data?.quickOrderId}");
       return response.data;
-
     } catch (e, st) {
       state = AsyncError(e, st);
     }
@@ -193,17 +196,19 @@ class QuickOrderController extends _$QuickOrderController {
           showNoDriverException(context, result.status);
           return;
         }
-      socketService.on(SocketEvents.chatMessage, (data) {
-  debugPrint("chatMessage => $data");
-  // if (data == null || data is! List) return;
+        socketService.on(SocketEvents.chatMessage, (data) {
+          debugPrint("chatMessage => $data");
+          // if (data == null || data is! List) return;
 
- if (data is List) {
-    debugPrint("📥 chatMessage orginal");
+          if (data is List) {
+            debugPrint("📥 chatMessage orginal");
 
-    final messages = List<Map<String, dynamic>>.from(data);
-    ref.read(chatControllerProvider.notifier).handleIncomingMessages(messages);
-  }
-});
+            final messages = List<Map<String, dynamic>>.from(data);
+            ref
+                .read(chatControllerProvider.notifier)
+                .handleIncomingMessages(messages);
+          }
+        });
 
         if (driverLat != null && driverLng != null) {
           final driverLocation = LatLng(driverLat, driverLng);
@@ -226,16 +231,19 @@ class QuickOrderController extends _$QuickOrderController {
 
           _hasResetLayersAndOpenedSheet = true;
         }
-       // Skip if the order status hasn't changed
+        // Skip if the order status hasn't changed
         if (_previousStatus != status?.name) {
           // Update the order model, but don't show a message or dialog
-        _previousStatus = status.toString();
-          debugPrint("Order status hasn't changed, just updating order details.${status.toString()}");
-          debugPrint("Order status hasn't changed, just updating order details.$_previousStatus");
-          debugPrint("Order status hasn't changed, just updating order details.${status?.name}");
+          _previousStatus = status.toString();
+          debugPrint(
+              "Order status hasn't changed, just updating order details.${status.toString()}");
+          debugPrint(
+              "Order status hasn't changed, just updating order details.$_previousStatus");
+          debugPrint(
+              "Order status hasn't changed, just updating order details.${status?.name}");
           // return;
         }
-          debugPrint("Order status hasn't changed, $_previousStatus");
+        debugPrint("Order status hasn't changed, $_previousStatus");
 
         // // Update the previous status to the current one
         // _previousStatus = status.toString();
@@ -261,11 +269,11 @@ class QuickOrderController extends _$QuickOrderController {
             debugPrint("✅ Order Status: Accepted by driver");
             await mapService.getPolylinePoints(fromUserToSource: true);
             if (_previousStatus != OrderStatus.accepted.toString()) {
-              showAutoClosingDialog(
-                currentContext,
-                "accepted".tr(),
-                icon: const Icon(Icons.check_circle, color: AppColors.green),
-              );
+              // showAutoClosingDialog(
+              //   currentContext,
+              //   "accepted".tr(),
+              //   icon: const Icon(Icons.check_circle, color: AppColors.green),
+              // );
             }
             // ScaffoldMessenger.of(currentContext).showSnackBar(
             //    SnackBar(content: Text("Driver has accepted your order".tr())),
@@ -295,7 +303,7 @@ class QuickOrderController extends _$QuickOrderController {
             break;
           case OrderStatus.driverArrived:
             debugPrint("📍 Driver has arrived");
-           await mapService.getPolylinePoints(
+            await mapService.getPolylinePoints(
                 fromDriverToUser: true, fromUserToSource: false);
             final currentContext = appRouter.navigatorKey.currentContext;
             if (currentContext != null) {
@@ -326,35 +334,39 @@ class QuickOrderController extends _$QuickOrderController {
 
           case OrderStatus.finished:
             debugPrint("🏁 Trip finished");
-            if (_previousStatus != OrderStatus.finished.toString()) {
-              ScaffoldMessenger.of(currentContext).showSnackBar(
-                SnackBar(
-                    backgroundColor: AppColors.newRed,
-                    content: Text("finished_thank_you".tr())),
-              );
-              ref.read(mapControllerProvider.notifier)
-                ..resetPoints()
-                ..updateLocation();
-              await showRateDriverDialog(currentContext);
+            // if (_previousStatus != OrderStatus.finished.toString()) {
+            debugPrint("🏁 Trip finished Confirm");
 
-              ref
-                  .read(hideLayersDuringOrderControllerProvider.notifier)
-                  .hideLayersDuringOrder();
-              ref
-                  .read(showOrderFormControllerProvider.notifier)
-                  .toggleVisibility();
-            }
+            ScaffoldMessenger.of(currentContext).showSnackBar(
+              SnackBar(
+                  backgroundColor: AppColors.newRed,
+                  content: Text("finished_thank_you".tr())),
+            );
+            await showRateDriverDialog(currentContext);
 
-            // socketService.disconnect();
-
-            break;
-
-          case OrderStatus.completed:
-            socketService.disconnect();
             ref.read(mapControllerProvider.notifier)
               ..resetPoints()
               ..updateLocation();
+
+            ref
+                .read(hideLayersDuringOrderControllerProvider.notifier)
+                .hideLayersDuringOrder();
+            // ref.read(showMapControllerProvider.notifier).toggleSelection();
+            ref
+                .read(showOrderFormControllerProvider.notifier)
+                .toggleVisibility();
+            // }
+
+            socketService.disconnect();
+
             break;
+
+          // case OrderStatus.completed:
+          //   socketService.disconnect();
+          //   ref.read(mapControllerProvider.notifier)
+          //     ..resetPoints()
+          //     ..updateLocation();
+          //   break;
 
           case OrderStatus.noDriverFound:
             debugPrint("❌ No driver found");
@@ -363,10 +375,6 @@ class QuickOrderController extends _$QuickOrderController {
             break;
 
           default:
-            debugPrint("⚠️ Unknown order status: $status");
-            ScaffoldMessenger.of(currentContext).showSnackBar(
-              const SnackBar(content: Text("Unknown order status received")),
-            );
             break;
         }
       });
@@ -401,6 +409,79 @@ class QuickOrderController extends _$QuickOrderController {
     // );
 
     // state = AsyncData(newState); // Update state if the status changed
+  }
+
+  Future<void> rehydrateOrder(
+      MyOrderDetailsModel orderModel, BuildContext context) async {
+    debugPrint("rehydrateOrder");
+    final socketService = ref.read(socketServiceProvider);
+    final userData = ref.read(userDataProvider.notifier).userinformation;
+    final mapController = ref.read(mapControllerProvider.notifier);
+
+    // 1. Connect Socket
+    // await socketService.connect(userData.token);
+
+    // 2. Build QuickOrderDetailsModel from MyOrderDetailsModel
+    final rehydrated = QuickOrderDetailsModel(
+      status: orderModel.status,
+      
+      driverData: DriverDateModel(
+
+        driverId: orderModel.driverDetails.assignedDriver,
+        driverEmail: orderModel.driverDetails.assignedDriver,
+        status: orderModel.status,
+        available: 1,
+        name: orderModel.driverDetails.fullName,
+        image: orderModel.driverDetails.profileImage,
+        phone: orderModel.driverDetails.driverPhone,
+        vehicleType: orderModel.serviceType,
+        rate: orderModel.driverDetails.rating!.toDouble(),
+        lat: orderModel.passengerLocation.latitude,
+        lng: orderModel.passengerLocation.longitude,
+      ),
+    );
+    state = AsyncData(OrderState(orderDetails: rehydrated));
+
+    ref
+        .read(hideLayersDuringOrderControllerProvider.notifier)
+        .hideLayersDuringOrder();
+    ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();
+
+    await ref.read(mapControllerProvider.notifier).updateLocation();
+
+    ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
+    await setNewOrderDetails(rehydrated);
+
+    connectSocketAndListen(socketService, orderModel.quickOrderId, userData.token, context);
+
+
+    // // 3. Set Route
+    // await mapController.setOrderRoute(
+    //   fromLocation: orderModel.passengerLocation.toLatLng(),
+    //   toLocation: orderModel.destinationLocation.toLatLng(),
+    //   initialRoute: true,
+    // );
+
+    // // 4. Start Location Updates
+    // mapController.startLocationUpdates(
+    //   socketService,
+    //   orderModel.driverDetails.driverId,
+    //   isUpdatingOnOrderDriverLocation: true,
+    //   orderId: orderModel.quickOrderId,
+    // );
+
+    // 5. Chat Listener
+    // socketService.on(SocketEvents.chatMessage, (data) {
+    //   if (data is List) {
+    //     final messages = List<Map<String, dynamic>>.from(data);
+    //     ref
+    //         .read(chatControllerProvider.notifier)
+    //         .handleIncomingMessages(messages);
+    //   }
+    // });
+
+    // 6. Show tracking pad
+    // ref.read(orderAcceptedControllerProvider.notifier).showTrackingPad();
   }
 
   void resetOrderDetails() {

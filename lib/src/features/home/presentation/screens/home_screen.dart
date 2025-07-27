@@ -1,5 +1,7 @@
 import 'dart:ui';
+import 'package:ahtizam/src/constants/socket_events.dart';
 import 'package:ahtizam/src/core/enums/order_status.dart';
+import 'package:ahtizam/src/core/services/socket_service.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
@@ -7,6 +9,9 @@ import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_card.dart';
+import 'package:ahtizam/src/features/messages/presentation/controller/chat_controller.dart';
+import 'package:ahtizam/src/features/my_order_details/domain/model/my_order_details_model.dart';
+import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_controller.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -32,22 +37,37 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  DateTime? _lastBackPressed;
+  // DateTime? _lastBackPressed;
 
-  Future<bool> _onWillPop() async {
-    final now = DateTime.now();
-    final backGap = now.difference(_lastBackPressed ?? DateTime(2000));
+  // Future<bool> _onWillPop() async {
+  //   final now = DateTime.now();
+  //   final backGap = now.difference(_lastBackPressed ?? DateTime(2000));
 
-    if (backGap > const Duration(seconds: 2)) {
-      _lastBackPressed = now;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('press_back_again_to_exit'.tr())),
-      );
-      return false; // Don't pop
+  //   if (backGap > const Duration(seconds: 2)) {
+  //     _lastBackPressed = now;
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('press_back_again_to_exit'.tr())),
+  //     );
+  //     return false; // Don't pop
+  //   }
+
+  //   return true; // Exit app
+  // }
+
+@override
+void initState() {
+  super.initState();
+
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    final orders = await ref.read(myOrdersControllerProvider.notifier).fetchOrders(page: 1);
+    final activeOrders = orders.where((order) => order.status == 'Accepted').toList();
+
+    if (activeOrders.isNotEmpty) {
+      final orderModel = activeOrders.first;
+      await ref.read(quickOrderControllerProvider.notifier).rehydrateOrder(orderModel, context);
     }
-
-    return true; // Exit app
-  }
+  });
+}
 
   @override
   Widget build(BuildContext context) {

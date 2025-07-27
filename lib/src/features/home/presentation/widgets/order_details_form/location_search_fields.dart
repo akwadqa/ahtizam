@@ -17,7 +17,7 @@ class LocationSearchFields extends ConsumerWidget {
     final workShopLocationController = ref
         .read(locationSearchControllerProvider.notifier)
         .workShopLocationController;
-    final formKey = ref.read(locationSearchControllerProvider.notifier).formKey;
+    final formKey = ref.watch(locationSearchControllerProvider.notifier).formKey;
 
     return Stack(
       alignment: Alignment.centerLeft,

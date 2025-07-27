@@ -175,7 +175,7 @@ class MapController extends _$MapController {
     bool fromUserToSource = true,
     bool fromDriverToUser = false,
   }) async {
-    // if (firstPoint == null || secondPoint == null) return;
+    if (firstPoint == null || secondPoint == null) return;
     debugPrint("📍 First polyline 📍: ${firstPoint?.latitude ?? "none"}");
     debugPrint("📍 second polyline 📍: ${secondPoint?.latitude ?? "none"}");
     final LatLng? fromPoint = fromUserToSource ? firstPoint : driverPoint;
@@ -377,13 +377,13 @@ final router=ref.watch(appRouterProvider);
 
     final cameraUpdate = CameraUpdate.newLatLngBounds(bounds, dynamicPadding);
     try {
-      await mapController!.animateCamera(cameraUpdate);
+      await mapController?.animateCamera(cameraUpdate);
     } catch (e) {
       debugPrint("❌ Camera animation failed: $e");
 
       // Workaround for known Android bounds crash bug
       await Future.delayed(const Duration(milliseconds: 300));
-      await mapController!.moveCamera(cameraUpdate);
+      await mapController?.moveCamera(cameraUpdate);
     }
   }
 
