@@ -10,6 +10,7 @@ import 'package:ahtizam/src/routing/app_routes.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
@@ -19,24 +20,23 @@ part 'chat_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class ChatController extends _$ChatController {
-  late final String myEmail;
   List<types.TextMessage> localMessages = [];
+  final Set<String> _sentMessageIds = {};
+
   bool _chatSocketListenerAdded = false;
   final _player = AudioPlayer(); // globally in the controller
-
+ 
   @override
   ChatState build() {
-    myEmail = ref.watch(userDataProvider.notifier).userinformation.email;
+    // myEmail = ref.read(userDataProvider.notifier).userinformation.email;
     _setupChatListener();
-    return ChatState.initial(myEmail);
+    return ChatState.initial(ref);
   }
-
   // ✅ Socket listener should only be registered ONCE
   void _setupChatListener() {
     if (_chatSocketListenerAdded) return;
 
     final socketService = ref.read(socketServiceProvider);
-    final order = ref.watch(quickOrderControllerProvider).value;
 
     socketService.on(SocketEvents.chatMessage, (data) {
       debugPrint("📥 chatMessage => $data");
@@ -45,7 +45,7 @@ class ChatController extends _$ChatController {
         final senderEmail = data['sender'];
         final msg = types.TextMessage(
           author: types.User(id: senderEmail),
-          id: "${data['timestamp']}-${senderEmail}",
+          id: "${data['timestamp']}-$senderEmail",
           text: data['message'],
           createdAt: DateTime.parse(data['timestamp']).millisecondsSinceEpoch,
           repliedMessage: state.replyingTo,
@@ -85,6 +85,15 @@ class ChatController extends _$ChatController {
     final senderEmail = data['sender'];
     final messageText = data['message'];
     final timestamp = data['timestamp'];
+    final msgId = "$timestamp-$senderEmail";
+    if (_sentMessageIds.contains(msgId)) {
+      debugPrint("🔁 Skipping duplicate of my own message: $msgId");
+      return;
+    }
+    if (senderEmail == state.currentUser.id) {
+      debugPrint("🙈 Skipping my own message from socket");
+      return;
+    }
 
     final message = types.TextMessage(
       author: types.User(id: senderEmail),
@@ -135,7 +144,6 @@ class ChatController extends _$ChatController {
     final orderInfo = ref.watch(quickOrderControllerProvider).value;
     final socketService = ref.watch(socketServiceProvider);
     final myEmail = state.currentUser.id;
-
     final payload = {
       "receiver":
           orderInfo?.orderDetails?.driverData?.driverEmail ?? "no driver",
@@ -152,16 +160,19 @@ class ChatController extends _$ChatController {
 
   void addLocalSentMessage(String text, String senderEmail) {
     final now = DateTime.now();
+    final id = Uuid().v4();
 
     final msg = types.TextMessage(
       author: types.User(id: senderEmail),
-      id: "${now.toIso8601String()}-$senderEmail",
+      id: id,
       text: text,
       createdAt: now.millisecondsSinceEpoch,
       repliedMessage: state.replyingTo,
     );
 
     localMessages.insert(0, msg);
+    _sentMessageIds.add(id);
+
     _***REMOVED***UI();
   }
 
@@ -303,8 +314,9 @@ class ChatState {
     this.replyingTo,
   });
 
-  factory ChatState.initial(String email) {
-    final user = types.User(id: email);
+  factory ChatState.initial(Ref ref) {
+   final  myEmail = ref.read(userDataProvider.notifier).userinformation.email;
+    final user = types.User(id: myEmail);
     return ChatState(
       messages: [],
       filteredMessages: [],

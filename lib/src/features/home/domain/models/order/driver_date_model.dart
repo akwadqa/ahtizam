@@ -24,3 +24,4 @@ class DriverDateModel with _$DriverDateModel {
   factory DriverDateModel.fromJson(Map<String, dynamic> json) =>
       _$DriverDateModelFromJson(json);
 }
+// {driver_email: driverben@gmail.com, driver_id: DR-25-1046, driver_image: /files/7ae9f5fc-829b-4240-9158-57a694b535ae5093745527137532676.jpg, driver_name: driver ben10, driver_number: 55115522, driver_rate: 0.2, vehicle_type: Regular flatbed truck}

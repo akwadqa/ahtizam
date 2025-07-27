@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // context.maybePop().then((_) {
               debugPrint("Success check");
               context
-                  .navigateTo(VerificationRoute(inputedPhone: _phoneNumber!));
+                  .pushRoute(VerificationRoute(inputedPhone: _phoneNumber!));
               // _showDialog();
               // });
             } else if (next is AsyncError) {

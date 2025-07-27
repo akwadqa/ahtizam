@@ -13,7 +13,7 @@ class WalletRemoteDataSource {
     try {
       final response = await _networkService.get(
         EndPoints.walletHistoryDataApi,
-        queryParameters: {"page":page}
+        queryParameters: {"page":page,"action":"passenger"}
       );
 
       if (response.data == null || response.statusCode != 200) {
@@ -36,7 +36,7 @@ class WalletRemoteDataSource {
 
       final response = await _networkService.post(
         EndPoints.getWalletRequestId,
-        data: {"amount": amount},
+        data: {"amount": amount,"action":"passenger"},
       );
 
       if (response.data == null || response.statusCode != 200) {
