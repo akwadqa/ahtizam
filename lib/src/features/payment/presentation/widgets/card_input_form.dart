@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:queen_validators/queen_validators.dart';
 import '../../../../shared_widgets/custom_text_field.dart';
 import '../../../../shared_widgets/text_input_formatter.dart';
 import '../../../../utils/validators/card_form_validator.dart';

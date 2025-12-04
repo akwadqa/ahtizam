@@ -1,11 +1,9 @@
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/localization/current_language.dart';
-import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_google_places_hoc081098/flutter_google_places_hoc081098.dart';
 import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
@@ -64,9 +62,9 @@ class LocationAutoCompleteField extends ConsumerWidget {
     final lat = detail.result.geometry?.location.lat;
     final lng = detail.result.geometry?.location.lng;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Selected Place Details - Lat: $lat, Lng: $lng')),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(content: Text('Selected Place Details - Lat: $lat, Lng: $lng')),
+    // );
   }
 
   @override
@@ -97,7 +95,7 @@ class LocationAutoCompleteField extends ConsumerWidget {
                     children: [
                     if(fieldId=="myLocation")
                      ref.watch(mapControllerProvider).isLoading?
-                     FadeCircleLoadingIndicator()
+                    SizedBox()
                      : SizedBox(
                         height: 30,
                         width: 35,

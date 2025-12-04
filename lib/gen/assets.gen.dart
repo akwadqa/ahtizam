@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,7 +7,7 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -34,6 +36,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/apple_ic.svg
   SvgGenImage get appleIc => const SvgGenImage('assets/icons/apple_ic.svg');
 
+  /// File path: assets/icons/cash2_ic.svg
+  SvgGenImage get cash2Ic => const SvgGenImage('assets/icons/cash2_ic.svg');
+
+  /// File path: assets/icons/cash3_ic.svg
+  SvgGenImage get cash3Ic => const SvgGenImage('assets/icons/cash3_ic.svg');
+
   /// File path: assets/icons/category.svg
   SvgGenImage get category => const SvgGenImage('assets/icons/category.svg');
 
@@ -52,10 +60,6 @@ class $AssetsIconsGen {
   AssetGenImage get destinationMarker =>
       const AssetGenImage('assets/icons/destination_marker.png');
 
-  /// File path: assets/icons/destination_marker1.png
-  AssetGenImage get destinationMarker1 =>
-      const AssetGenImage('assets/icons/destination_marker1.png');
-
   /// File path: assets/icons/destination_marker2.png
   AssetGenImage get destinationMarker2 =>
       const AssetGenImage('assets/icons/destination_marker2.png');
@@ -65,6 +69,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
+
+  /// File path: assets/icons/id_ic.svg
+  SvgGenImage get idIc => const SvgGenImage('assets/icons/id_ic.svg');
 
   /// File path: assets/icons/location_ic.svg
   SvgGenImage get locationIc =>
@@ -121,73 +128,55 @@ class $AssetsIconsGen {
   AssetGenImage get truckMarker =>
       const AssetGenImage('assets/icons/truck_marker.png');
 
-  /// File path: assets/icons/truck_marker1.png
-  AssetGenImage get truckMarker1 =>
-      const AssetGenImage('assets/icons/truck_marker1.png');
-
   /// File path: assets/icons/verifiedCheck_ic.svg
   SvgGenImage get verifiedCheckIc =>
       const SvgGenImage('assets/icons/verifiedCheck_ic.svg');
-
-  /// File path: assets/icons/verifiedCheck_icq.svg
-  SvgGenImage get verifiedCheckIcq =>
-      const SvgGenImage('assets/icons/verifiedCheck_icq.svg');
 
   /// File path: assets/icons/wallet_ic.svg
   SvgGenImage get walletIc => const SvgGenImage('assets/icons/wallet_ic.svg');
 
   /// List of all assets
   List<dynamic> get values => [
-        appleIc,
-        category,
-        coupon,
-        creditCardIc,
-        creditCardIcn,
-        destinationMarker,
-        destinationMarker1,
-        destinationMarker2,
-        googleIc,
-        home,
-        locationIc,
-        logo,
-        markIcon,
-        messages,
-        mobileIc,
-        myMarker,
-        notificationsIc,
-        orderIc,
-        phoneIc,
-        polyline,
-        profile,
-        qr,
-        sendIc,
-        settings,
-        timeIc,
-        truck,
-        truckMarker,
-        truckMarker1,
-        verifiedCheckIc,
-        verifiedCheckIcq,
-        walletIc
-      ];
+    appleIc,
+    cash2Ic,
+    cash3Ic,
+    category,
+    coupon,
+    creditCardIc,
+    creditCardIcn,
+    destinationMarker,
+    destinationMarker2,
+    googleIc,
+    home,
+    idIc,
+    locationIc,
+    logo,
+    markIcon,
+    messages,
+    mobileIc,
+    myMarker,
+    notificationsIc,
+    orderIc,
+    phoneIc,
+    polyline,
+    profile,
+    qr,
+    sendIc,
+    settings,
+    timeIc,
+    truck,
+    truckMarker,
+    verifiedCheckIc,
+    walletIc,
+  ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/Logo2.png
-  AssetGenImage get logo2 => const AssetGenImage('assets/images/Logo2.png');
-
-  /// File path: assets/images/card_im.png
-  AssetGenImage get cardIm => const AssetGenImage('assets/images/card_im.png');
-
   /// File path: assets/images/card_image.png
   AssetGenImage get cardImage =>
       const AssetGenImage('assets/images/card_image.png');
-
-  /// File path: assets/images/check_done.svg
-  SvgGenImage get checkDone =>
-      const SvgGenImage('assets/images/check_done.svg');
 
   /// File path: assets/images/check_done_image.png
   AssetGenImage get checkDoneImage =>
@@ -204,8 +193,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/logo.png
   AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
-  /// File path: assets/images/logo_im.png
-  AssetGenImage get logoIm => const AssetGenImage('assets/images/logo_im.png');
+  /// File path: assets/images/logo_image.png
+  AssetGenImage get logoImage =>
+      const AssetGenImage('assets/images/logo_image.png');
 
   /// File path: assets/images/onboarding1_im.png
   AssetGenImage get onboarding1Im =>
@@ -223,27 +213,34 @@ class $AssetsImagesGen {
   AssetGenImage get qatarCountry =>
       const AssetGenImage('assets/images/qatar_country.png');
 
-  /// File path: assets/images/qatar_flag_image.png
-  AssetGenImage get qatarFlagImage =>
-      const AssetGenImage('assets/images/qatar_flag_image.png');
+  /// File path: assets/images/splash_im.png
+  AssetGenImage get splashIm =>
+      const AssetGenImage('assets/images/splash_im.png');
 
   /// List of all assets
   List<dynamic> get values => [
-        logo2,
-        cardIm,
-        cardImage,
-        checkDone,
-        checkDoneImage,
-        emptyData,
-        imErrorScreen,
-        logo,
-        logoIm,
-        onboarding1Im,
-        onboarding2Im,
-        onboarding2layerIm,
-        qatarCountry,
-        qatarFlagImage
-      ];
+    cardImage,
+    checkDoneImage,
+    emptyData,
+    imErrorScreen,
+    logo,
+    logoImage,
+    onboarding1Im,
+    onboarding2Im,
+    onboarding2layerIm,
+    qatarCountry,
+    splashIm,
+  ];
+}
+
+class $AssetsSoundsGen {
+  const $AssetsSoundsGen();
+
+  /// File path: assets/sounds/bell.wav
+  String get bell => 'assets/sounds/bell.wav';
+
+  /// List of all assets
+  List<String> get values => [bell];
 }
 
 class $AssetsTranslationsGen {
@@ -266,6 +263,7 @@ class Assets {
   static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsSoundsGen sounds = $AssetsSoundsGen();
   static const $AssetsTranslationsGen translations = $AssetsTranslationsGen();
 
   /// List of all assets
@@ -277,12 +275,14 @@ class AssetGenImage {
     this._assetName, {
     this.size,
     this.flavors = const {},
+    this.animation,
   });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -337,15 +337,8 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
@@ -353,18 +346,24 @@ class AssetGenImage {
   String get keyName => _assetName;
 }
 
-class SvgGenImage {
-  const SvgGenImage(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = false;
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
 
-  const SvgGenImage.vec(
-    this._assetName, {
-    this.size,
-    this.flavors = const {},
-  }) : _isVecFormat = true;
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
+}
+
+class SvgGenImage {
+  const SvgGenImage(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = false;
+
+  const SvgGenImage.vec(this._assetName, {this.size, this.flavors = const {}})
+    : _isVecFormat = true;
 
   final String _assetName;
   final Size? size;
@@ -385,6 +384,7 @@ class SvgGenImage {
     String? semanticsLabel,
     bool excludeFromSemantics = false,
     _svg.SvgTheme? theme,
+    _svg.ColorMapper? colorMapper,
     ColorFilter? colorFilter,
     Clip clipBehavior = Clip.hardEdge,
     @deprecated Color? color,
@@ -404,6 +404,7 @@ class SvgGenImage {
         assetBundle: bundle,
         packageName: package,
         theme: theme,
+        colorMapper: colorMapper,
       );
     }
     return _svg.SvgPicture(
@@ -418,7 +419,8 @@ class SvgGenImage {
       placeholderBuilder: placeholderBuilder,
       semanticsLabel: semanticsLabel,
       excludeFromSemantics: excludeFromSemantics,
-      colorFilter: colorFilter ??
+      colorFilter:
+          colorFilter ??
           (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
       clipBehavior: clipBehavior,
       cacheColorFilter: cacheColorFilter,

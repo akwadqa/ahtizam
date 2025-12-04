@@ -6,9 +6,8 @@ part of 'transaction_history_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TransactionHistoryImpl _$$TransactionHistoryImplFromJson(
-        Map<String, dynamic> json) =>
-    _$TransactionHistoryImpl(
+_TransactionHistory _$TransactionHistoryFromJson(Map<String, dynamic> json) =>
+    _TransactionHistory(
       transactionDate: DateTime.parse(json['transaction_date'] as String),
       transactionTime: json['transaction_time'] as String,
       logType: json['log_type'] as String,
@@ -18,8 +17,7 @@ _$TransactionHistoryImpl _$$TransactionHistoryImplFromJson(
       walletBalance: (json['wallet_balance'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$TransactionHistoryImplToJson(
-        _$TransactionHistoryImpl instance) =>
+Map<String, dynamic> _$TransactionHistoryToJson(_TransactionHistory instance) =>
     <String, dynamic>{
       'transaction_date': instance.transactionDate.toIso8601String(),
       'transaction_time': instance.transactionTime,

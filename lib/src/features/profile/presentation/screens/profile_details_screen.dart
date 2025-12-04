@@ -158,15 +158,15 @@ class _ProfileDetailsScreenState extends ConsumerState<ProfileDetailsScreen> {
     return Column(
       children: [
         ProfileNameFormField(
-          controller: controller.fullNameController,
+          controller: controller.fullNameController!,
         ),
         30.verticalSpace,
         ProfileEmailFormField(
-          controller: controller.emailController,
+          controller: controller.emailController!,
         ),
         30.verticalSpace,
         ProfilePhoneFormField(
-          controller: controller.phoneController,
+          controller: controller.phoneController!,
         ),
       ],
     );

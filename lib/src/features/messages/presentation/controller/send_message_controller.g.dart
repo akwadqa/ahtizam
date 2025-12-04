@@ -6,22 +6,51 @@ part of 'send_message_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sendMessageControllerHash() =>
-    r'8cbff00f91a61e029480f2d33b57819f67522428';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [SendMessageController].
 @ProviderFor(SendMessageController)
-final sendMessageControllerProvider =
-    AutoDisposeAsyncNotifierProvider<SendMessageController, String>.internal(
-  SendMessageController.new,
-  name: r'sendMessageControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sendMessageControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const sendMessageControllerProvider = SendMessageControllerProvider._();
 
-typedef _$SendMessageController = AutoDisposeAsyncNotifier<String>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class SendMessageControllerProvider
+    extends $AsyncNotifierProvider<SendMessageController, String> {
+  const SendMessageControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sendMessageControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$sendMessageControllerHash();
+
+  @$internal
+  @override
+  SendMessageController create() => SendMessageController();
+}
+
+String _$sendMessageControllerHash() =>
+    r'f9adb60ee43fd99b2ef34f9b300a4efe9daf787a';
+
+abstract class _$SendMessageController extends $AsyncNotifier<String> {
+  FutureOr<String> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<String>, String>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String>, String>,
+              AsyncValue<String>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

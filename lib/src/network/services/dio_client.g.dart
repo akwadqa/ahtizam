@@ -6,183 +6,137 @@ part of 'dio_client.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$dioHash() => r'b2c8d0ea919b9569d954884c6b6d80548387d8a2';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [dio].
 @ProviderFor(dio)
-final dioProvider = Provider<Dio>.internal(
-  dio,
-  name: r'dioProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$dioHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const dioProvider = DioProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DioRef = ProviderRef<Dio>;
-String _$networkServiceHash() => r'7aecc727f9e648c49709ba09cd80c82e38d00614';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// NetworkService injection
-///
-/// Copied from [networkService].
-@ProviderFor(networkService)
-const networkServiceProvider = NetworkServiceFamily();
-
-/// NetworkService injection
-///
-/// Copied from [networkService].
-class NetworkServiceFamily extends Family<NetworkService> {
-  /// NetworkService injection
-  ///
-  /// Copied from [networkService].
-  const NetworkServiceFamily();
-
-  /// NetworkService injection
-  ///
-  /// Copied from [networkService].
-  NetworkServiceProvider call([
-    Dio? dio,
-  ]) {
-    return NetworkServiceProvider(
-      dio,
-    );
-  }
-
-  @override
-  NetworkServiceProvider getProviderOverride(
-    covariant NetworkServiceProvider provider,
-  ) {
-    return call(
-      provider.dio,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'networkServiceProvider';
-}
-
-/// NetworkService injection
-///
-/// Copied from [networkService].
-class NetworkServiceProvider extends Provider<NetworkService> {
-  /// NetworkService injection
-  ///
-  /// Copied from [networkService].
-  NetworkServiceProvider([
-    Dio? dio,
-  ]) : this._internal(
-          (ref) => networkService(
-            ref as NetworkServiceRef,
-            dio,
-          ),
-          from: networkServiceProvider,
-          name: r'networkServiceProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$networkServiceHash,
-          dependencies: NetworkServiceFamily._dependencies,
-          allTransitiveDependencies:
-              NetworkServiceFamily._allTransitiveDependencies,
-          dio: dio,
-        );
-
-  NetworkServiceProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.dio,
-  }) : super.internal();
-
-  final Dio? dio;
-
-  @override
-  Override overrideWith(
-    NetworkService Function(NetworkServiceRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: NetworkServiceProvider._internal(
-        (ref) => create(ref as NetworkServiceRef),
-        from: from,
-        name: null,
+final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
+    with $Provider<Dio> {
+  const DioProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dioProvider',
+        isAutoDispose: false,
         dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        dio: dio,
-      ),
-    );
-  }
+        $allTransitiveDependencies: null,
+      );
 
   @override
-  ProviderElement<NetworkService> createElement() {
-    return _NetworkServiceProviderElement(this);
+  String debugGetCreateSourceHash() => _$dioHash();
+
+  @$internal
+  @override
+  $ProviderElement<Dio> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Dio create(Ref ref) {
+    return dio(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Dio value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Dio>(value),
+    );
+  }
+}
+
+String _$dioHash() => r'80ee57085722f43fa0d607854ac6104e9a0e2537';
+
+/// NetworkService injection
+
+@ProviderFor(networkService)
+const networkServiceProvider = NetworkServiceFamily._();
+
+/// NetworkService injection
+
+final class NetworkServiceProvider
+    extends
+        $FunctionalProvider<
+          NetworkService<dynamic>,
+          NetworkService<dynamic>,
+          NetworkService<dynamic>
+        >
+    with $Provider<NetworkService<dynamic>> {
+  /// NetworkService injection
+  const NetworkServiceProvider._({
+    required NetworkServiceFamily super.from,
+    required Dio? super.argument,
+  }) : super(
+         retry: null,
+         name: r'networkServiceProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$networkServiceHash();
+
+  @override
+  String toString() {
+    return r'networkServiceProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<NetworkService<dynamic>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  NetworkService<dynamic> create(Ref ref) {
+    final argument = this.argument as Dio?;
+    return networkService(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NetworkService<dynamic> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NetworkService<dynamic>>(value),
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is NetworkServiceProvider && other.dio == dio;
+    return other is NetworkServiceProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, dio.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin NetworkServiceRef on ProviderRef<NetworkService> {
-  /// The parameter `dio` of this provider.
-  Dio? get dio;
-}
+String _$networkServiceHash() => r'7aecc727f9e648c49709ba09cd80c82e38d00614';
 
-class _NetworkServiceProviderElement extends ProviderElement<NetworkService>
-    with NetworkServiceRef {
-  _NetworkServiceProviderElement(super.provider);
+/// NetworkService injection
+
+final class NetworkServiceFamily extends $Family
+    with $FunctionalFamilyOverride<NetworkService<dynamic>, Dio?> {
+  const NetworkServiceFamily._()
+    : super(
+        retry: null,
+        name: r'networkServiceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  /// NetworkService injection
+
+  NetworkServiceProvider call([Dio? dio]) =>
+      NetworkServiceProvider._(argument: dio, from: this);
 
   @override
-  Dio? get dio => (origin as NetworkServiceProvider).dio;
+  String toString() => r'networkServiceProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

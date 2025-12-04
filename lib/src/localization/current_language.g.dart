@@ -6,21 +6,58 @@ part of 'current_language.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(CurrentLanguage)
+const currentLanguageProvider = CurrentLanguageProvider._();
+
+final class CurrentLanguageProvider
+    extends $NotifierProvider<CurrentLanguage, String> {
+  const CurrentLanguageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentLanguageProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentLanguageHash();
+
+  @$internal
+  @override
+  CurrentLanguage create() => CurrentLanguage();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
 String _$currentLanguageHash() => r'266bdc5489ff07b6ea418a6293fb0c20856e5866';
 
-/// See also [CurrentLanguage].
-@ProviderFor(CurrentLanguage)
-final currentLanguageProvider =
-    NotifierProvider<CurrentLanguage, String>.internal(
-  CurrentLanguage.new,
-  name: r'currentLanguageProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentLanguageHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$CurrentLanguage = Notifier<String>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$CurrentLanguage extends $Notifier<String> {
+  String build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<String, String>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<String, String>,
+              String,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

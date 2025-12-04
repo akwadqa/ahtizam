@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'pagination.freezed.dart';
 part 'pagination.g.dart';
 @freezed
-class Pagination with _$Pagination {
+abstract class Pagination with _$Pagination {
   const factory Pagination({
     @JsonKey(name: 'total_items') required int totalItems,
     @JsonKey(name: 'total_pages') required int totalPages,

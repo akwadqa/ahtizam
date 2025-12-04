@@ -1,113 +1,46 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-part 'prices_order_data_controller.g.dart';
-
-enum PriceFilterType { all, lowestPrice, nearestToMe }
-
-@riverpod
-class PricesOfferDataController extends _$PricesOfferDataController {
-  @override
-  List<PriceOfferModel> build() {
-    return [
-      PriceOfferModel(
-        driverName: "سالم محمد",
-        driverImage:
-            "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-        driverPhoneNumber: "+978988888",
-        driverRating: "4.3",
-        isDriverVerified: false,
-        truckNumber: "123-ABC",
-        location: "الدوحة, قطر",
-        expectedTime: "30 دقيقة",
-        price: "75 ر.ق",
-        type: PriceFilterType.nearestToMe,
-      ),
-      PriceOfferModel(
-        driverName: "أحمد علي",
-        driverImage:
-            "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-        driverPhoneNumber: "+978213188",
-        driverRating: "4.8",
-        isDriverVerified: true,
-        truckNumber: "456-XYZ",
-        location: "الوكرة, قطر",
-        expectedTime: "45 دقيقة",
-        price: "60 ر.ق",
-        type: PriceFilterType.lowestPrice,
-      ),
-      PriceOfferModel(
-        driverName: "أحمد علي",
-        driverImage:
-            "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-        driverPhoneNumber: "+978213188",
-        driverRating: "4.8",
-        isDriverVerified: true,
-        truckNumber: "456-XYZ",
-        location: "الوكرة, قطر",
-        expectedTime: "45 دقيقة",
-        price: "60 ر.ق",
-        type: PriceFilterType.lowestPrice,
-      ),
-      PriceOfferModel(
-        driverName: "أحمد علي",
-        driverImage:
-            "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-        driverPhoneNumber: "+978213188",
-        driverRating: "4.8",
-        isDriverVerified: true,
-        truckNumber: "456-XYZ",
-        location: "الوكرة, قطر",
-        expectedTime: "45 دقيقة",
-        price: "60 ر.ق",
-        type: PriceFilterType.lowestPrice,
-      ),
-      PriceOfferModel(
-        driverName: "أحمد علي",
-        driverImage:
-            "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
-        driverPhoneNumber: "+978213188",
-        driverRating: "4.8",
-        isDriverVerified: true,
-        truckNumber: "456-XYZ",
-        location: "الوكرة, قطر",
-        expectedTime: "45 دقيقة",
-        price: "60 ر.ق",
-        type: PriceFilterType.lowestPrice,
-      ),
-      // Add more mock data as needed
-    ];
-  }
-
-  List<PriceOfferModel> getFilteredData(PriceFilterType filter) {
-    if (filter == PriceFilterType.all) {
-      return state;
-    }
-    return state.where((offer) => offer.type == filter).toList();
-  }
+import 'package:ahtizam/src/features/home/domain/models/order/price_offer/driver_offer_model.dart';
+import 'package:flutter_riverpod/legacy.dart';
+enum PriceFilterType {
+  all,
+  nearest,
+  cheapest,
 }
+final pricesOfferDataControllerProvider =
+    StateNotifierProvider<PricesOrderDataController, List<DriverOfferModel>>(
+  (ref) => PricesOrderDataController(),
+);
 
-class PriceOfferModel {
-  final String driverName;
-  final String driverImage;
-  final String driverPhoneNumber;
-  final String driverRating;
-  final String truckNumber;
-  final String location;
-  final String expectedTime;
-  final String price;
-  final bool isDriverVerified;
-  final PriceFilterType type;
+class PricesOrderDataController extends StateNotifier<List<DriverOfferModel>> {
+  PricesOrderDataController() : super([]);
 
-  PriceOfferModel({
-    required this.driverName,
-    required this.driverImage,
-    required this.driverPhoneNumber,
-    required this.driverRating,
-    required this.truckNumber,
-    required this.location,
-    required this.expectedTime,
-    required this.price,
-    required this.isDriverVerified,
-    required this.type,
-  });
+  void setOffers(List<DriverOfferModel> offers) {
+    state = offers;
+  }
+
+  List<DriverOfferModel> getFilteredData(PriceFilterType filter) {
+    switch (filter) {
+      case PriceFilterType.nearest:
+        return [...state]..sort((a, b) {
+          // sort by ETA distance (nearest first)
+          final aDistance = a.eta.toLowerCase().contains("km") == true
+              ? double.tryParse(a.eta.split(" ").first) ?? double.infinity
+              : double.infinity;
+          final bDistance = b.eta.toLowerCase().contains("km") == true
+              ? double.tryParse(b.eta.split(" ").first) ?? double.infinity
+              : double.infinity;
+          return aDistance.compareTo(bDistance);
+        });
+
+      case PriceFilterType.cheapest:
+        return [...state]..sort((a, b) {
+          final aPrice = a.price ?? double.infinity;
+          final bPrice = b.price ?? double.infinity;
+          return aPrice.compareTo(bPrice);
+        });
+
+      case PriceFilterType.all:
+      default:
+        return state;
+    }
+  }
 }

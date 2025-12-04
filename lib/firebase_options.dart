@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCaPxbOILQsJnhmc-4qtUbt0sEVSYwS1iw',
-    appId: '1:438670902644:android:fbc2c6245d27f601dcd821',
-    messagingSenderId: '438670902644',
-    projectId: 'ahtezam-akwad',
-    storageBucket: 'ahtezam-akwad.firebasestorage.app',
+    apiKey: 'AIzaSyA9P-9zX1OVslaEGdwrHUGAK_2rIpRgakM',
+    appId: '1:871911088481:android:ece2956912a36ede30e520',
+    messagingSenderId: '871911088481',
+    projectId: 'ahtizam-app',
+    storageBucket: 'ahtizam-app.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA-kUn9U9pfFKVQn1vXVcrb9egu-673oXU',
-    appId: '1:438670902644:ios:bd9b750b04376504dcd821',
-    messagingSenderId: '438670902644',
-    projectId: 'ahtezam-akwad',
-    storageBucket: 'ahtezam-akwad.firebasestorage.app',
-    iosBundleId: 'com.example.ahtizam',
+    apiKey: 'AIzaSyAarmkHSAOGMM2O6JkPjhwpDXlcCKUgDPs',
+    appId: '1:871911088481:ios:9ab337dbe74d3fdd30e520',
+    messagingSenderId: '871911088481',
+    projectId: 'ahtizam-app',
+    storageBucket: 'ahtizam-app.firebasestorage.app',
+    iosBundleId: 'ehtezam.app.ios',
   );
+
 }

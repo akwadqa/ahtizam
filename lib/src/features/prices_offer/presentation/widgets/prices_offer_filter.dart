@@ -39,7 +39,7 @@ class PricesOfferFilter extends ConsumerWidget {
                 contentPadding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
               ),
-              value: selectedFilter,
+              initialValue: selectedFilter,
               isExpanded: true,
               icon: const Icon(Icons.arrow_drop_down),
               items: [
@@ -48,11 +48,11 @@ class PricesOfferFilter extends ConsumerWidget {
                   child: Text('all_orders'.tr()),
                 ),
                 DropdownMenuItem(
-                  value: PriceFilterType.nearestToMe,
+                  value: PriceFilterType.nearest,
                   child: Text('nearestToMe'.tr()),
                 ),
                 DropdownMenuItem(
-                  value: PriceFilterType.lowestPrice,
+                  value: PriceFilterType.cheapest,
                   child: Text('lowestPrice'.tr()),
                 ),
               ],

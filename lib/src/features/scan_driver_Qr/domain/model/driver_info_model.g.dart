@@ -6,24 +6,22 @@ part of 'driver_info_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DriverInfoModelImpl _$$DriverInfoModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$DriverInfoModelImpl(
+_DriverInfoModel _$DriverInfoModelFromJson(Map<String, dynamic> json) =>
+    _DriverInfoModel(
       serviceType: json['service_type'] as String,
-      qid: (json['qid'] as num).toInt(),
-      fullName: json['full_name'] as String,
-      driverPhone: json['mobile_no'] as String,
+      qid: json['driver_qid'] as String,
+      fullName: json['driver_full_name'] as String,
+      driverPhone: json['driver_phone_number'] as String,
       profileImage: json['profile_image'] as String?,
       rating: (json['rating'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$DriverInfoModelImplToJson(
-        _$DriverInfoModelImpl instance) =>
+Map<String, dynamic> _$DriverInfoModelToJson(_DriverInfoModel instance) =>
     <String, dynamic>{
       'service_type': instance.serviceType,
-      'qid': instance.qid,
-      'full_name': instance.fullName,
-      'mobile_no': instance.driverPhone,
+      'driver_qid': instance.qid,
+      'driver_full_name': instance.fullName,
+      'driver_phone_number': instance.driverPhone,
       'profile_image': instance.profileImage,
       'rating': instance.rating,
     };

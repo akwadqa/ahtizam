@@ -6,22 +6,74 @@ part of 'location_search_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$locationSearchControllerHash() =>
-    r'98b7921c52471b055fbcad8f3775fc0dcbb41c1a';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [LocationSearchController].
 @ProviderFor(LocationSearchController)
-final locationSearchControllerProvider = NotifierProvider<
-    LocationSearchController, Map<String, List<Prediction>>>.internal(
-  LocationSearchController.new,
-  name: r'locationSearchControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$locationSearchControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const locationSearchControllerProvider = LocationSearchControllerProvider._();
 
-typedef _$LocationSearchController = Notifier<Map<String, List<Prediction>>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class LocationSearchControllerProvider
+    extends
+        $NotifierProvider<
+          LocationSearchController,
+          Map<String, List<Prediction>>
+        > {
+  const LocationSearchControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'locationSearchControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$locationSearchControllerHash();
+
+  @$internal
+  @override
+  LocationSearchController create() => LocationSearchController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Map<String, List<Prediction>> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<String, List<Prediction>>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$locationSearchControllerHash() =>
+    r'477fdbf1f36963bde8443485e503dc8ab8ca3aaf';
+
+abstract class _$LocationSearchController
+    extends $Notifier<Map<String, List<Prediction>>> {
+  Map<String, List<Prediction>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              Map<String, List<Prediction>>,
+              Map<String, List<Prediction>>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                Map<String, List<Prediction>>,
+                Map<String, List<Prediction>>
+              >,
+              Map<String, List<Prediction>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

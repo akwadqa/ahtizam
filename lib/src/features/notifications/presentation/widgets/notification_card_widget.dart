@@ -5,13 +5,13 @@ import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class NotificationCardWidget extends StatelessWidget {
-  final String driverName;
+  final String name;
   final String message;
   final String time;
-  final String imageUrl;
+  final String? imageUrl;
 
   const NotificationCardWidget({super.key, 
-    required this.driverName,
+    required this.name,
     required this.message,
     required this.time,
     required this.imageUrl,
@@ -38,7 +38,7 @@ class NotificationCardWidget extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: driverName,
+                        text: name,
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       TextSpan(text: ' $message'),

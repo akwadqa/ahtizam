@@ -6,23 +6,53 @@ part of 'my_orders_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(myOrdersRepository)
+const myOrdersRepositoryProvider = MyOrdersRepositoryProvider._();
+
+final class MyOrdersRepositoryProvider
+    extends
+        $FunctionalProvider<
+          MyOrdersRepository,
+          MyOrdersRepository,
+          MyOrdersRepository
+        >
+    with $Provider<MyOrdersRepository> {
+  const MyOrdersRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'myOrdersRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$myOrdersRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<MyOrdersRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  MyOrdersRepository create(Ref ref) {
+    return myOrdersRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MyOrdersRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MyOrdersRepository>(value),
+    );
+  }
+}
+
 String _$myOrdersRepositoryHash() =>
     r'87aabccd35f167018ba11f12393f8c9a5af85a13';
-
-/// See also [myOrdersRepository].
-@ProviderFor(myOrdersRepository)
-final myOrdersRepositoryProvider = Provider<MyOrdersRepository>.internal(
-  myOrdersRepository,
-  name: r'myOrdersRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$myOrdersRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MyOrdersRepositoryRef = ProviderRef<MyOrdersRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

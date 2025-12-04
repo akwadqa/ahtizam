@@ -6,6 +6,7 @@ import 'payment_method_item.dart';
 class PaymentMethodsList extends StatelessWidget {
   final List<PaymentMethod> paymentMethods;
   final PaymentMethod? selectedMethod;
+  final bool? isPaied;
   final Function(PaymentMethod) onMethodSelected;
 
   const PaymentMethodsList({
@@ -13,6 +14,7 @@ class PaymentMethodsList extends StatelessWidget {
     required this.paymentMethods,
     required this.selectedMethod,
     required this.onMethodSelected,
+    required this.isPaied,
   });
 
   @override
@@ -29,9 +31,9 @@ class PaymentMethodsList extends StatelessWidget {
           final method = paymentMethods[index];
           return PaymentMethodItem(
             icon: method.icon,
-            title: method.title,
+            title: method.id,
             isSelected: selectedMethod?.id == method.id,
-            onTap: () => onMethodSelected(method),
+            onTap: () =>isPaied!?null: onMethodSelected(method),
           );
         },
       ),

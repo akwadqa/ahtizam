@@ -12,27 +12,7 @@ import 'package:ahtizam/src/features/home/application/map_service.dart';
 part 'select_truck_controller.g.dart';
 
 final List<ServiceTypesModel> trucks = [
-  ServiceTypesModel(
-    serviceId: "1",
-    serviceItem: "سطحة",
-    serviceCostPerKm: 10.7,
-    vehicleCapacity: "21652731",
-    vehiclesSize: "1222",
-  ),
-
-  ServiceTypesModel(
-    serviceId: "3",
-    serviceItem: "ونش",
-    serviceCostPerKm: 15.7,
-    vehicleCapacity: "21652731",
-    vehiclesSize: "1222",
-  ),
-
-  // ServiceTypesModel(
-  //     id: 3,
-  //     name: "قاطرة",
-  //     price: "with_currency".tr(args: ['20']),
-  //     image: "assets/icons/truck.svg"),
+ 
 ];
 
 @Riverpod(keepAlive: true)
@@ -57,14 +37,8 @@ class SelectServiceTypeController extends _$SelectServiceTypeController {
       }
       final repo = ref.read(homeRepositoryProvider);
       final result = await repo.getServiceTypes();
-      // final slom = await ref
-      //     .read(serviceTypesControllerProvider.notifier)
-      //     .getServiceTypes(context);
       final currentState = state.value?.copyWith(trucks: result.data);
       state = AsyncData(currentState);
-      //  AsyncData(
-      //     ServiceTypesState(trucks: trucks, selectedServiceType: null));
-      // ✅ After loading trucks, check for scanned serviceId
       final scannedServiceId =
           ref.watch(scanDriverQrControllerProvider).value?.driverInfoModel?.serviceType;
       debugPrint(" scanned serviceId => $scannedServiceId");

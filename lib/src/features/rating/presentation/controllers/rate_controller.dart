@@ -1,12 +1,9 @@
-import 'package:ahtizam/src/features/home/application/map_service.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/widgets/order_details_form/order_types_drop_down_widget.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:ahtizam/src/features/rating/data/repository/rating_repository.dart';
 import 'package:ahtizam/src/features/rating/domain/rating_params.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'rate_controller.g.dart';
@@ -95,7 +92,8 @@ class RateController extends _$RateController {
             orderInfo?.orderDetails?.driverData?.driverId ?? "No drive Id",
         rating: state.selectedRating!.value.toString(),
         referenceDoctype:
-            orderType == "request_now" ? "Quick Order" : "Order Offer",
+           "Quick Order" ,
+            // orderType == "request_now" ? "Quick Order" : "Order Offer",
         referenceName:
             // "35s67cuvy",
             orderInfo?.orderModel?.quickOrderId,
@@ -110,6 +108,7 @@ class RateController extends _$RateController {
         debugPrint(result.message);
         // ref.read(showMapControllerProvider.notifier).toggleSelection();
         ref.read(quickOrderControllerProvider.notifier).resetOrderDetails();
+        ref.read(priceOfferControllerProvider.notifier).resetOrderDetails();
               // ref.read(mapControllerProvider.notifier)
               // ..resetPoints()
               // ..updateLocation();

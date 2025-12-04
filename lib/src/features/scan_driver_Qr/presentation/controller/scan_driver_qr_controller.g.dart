@@ -6,22 +6,53 @@ part of 'scan_driver_qr_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$scanDriverQrControllerHash() =>
-    r'66e36bc502c33089cb6d8300fadb5ac5123e0d9d';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ScanDriverQrController].
 @ProviderFor(ScanDriverQrController)
-final scanDriverQrControllerProvider =
-    AsyncNotifierProvider<ScanDriverQrController, ScanDriverQrState?>.internal(
-  ScanDriverQrController.new,
-  name: r'scanDriverQrControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$scanDriverQrControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const scanDriverQrControllerProvider = ScanDriverQrControllerProvider._();
 
-typedef _$ScanDriverQrController = AsyncNotifier<ScanDriverQrState?>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ScanDriverQrControllerProvider
+    extends $AsyncNotifierProvider<ScanDriverQrController, ScanDriverQrState?> {
+  const ScanDriverQrControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'scanDriverQrControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$scanDriverQrControllerHash();
+
+  @$internal
+  @override
+  ScanDriverQrController create() => ScanDriverQrController();
+}
+
+String _$scanDriverQrControllerHash() =>
+    r'00f6a56c63ba6e97e950c811d094f30a6b55fdf4';
+
+abstract class _$ScanDriverQrController
+    extends $AsyncNotifier<ScanDriverQrState?> {
+  FutureOr<ScanDriverQrState?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<ScanDriverQrState?>, ScanDriverQrState?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<ScanDriverQrState?>, ScanDriverQrState?>,
+              AsyncValue<ScanDriverQrState?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

@@ -77,7 +77,7 @@ class RequestDetailsForm extends ConsumerWidget {
     );
   }
 
-  _restorerBackArrow(WidgetRef ref, bool isSelectLocationFromMap) {
+  InkWell _restorerBackArrow(WidgetRef ref, bool isSelectLocationFromMap) {
     return InkWell(
       onTap: () {
         ref.read(showOrderFormControllerProvider.notifier).toggleVisibility();

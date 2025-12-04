@@ -2,7 +2,6 @@ import 'package:ahtizam/src/constants/Api/api_response.dart';
 import 'package:ahtizam/src/features/payment/data/datasources/payment_data_source.dart';
 
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_repository.g.dart';
@@ -17,6 +16,23 @@ class PaymentRepository {
   final PaymentDataSource _remoteDataSource;
 
   PaymentRepository(this._remoteDataSource);
+Future<ApiResponse<void>> payBySadad({
+  required String orderId,
+  required String token,
+  required String method,
+}) async {
+  final result = await _remoteDataSource.payBySadad(
+    orderId: orderId,
+    token: token,
+    method: method,
+  );
+
+  if (result.hasSucceeded) {
+    return result;
+  } else {
+    return ApiResponse.error(message: result.message ?? 'Sadad payment failed');
+  }
+}
 
 Future<ApiResponse<String>> getPaymentUrl({
   required String orderId,

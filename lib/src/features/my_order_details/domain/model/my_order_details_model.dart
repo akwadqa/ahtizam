@@ -7,7 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'my_order_details_model.freezed.dart';
 part 'my_order_details_model.g.dart';
 @freezed
-class MyOrderDetailsModel with _$MyOrderDetailsModel {
+abstract class MyOrderDetailsModel with _$MyOrderDetailsModel {
   const factory MyOrderDetailsModel({
     @JsonKey(name: 'quick_order_id') required String quickOrderId,
     required String status,
@@ -19,7 +19,7 @@ class MyOrderDetailsModel with _$MyOrderDetailsModel {
     required OrderLocationModel destinationLocation,
     @JsonKey(name: "map_image")  String? mapImage,
     @JsonKey(name: "service_type") required String serviceType,
-    @JsonKey(name: "payment_method") required String paymentMethod,
+    @JsonKey(name: "payment_method") required String? paymentMethod,
     @JsonKey(name: "coupon_code")  String? couponCode,
     @JsonKey(name: "fare_details") required FareDetails fareDetails,
     @JsonKey(name: "creation_date") required DateTime creationDate,

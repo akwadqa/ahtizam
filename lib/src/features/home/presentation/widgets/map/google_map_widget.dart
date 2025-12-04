@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:ahtizam/gen/assets.gen.dart';
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points_plus/flutter_polyline_points_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
@@ -67,6 +64,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
     final isSelectLocationFromMap =
         ref.watch(selectLocationFromMapControllerProvider);
     final mapController = ref.read(mapControllerProvider.notifier);
+    final mapControllerState = ref.watch(mapControllerProvider.notifier);
 
     return mapState.when(
       data: (currentLocation) {
@@ -95,7 +93,7 @@ class _GoogleMapWidgetState extends ConsumerState<GoogleMapWidget> {
      GoogleMap(
           mapType: MapType.normal,
           zoomControlsEnabled: false,
-          onTap: isSelectLocationFromMap&&!mapController.orderActive
+          onTap: isSelectLocationFromMap&&!mapControllerState.orderActive
               ? (LatLng latLng) async {
                   await mapController.setCurrentLocation(latLng);
                   mapController.mapController?.animateCamera(

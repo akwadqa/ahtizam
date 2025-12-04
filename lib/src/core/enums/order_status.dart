@@ -6,6 +6,7 @@ enum OrderStatus {
   onTrip,
   finished,
   completed,
+  cancelled,
   noDriverFound,
 }
 extension OrderStatusExtension on OrderStatus {
@@ -27,10 +28,14 @@ extension OrderStatusExtension on OrderStatus {
         return OrderStatus.finished;
       case "completed":
         return OrderStatus.completed;
+      case "cancelled":
+        return OrderStatus.cancelled;
       case "no driver found":
         return OrderStatus.noDriverFound;
+      case "noDriverFound":
+        return OrderStatus.noDriverFound;
       default:
-        return null;
+        return OrderStatus.noDriverFound;
     }
   }
 }

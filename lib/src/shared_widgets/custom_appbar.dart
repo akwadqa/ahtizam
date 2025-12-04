@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 class CustomAppbar extends StatelessWidget {
   final String title;
   final bool? withBackButton;
+  final Function()? onBack;
   const CustomAppbar({
     super.key,
     required this.title,
     this.withBackButton,
+    this.onBack,
   });
 
   @override
@@ -27,7 +29,7 @@ class CustomAppbar extends StatelessWidget {
             fontWeight: FontWeight.w600,
             color: AppColors.black800),
       ),
-      leading: withBackButton == null ? CustomBackArrowWidget() : null,
+      leading: withBackButton == null ? CustomBackArrowWidget(onTap:onBack,) : null,
       bottom: PreferredSize(
           preferredSize: Size(double.infinity, 1),
           child: Divider(

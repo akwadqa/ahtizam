@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'dart:convert';
 
 import '../../../../configs/hive_configs/hive_type_ids.dart';
 
@@ -10,7 +9,7 @@ part 'user_information.g.dart';
 /// **Hive & Freezed Integrated Model**
 @freezed
 @HiveType(typeId: HiveTypeIds.userInfoTypId)
-class UserInformation with _$UserInformation {
+abstract class UserInformation with _$UserInformation {
   /// **Factory Constructor**
   factory UserInformation({
     @HiveField(0) required String token,
@@ -26,4 +25,39 @@ class UserInformation with _$UserInformation {
   /// **Factory Constructor for JSON**
   factory UserInformation.fromJson(Map<String, dynamic> json) =>
       _$UserInformationFromJson(json);
+}
+
+class UserInformationAdapter extends TypeAdapter<UserInformation> {
+  @override
+  final int typeId = HiveTypeIds.userInfoTypId;
+
+  @override
+  UserInformation read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+
+    return UserInformation(
+      token: fields[0] as String,
+      fullName: fields[1] as String,
+      mobileNumber: fields[2] as String,
+      email: fields[3] as String,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, UserInformation obj) {
+    writer
+      ..writeByte(4) // number of fields
+      ..writeByte(0)
+      ..write(obj.token)
+      ..writeByte(1)
+      ..write(obj.fullName)
+      ..writeByte(2)
+      ..write(obj.mobileNumber)
+      ..writeByte(3)
+      ..write(obj.email)
+      ;
+  }
 }

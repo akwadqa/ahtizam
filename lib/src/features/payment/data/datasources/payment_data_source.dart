@@ -6,6 +6,7 @@ class PaymentDataSource {
   final NetworkService _networkService;
 
   PaymentDataSource(this._networkService);
+  
 Future<ApiResponse<String>> getPaymentUrl({
   required String orderId,
   required String language,
@@ -45,6 +46,31 @@ Future<ApiResponse<void>> confirmPayment() async {
     return ApiResponse.error(message: e.toString());
   }
 }
+Future<ApiResponse<void>> payBySadad({
+  required String orderId,
+  required String token,
+  required String method,
+}) async {
+  try {
+    final response = await _networkService.post(
+      EndPoints.updatePaymentStatus, // 👈 define this in your EndPoints class
+      data: {
+        'order_id': orderId,
+        'payment_token': token,
+        'method': method,
+      },
+    );
+
+    if (response.data['error'] == 0) {
+      return ApiResponse.success(message: response.data['message']);
+    } else {
+      return ApiResponse.error(message: response.data['message']);
+    }
+  } catch (e) {
+    return ApiResponse.error(message: e.toString());
+  }
+}
+
 Future<ApiResponse<void>> payByWallet({
   required String orderId,
 

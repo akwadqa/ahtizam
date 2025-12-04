@@ -7,7 +7,6 @@ import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.
 import 'package:ahtizam/src/features/home/domain/models/service_types/service_types_model.dart';
 import 'package:ahtizam/src/network/exception/dio_exceptions.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'home_repository.g.dart';
@@ -28,6 +27,7 @@ class HomeRepository {
     required CoordinatesParams passengerCoordinates,
     required CoordinatesParams destinationCoordinates,
     required String searviceItemId,
+    required int orderType,
     String? couponCode,
     required String email,
   }) async {
@@ -37,6 +37,7 @@ class HomeRepository {
         destinationCoordinates,
         email,
         searviceItemId,
+        orderType,
         couponCode,
       );
 
@@ -53,16 +54,21 @@ class HomeRepository {
 
   Future<ApiResponse<QuickOrderModel>> processQuickOrder({
     required String quickOrderId,
+    required int orderType,
     required String? driverId,
-    required String paymentMethod,
+    bool? onlyUpdatePayment,
+    String? quickOrderOfferId,
+
+    required String? paymentMethod,
     required File? mapImage,
   }) async {
     try {
-      final result = await _remoteDataSource.proccessQuickOrder(
-        quickOrderId,
-        driverId,
-        paymentMethod,
-        mapImage,
+      final result = await _remoteDataSource.proccessQuickOrder(quickOrderId: quickOrderId, orderType: orderType,
+        driverId: driverId,
+        quickOrderOfferId: quickOrderOfferId,
+        onlyUpdatePayment:onlyUpdatePayment,
+        paymentMethod:paymentMethod,
+        mapScreenshotFile:mapImage,
       );
 
       if (result.status == 200) {
@@ -93,6 +99,26 @@ class HomeRepository {
       // }
     } catch (e) {
       throw AppException('❌ Failed to Get Service Types: $e');
+    }
+  }
+
+  Future<ApiResponse> cancelOrder({
+    required String orderId,
+    // required int orderStatus,
+  }) async {
+    try {
+      final result = await _remoteDataSource.cancelOrder(
+        orderId: orderId,
+        // orderStatus: orderStatus,
+      );
+
+      if (result.hasSucceeded) {
+        return result;
+      } else {
+        return ApiResponse.error(message: result.message ?? 'Unknown error');
+      }
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
     }
   }
 }

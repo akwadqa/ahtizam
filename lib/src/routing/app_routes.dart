@@ -29,6 +29,7 @@ class AppRoutes {
   // Others
   static const pricesOffer = '/prices-offer';
   static const rate = '/rate';
+  static const contactUs = '/contactUs';
   static const myOrderDetails = '/myOrderDetails';
 
 }

@@ -6,9 +6,8 @@ part of 'quick_order_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QuickOrderModelImpl _$$QuickOrderModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$QuickOrderModelImpl(
+_QuickOrderModel _$QuickOrderModelFromJson(Map<String, dynamic> json) =>
+    _QuickOrderModel(
       quickOrderId: json['quick_order_id'] as String,
       baseFee: (json['base_fee'] as num).toDouble(),
       taxFee: (json['tax_fee'] as num).toDouble(),
@@ -17,8 +16,7 @@ _$QuickOrderModelImpl _$$QuickOrderModelImplFromJson(
       eta: json['eta'] as String,
     );
 
-Map<String, dynamic> _$$QuickOrderModelImplToJson(
-        _$QuickOrderModelImpl instance) =>
+Map<String, dynamic> _$QuickOrderModelToJson(_QuickOrderModel instance) =>
     <String, dynamic>{
       'quick_order_id': instance.quickOrderId,
       'base_fee': instance.baseFee,

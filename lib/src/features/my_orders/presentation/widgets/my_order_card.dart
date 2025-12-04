@@ -5,7 +5,6 @@ import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/numbers_extension.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/my_order_details/domain/model/my_order_details_model.dart';
-import 'package:ahtizam/src/features/my_orders/domain/model/my_order_model.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/screens/past_order_map_screen.dart';
 import 'package:ahtizam/src/localization/current_language.dart';
 import 'package:ahtizam/src/shared_widgets/circle_image_widget.dart';
@@ -47,8 +46,8 @@ class OrderCardWidget extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleImageWidget(
-                  imageUrl:
-                      ServicesUrls.imageUrl + order.driverDetails.profileImage!,
+                  imageUrl:order.driverDetails.profileImage!=null?(
+                      ServicesUrls.imageUrl + order.driverDetails.profileImage!):null,
                   circleWidth: 4,
                   height: 120,
                   width: 120,
@@ -59,7 +58,7 @@ class OrderCardWidget extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      order.driverDetails.fullName,
+                      order.driverDetails.fullName??"",
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium!
@@ -106,9 +105,9 @@ class OrderCardWidget extends ConsumerWidget {
                           TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
                     ),
                     12.verticalSpace,
-                    if (isOngoing)
+                    if (isOngoing&&order.paymentMethod!=null)
                       Text(
-                        order.paymentMethod,
+                        order.paymentMethod!,
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium!
@@ -227,7 +226,7 @@ class OrderCardWidget extends ConsumerWidget {
                           10.horizontalSpace,
                           Text(
                             context.tr("call_by",
-                                args: [order.driverDetails.fullName]),
+                                args: [order.driverDetails.fullName??""]),
                             style: Theme.of(context)
                                 .textTheme
                                 .displaySmall!
@@ -266,8 +265,8 @@ class OrderCardWidget extends ConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (_) => PastOrderMapScreen(
-                          // userLocation: LatLng(order.userLocation.latitude, order.userLocation.longitude),
-                          // destinationLocation: LatLng(order.destinationLocation.latitude, order.destinationLocation.longitude),
+                          userLocation: LatLng(order.passengerLocation.latitude, order.passengerLocation.longitude),
+                          destinationLocation: LatLng(order.destinationLocation.latitude, order.destinationLocation.longitude),
                           ),
                     ),
                   );

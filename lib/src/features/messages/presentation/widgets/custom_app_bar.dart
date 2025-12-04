@@ -2,7 +2,6 @@ import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_c
 import 'package:ahtizam/src/shared_widgets/custom_back_arrow_widget.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomChatAppBar extends ConsumerWidget implements PreferredSizeWidget {

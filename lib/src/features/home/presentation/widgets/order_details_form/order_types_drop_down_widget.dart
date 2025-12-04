@@ -34,7 +34,7 @@ class OrdersTypeDropDownWidget extends ConsumerWidget {
         
         return DropdownButtonFormField<String>(
         
-          value:scanned?"scan_code":  state.value,
+          initialValue:scanned?"scan_code":  state.value,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.white,

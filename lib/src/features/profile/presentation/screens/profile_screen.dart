@@ -1,5 +1,6 @@
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/profile/domain/model/profile_model.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
@@ -47,13 +48,13 @@ class ProfileScreen extends ConsumerWidget {
             20.verticalSpace,
             _buildProfileHeader(context,data),
             30.verticalSpace,
-            _buildMenuItems(context),
+            _buildMenuItems(context,ref),
           ],
         ),
       );
       },
       loading: () => FadeCircleLoadingIndicator().centered(),
-      error: (error, stackTrace) => AppErrorWidget(),
+      error: (error, stackTrace) => AppErrorWidget(onRetry:()=> ref.read(profileControllerProvider.notifier).build() ,),
       ),
       
        );
@@ -92,7 +93,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildMenuItems(BuildContext context) {
+  Widget _buildMenuItems(BuildContext context,WidgetRef ref) {
     return Expanded(
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -125,33 +126,45 @@ class ProfileScreen extends ConsumerWidget {
               context.pushRoute(PrivacyPolicyRoute());
             },
           ),
+          _buildMenuItem(
+            context,
+            context.tr('call_us'),
+            onTap: () {
+              context.pushRoute(ContactUsRoute());
+
+            },
+          ),
           // _buildMenuItem(
           //   context,
-          //   context.tr('withdraw_requests'),
+          //   context.tr('notifications'),
           //   onTap: () {
-          //     context.pushRoute(WithdrawRequestsRoute());
+          //     context.pushRoute(NotificationsRoute());
           //   },
           // ),
           _buildMenuItem(
             context,
-            context.tr('call_us'),
-            onTap: () {},
-          ),
-          _buildMenuItem(
-            context,
-            context.tr('notifications'),
+            context.tr('delete_account'),
             onTap: () {
-              context.pushRoute(NotificationsRoute());
+              ref.watch(hideLayersDuringOrderControllerProvider)?
+              showErrorDialog(context, "you_have_ongoing_oder_already".tr())
+              :
+              showDeleteAccountDialog(context,ref);
             },
+            showDivider: false,
           ),
+       
           _buildMenuItem(
             context,
             context.tr('logout'),
             onTap: () {
+              ref.watch(hideLayersDuringOrderControllerProvider)?
+              showErrorDialog(context, "you_have_ongoing_oder_already".tr())
+              :
               showLogoutDialog(context);
             },
             showDivider: false,
           ),
+       
         ],
       ),
     );
@@ -184,4 +197,5 @@ class ProfileScreen extends ConsumerWidget {
       ],
     );
   }
+
 }

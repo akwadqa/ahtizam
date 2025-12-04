@@ -4,7 +4,7 @@ part 'service_types_model.freezed.dart';
 part 'service_types_model.g.dart';
 
 @freezed
-class ServiceTypesModel with _$ServiceTypesModel {
+abstract class ServiceTypesModel with _$ServiceTypesModel {
 
   factory ServiceTypesModel({
    @JsonKey(name: "service_id") required String serviceId,

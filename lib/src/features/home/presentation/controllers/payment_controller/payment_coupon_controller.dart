@@ -1,7 +1,6 @@
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
-import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'payment_coupon_controller.g.dart';
@@ -10,6 +9,7 @@ part 'payment_coupon_controller.g.dart';
 class PaymentCouponController extends _$PaymentCouponController {
   @override
   FutureOr<PaymentState> build() {
+    final priceOfferController=ref.watch(priceOfferControllerProvider);
     final orderState = ref.watch(quickOrderControllerProvider);
     debugPrint("Final fee ${orderState.value?.orderModel?.finalFee}");
     debugPrint("discountCost${ orderState.value?.orderModel?.discountCost}");

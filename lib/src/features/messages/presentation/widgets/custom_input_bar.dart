@@ -8,7 +8,6 @@ import 'package:ahtizam/src/utils/image_picker_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CustomInputBar extends ConsumerWidget {
   CustomInputBar({super.key});

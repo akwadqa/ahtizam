@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,236 +9,278 @@ part of 'passenger_details_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-PassengerDetails _$PassengerDetailsFromJson(Map<String, dynamic> json) {
-  return _PassengerDetails.fromJson(json);
-}
 
 /// @nodoc
 mixin _$PassengerDetails {
-  String get passenger => throw _privateConstructorUsedError;
-  @JsonKey(name: "full_name")
-  String get fullName => throw _privateConstructorUsedError;
-  @JsonKey(name: "phone")
-  String get driverPhone => throw _privateConstructorUsedError;
-  @JsonKey(name: "profile_image")
-  String? get profileImage => throw _privateConstructorUsedError;
+
+ String get passenger;@JsonKey(name: "full_name") String? get fullName;@JsonKey(name: "phone") String? get driverPhone;@JsonKey(name: "profile_image") String? get profileImage;
+/// Create a copy of PassengerDetails
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PassengerDetailsCopyWith<PassengerDetails> get copyWith => _$PassengerDetailsCopyWithImpl<PassengerDetails>(this as PassengerDetails, _$identity);
 
   /// Serializes this PassengerDetails to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson();
 
-  /// Create a copy of PassengerDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $PassengerDetailsCopyWith<PassengerDetails> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PassengerDetails&&(identical(other.passenger, passenger) || other.passenger == passenger)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.driverPhone, driverPhone) || other.driverPhone == driverPhone)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,passenger,fullName,driverPhone,profileImage);
+
+@override
+String toString() {
+  return 'PassengerDetails(passenger: $passenger, fullName: $fullName, driverPhone: $driverPhone, profileImage: $profileImage)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $PassengerDetailsCopyWith<$Res> {
-  factory $PassengerDetailsCopyWith(
-          PassengerDetails value, $Res Function(PassengerDetails) then) =
-      _$PassengerDetailsCopyWithImpl<$Res, PassengerDetails>;
-  @useResult
-  $Res call(
-      {String passenger,
-      @JsonKey(name: "full_name") String fullName,
-      @JsonKey(name: "phone") String driverPhone,
-      @JsonKey(name: "profile_image") String? profileImage});
-}
+abstract mixin class $PassengerDetailsCopyWith<$Res>  {
+  factory $PassengerDetailsCopyWith(PassengerDetails value, $Res Function(PassengerDetails) _then) = _$PassengerDetailsCopyWithImpl;
+@useResult
+$Res call({
+ String passenger,@JsonKey(name: "full_name") String? fullName,@JsonKey(name: "phone") String? driverPhone,@JsonKey(name: "profile_image") String? profileImage
+});
 
+
+
+
+}
 /// @nodoc
-class _$PassengerDetailsCopyWithImpl<$Res, $Val extends PassengerDetails>
+class _$PassengerDetailsCopyWithImpl<$Res>
     implements $PassengerDetailsCopyWith<$Res> {
-  _$PassengerDetailsCopyWithImpl(this._value, this._then);
+  _$PassengerDetailsCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PassengerDetails _self;
+  final $Res Function(PassengerDetails) _then;
 
-  /// Create a copy of PassengerDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? passenger = null,
-    Object? fullName = null,
-    Object? driverPhone = null,
-    Object? profileImage = freezed,
-  }) {
-    return _then(_value.copyWith(
-      passenger: null == passenger
-          ? _value.passenger
-          : passenger // ignore: cast_nullable_to_non_nullable
-              as String,
-      fullName: null == fullName
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      driverPhone: null == driverPhone
-          ? _value.driverPhone
-          : driverPhone // ignore: cast_nullable_to_non_nullable
-              as String,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of PassengerDetails
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? passenger = null,Object? fullName = freezed,Object? driverPhone = freezed,Object? profileImage = freezed,}) {
+  return _then(_self.copyWith(
+passenger: null == passenger ? _self.passenger : passenger // ignore: cast_nullable_to_non_nullable
+as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
+as String?,driverPhone: freezed == driverPhone ? _self.driverPhone : driverPhone // ignore: cast_nullable_to_non_nullable
+as String?,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$PassengerDetailsImplCopyWith<$Res>
-    implements $PassengerDetailsCopyWith<$Res> {
-  factory _$$PassengerDetailsImplCopyWith(_$PassengerDetailsImpl value,
-          $Res Function(_$PassengerDetailsImpl) then) =
-      __$$PassengerDetailsImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String passenger,
-      @JsonKey(name: "full_name") String fullName,
-      @JsonKey(name: "phone") String driverPhone,
-      @JsonKey(name: "profile_image") String? profileImage});
 }
 
-/// @nodoc
-class __$$PassengerDetailsImplCopyWithImpl<$Res>
-    extends _$PassengerDetailsCopyWithImpl<$Res, _$PassengerDetailsImpl>
-    implements _$$PassengerDetailsImplCopyWith<$Res> {
-  __$$PassengerDetailsImplCopyWithImpl(_$PassengerDetailsImpl _value,
-      $Res Function(_$PassengerDetailsImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of PassengerDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? passenger = null,
-    Object? fullName = null,
-    Object? driverPhone = null,
-    Object? profileImage = freezed,
-  }) {
-    return _then(_$PassengerDetailsImpl(
-      passenger: null == passenger
-          ? _value.passenger
-          : passenger // ignore: cast_nullable_to_non_nullable
-              as String,
-      fullName: null == fullName
-          ? _value.fullName
-          : fullName // ignore: cast_nullable_to_non_nullable
-              as String,
-      driverPhone: null == driverPhone
-          ? _value.driverPhone
-          : driverPhone // ignore: cast_nullable_to_non_nullable
-              as String,
-      profileImage: freezed == profileImage
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [PassengerDetails].
+extension PassengerDetailsPatterns on PassengerDetails {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PassengerDetails value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PassengerDetails() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PassengerDetails value)  $default,){
+final _that = this;
+switch (_that) {
+case _PassengerDetails():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PassengerDetails value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PassengerDetails() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String passenger, @JsonKey(name: "full_name")  String? fullName, @JsonKey(name: "phone")  String? driverPhone, @JsonKey(name: "profile_image")  String? profileImage)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PassengerDetails() when $default != null:
+return $default(_that.passenger,_that.fullName,_that.driverPhone,_that.profileImage);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String passenger, @JsonKey(name: "full_name")  String? fullName, @JsonKey(name: "phone")  String? driverPhone, @JsonKey(name: "profile_image")  String? profileImage)  $default,) {final _that = this;
+switch (_that) {
+case _PassengerDetails():
+return $default(_that.passenger,_that.fullName,_that.driverPhone,_that.profileImage);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String passenger, @JsonKey(name: "full_name")  String? fullName, @JsonKey(name: "phone")  String? driverPhone, @JsonKey(name: "profile_image")  String? profileImage)?  $default,) {final _that = this;
+switch (_that) {
+case _PassengerDetails() when $default != null:
+return $default(_that.passenger,_that.fullName,_that.driverPhone,_that.profileImage);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$PassengerDetailsImpl implements _PassengerDetails {
-  const _$PassengerDetailsImpl(
-      {required this.passenger,
-      @JsonKey(name: "full_name") required this.fullName,
-      @JsonKey(name: "phone") required this.driverPhone,
-      @JsonKey(name: "profile_image") this.profileImage});
 
-  factory _$PassengerDetailsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PassengerDetailsImplFromJson(json);
+class _PassengerDetails implements PassengerDetails {
+  const _PassengerDetails({required this.passenger, @JsonKey(name: "full_name") required this.fullName, @JsonKey(name: "phone") required this.driverPhone, @JsonKey(name: "profile_image") this.profileImage});
+  factory _PassengerDetails.fromJson(Map<String, dynamic> json) => _$PassengerDetailsFromJson(json);
 
-  @override
-  final String passenger;
-  @override
-  @JsonKey(name: "full_name")
-  final String fullName;
-  @override
-  @JsonKey(name: "phone")
-  final String driverPhone;
-  @override
-  @JsonKey(name: "profile_image")
-  final String? profileImage;
+@override final  String passenger;
+@override@JsonKey(name: "full_name") final  String? fullName;
+@override@JsonKey(name: "phone") final  String? driverPhone;
+@override@JsonKey(name: "profile_image") final  String? profileImage;
 
-  @override
-  String toString() {
-    return 'PassengerDetails(passenger: $passenger, fullName: $fullName, driverPhone: $driverPhone, profileImage: $profileImage)';
-  }
+/// Create a copy of PassengerDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PassengerDetailsCopyWith<_PassengerDetails> get copyWith => __$PassengerDetailsCopyWithImpl<_PassengerDetails>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PassengerDetailsImpl &&
-            (identical(other.passenger, passenger) ||
-                other.passenger == passenger) &&
-            (identical(other.fullName, fullName) ||
-                other.fullName == fullName) &&
-            (identical(other.driverPhone, driverPhone) ||
-                other.driverPhone == driverPhone) &&
-            (identical(other.profileImage, profileImage) ||
-                other.profileImage == profileImage));
-  }
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, passenger, fullName, driverPhone, profileImage);
-
-  /// Create a copy of PassengerDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PassengerDetailsImplCopyWith<_$PassengerDetailsImpl> get copyWith =>
-      __$$PassengerDetailsImplCopyWithImpl<_$PassengerDetailsImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PassengerDetailsImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$PassengerDetailsToJson(this, );
 }
 
-abstract class _PassengerDetails implements PassengerDetails {
-  const factory _PassengerDetails(
-          {required final String passenger,
-          @JsonKey(name: "full_name") required final String fullName,
-          @JsonKey(name: "phone") required final String driverPhone,
-          @JsonKey(name: "profile_image") final String? profileImage}) =
-      _$PassengerDetailsImpl;
-
-  factory _PassengerDetails.fromJson(Map<String, dynamic> json) =
-      _$PassengerDetailsImpl.fromJson;
-
-  @override
-  String get passenger;
-  @override
-  @JsonKey(name: "full_name")
-  String get fullName;
-  @override
-  @JsonKey(name: "phone")
-  String get driverPhone;
-  @override
-  @JsonKey(name: "profile_image")
-  String? get profileImage;
-
-  /// Create a copy of PassengerDetails
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PassengerDetailsImplCopyWith<_$PassengerDetailsImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PassengerDetails&&(identical(other.passenger, passenger) || other.passenger == passenger)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.driverPhone, driverPhone) || other.driverPhone == driverPhone)&&(identical(other.profileImage, profileImage) || other.profileImage == profileImage));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,passenger,fullName,driverPhone,profileImage);
+
+@override
+String toString() {
+  return 'PassengerDetails(passenger: $passenger, fullName: $fullName, driverPhone: $driverPhone, profileImage: $profileImage)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PassengerDetailsCopyWith<$Res> implements $PassengerDetailsCopyWith<$Res> {
+  factory _$PassengerDetailsCopyWith(_PassengerDetails value, $Res Function(_PassengerDetails) _then) = __$PassengerDetailsCopyWithImpl;
+@override @useResult
+$Res call({
+ String passenger,@JsonKey(name: "full_name") String? fullName,@JsonKey(name: "phone") String? driverPhone,@JsonKey(name: "profile_image") String? profileImage
+});
+
+
+
+
+}
+/// @nodoc
+class __$PassengerDetailsCopyWithImpl<$Res>
+    implements _$PassengerDetailsCopyWith<$Res> {
+  __$PassengerDetailsCopyWithImpl(this._self, this._then);
+
+  final _PassengerDetails _self;
+  final $Res Function(_PassengerDetails) _then;
+
+/// Create a copy of PassengerDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passenger = null,Object? fullName = freezed,Object? driverPhone = freezed,Object? profileImage = freezed,}) {
+  return _then(_PassengerDetails(
+passenger: null == passenger ? _self.passenger : passenger // ignore: cast_nullable_to_non_nullable
+as String,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
+as String?,driverPhone: freezed == driverPhone ? _self.driverPhone : driverPhone // ignore: cast_nullable_to_non_nullable
+as String?,profileImage: freezed == profileImage ? _self.profileImage : profileImage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+// dart format on

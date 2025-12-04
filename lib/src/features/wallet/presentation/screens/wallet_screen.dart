@@ -2,6 +2,7 @@ import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/wallet/presentation/controller/wallet_controller.dart';
 import 'package:ahtizam/src/features/transactions_requests/presentation/widgets/transactions_item_widget.dart';
+import 'package:ahtizam/src/routing/app_routes.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/app_pagination_widget.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
@@ -25,7 +26,9 @@ class WalletScreen extends ConsumerWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
-        child: CustomAppbar(title: context.tr('wallet')),
+        child: CustomAppbar(title: context.tr('wallet'),withBackButton: context.router.currentPath==AppRoutes.main?true:null,
+       
+        ),
       ),
       body: walletAsync.when(
         data: (wallet) => _buildBody(context, wallet.walletBalance, wallet.transactionHistory,ref),

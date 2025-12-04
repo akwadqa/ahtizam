@@ -1,10 +1,8 @@
-import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
-import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
-import 'package:ahtizam/src/routing/app_router.gr.dart';
+
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/routing/app_routes.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../presentation/controllers/toggle_layers_controllers/change_request_order_state_service.dart';
@@ -38,7 +36,7 @@ class HomeService extends _$HomeService {
 // }
 
   Future<void> resetLayers(BuildContext context) async {
-     int maxPops = 3;
+     int maxPops = 4;
     final navigator = Navigator.of(context, rootNavigator: true);
     if (isPreviousRouteVerification(context)) {
       debugPrint("We came from verification page");
@@ -55,24 +53,29 @@ class HomeService extends _$HomeService {
 if(context.router.stack.map((e) => e.name).length > 2){
       debugPrint("maxxxxxxxxxxxx");
 
-       maxPops = 2;
+       maxPops = 3;
+
 
 }
+  ref
+          .read(hideLayersDuringOrderControllerProvider.notifier)
+          .hideLayersDuringOrder();
+      ref
+          .read(showOrderFormControllerProvider.notifier)
+          .toggleVisibility();
+
+      ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
       int pops = 0;
       while (navigator.canPop() && pops < maxPops) {
         debugPrint("Current stack: ${context.router.stack.map((e) => e.name)}");
 
         navigator.pop();
         pops++;
-        await Future.delayed(const Duration(milliseconds: 2));
+        // await Future.delayed(const Duration(milliseconds: 2));
       }
     }
 
-      ref
-          .read(hideLayersDuringOrderControllerProvider.notifier)
-          .hideLayersDuringOrder();
-
-      ref.read(changeRequestOrderStateServiceProvider.notifier).toggleWidget();
+    
   }
 
 // Future<void> resetLayers(BuildContext context) async {
@@ -102,4 +105,5 @@ if(context.router.stack.map((e) => e.name).length > 2){
 //   //     .read(quickOrderControllerProvider.notifier)
 //   //     .resetOrderDetails();
 // }
+
 }

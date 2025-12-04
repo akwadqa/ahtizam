@@ -6,177 +6,104 @@ part of 'my_order_details_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$myOrderDetailsControllerHash() =>
-    r'614f9d17f6908f57d804ff3818000aac8cb9156b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$MyOrderDetailsController
-    extends BuildlessAutoDisposeAsyncNotifier<MyOrderDetailsModel?> {
-  late final String quickOrderId;
-
-  FutureOr<MyOrderDetailsModel?> build(
-    String quickOrderId,
-  );
-}
-
-/// See also [MyOrderDetailsController].
 @ProviderFor(MyOrderDetailsController)
-const myOrderDetailsControllerProvider = MyOrderDetailsControllerFamily();
+const myOrderDetailsControllerProvider = MyOrderDetailsControllerFamily._();
 
-/// See also [MyOrderDetailsController].
-class MyOrderDetailsControllerFamily
-    extends Family<AsyncValue<MyOrderDetailsModel?>> {
-  /// See also [MyOrderDetailsController].
-  const MyOrderDetailsControllerFamily();
+final class MyOrderDetailsControllerProvider
+    extends
+        $AsyncNotifierProvider<MyOrderDetailsController, MyOrderDetailsModel?> {
+  const MyOrderDetailsControllerProvider._({
+    required MyOrderDetailsControllerFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'myOrderDetailsControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [MyOrderDetailsController].
-  MyOrderDetailsControllerProvider call(
-    String quickOrderId,
-  ) {
-    return MyOrderDetailsControllerProvider(
-      quickOrderId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$myOrderDetailsControllerHash();
+
+  @override
+  String toString() {
+    return r'myOrderDetailsControllerProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  MyOrderDetailsControllerProvider getProviderOverride(
-    covariant MyOrderDetailsControllerProvider provider,
-  ) {
-    return call(
-      provider.quickOrderId,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'myOrderDetailsControllerProvider';
-}
-
-/// See also [MyOrderDetailsController].
-class MyOrderDetailsControllerProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<MyOrderDetailsController,
-        MyOrderDetailsModel?> {
-  /// See also [MyOrderDetailsController].
-  MyOrderDetailsControllerProvider(
-    String quickOrderId,
-  ) : this._internal(
-          () => MyOrderDetailsController()..quickOrderId = quickOrderId,
-          from: myOrderDetailsControllerProvider,
-          name: r'myOrderDetailsControllerProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$myOrderDetailsControllerHash,
-          dependencies: MyOrderDetailsControllerFamily._dependencies,
-          allTransitiveDependencies:
-              MyOrderDetailsControllerFamily._allTransitiveDependencies,
-          quickOrderId: quickOrderId,
-        );
-
-  MyOrderDetailsControllerProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.quickOrderId,
-  }) : super.internal();
-
-  final String quickOrderId;
-
-  @override
-  FutureOr<MyOrderDetailsModel?> runNotifierBuild(
-    covariant MyOrderDetailsController notifier,
-  ) {
-    return notifier.build(
-      quickOrderId,
-    );
-  }
-
-  @override
-  Override overrideWith(MyOrderDetailsController Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: MyOrderDetailsControllerProvider._internal(
-        () => create()..quickOrderId = quickOrderId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        quickOrderId: quickOrderId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<MyOrderDetailsController,
-      MyOrderDetailsModel?> createElement() {
-    return _MyOrderDetailsControllerProviderElement(this);
-  }
+  MyOrderDetailsController create() => MyOrderDetailsController();
 
   @override
   bool operator ==(Object other) {
     return other is MyOrderDetailsControllerProvider &&
-        other.quickOrderId == quickOrderId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, quickOrderId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin MyOrderDetailsControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<MyOrderDetailsModel?> {
-  /// The parameter `quickOrderId` of this provider.
-  String get quickOrderId;
-}
+String _$myOrderDetailsControllerHash() =>
+    r'614f9d17f6908f57d804ff3818000aac8cb9156b';
 
-class _MyOrderDetailsControllerProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<MyOrderDetailsController,
-        MyOrderDetailsModel?> with MyOrderDetailsControllerRef {
-  _MyOrderDetailsControllerProviderElement(super.provider);
+final class MyOrderDetailsControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          MyOrderDetailsController,
+          AsyncValue<MyOrderDetailsModel?>,
+          MyOrderDetailsModel?,
+          FutureOr<MyOrderDetailsModel?>,
+          String
+        > {
+  const MyOrderDetailsControllerFamily._()
+    : super(
+        retry: null,
+        name: r'myOrderDetailsControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  MyOrderDetailsControllerProvider call(String quickOrderId) =>
+      MyOrderDetailsControllerProvider._(argument: quickOrderId, from: this);
 
   @override
-  String get quickOrderId =>
-      (origin as MyOrderDetailsControllerProvider).quickOrderId;
+  String toString() => r'myOrderDetailsControllerProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+
+abstract class _$MyOrderDetailsController
+    extends $AsyncNotifier<MyOrderDetailsModel?> {
+  late final _$args = ref.$arg as String;
+  String get quickOrderId => _$args;
+
+  FutureOr<MyOrderDetailsModel?> build(String quickOrderId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref =
+        this.ref
+            as $Ref<AsyncValue<MyOrderDetailsModel?>, MyOrderDetailsModel?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<MyOrderDetailsModel?>,
+                MyOrderDetailsModel?
+              >,
+              AsyncValue<MyOrderDetailsModel?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

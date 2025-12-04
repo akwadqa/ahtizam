@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:easy_localization/easy_localization.dart';
 
 import '../../../../theme/app_colors.dart';

@@ -2,22 +2,22 @@ name: ahtizam
 description: "This is A standard project to start all projects from here."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+8
+version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.1
+  sdk: ^3.9.0
 
 dependencies:
-  auto_route: ^9.2.2
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  flutter_riverpod: ^3.0.1
+  riverpod_annotation: ^3.0.1
+  auto_route: ^10.1.0+1
   intl: ^0.20.2
   flutter_svg: ^2.0.10+1
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
   dio: ^5.7.0
   cached_network_image: ^3.4.1
@@ -37,54 +37,76 @@ dependencies:
   pinput: ^5.0.1
   crystal_navigation_bar: ^1.0.2
   flutter_floating_bottom_bar: ^1.2.1+1
+  firebase_messaging: any
+  firebase_core: ^3.13.0
+  flutter_local_notifications: ^19.1.0
+  fcm_config: ^3.6.5
   dot_navigation_bar: ^1.0.2
-  flutter_dotenv: ^5.2.1
+  flutter_dotenv: ^6.0.0
   google_maps_flutter: ^2.10.1
-  geolocator: ^13.0.2
-  geocoding: ^2.1.1
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
   google_geocoding_api: ^1.5.2
-  permission_handler: ^11.4.0
+  permission_handler: ^12.0.1
   avatar_glow: ^3.0.1
   flutter_polyline_points_plus: ^3.0.0
   flutter_google_places_hoc081098: ^2.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   chatview: ^2.3.0
-  firebase_core: ^3.13.0
-  cloud_firestore: ^5.6.7
-  geoflutterfire_plus: ^0.0.32
-  firebase_messaging: any
-  flutter_local_notifications: ^19.1.0
+  # firebase_core: ^4.1.1
+  # cloud_firestore: ^6.0.2
+  # geoflutterfire_plus: ^0.0.32
+  # firebase_messaging: any
+  # flutter_local_notifications: ^19.1.0
   flutter_chat_ui: ^1.6.15
-  flutter_chat_core: ^0.0.8
-
-  flutter_chat_types: ^3.6.1
+  flutter_chat_core: ^2.8.0
+  flutter_chat_types: ^3.6.2
   uuid: ^4.0.0
   image_picker: ^1.1.2
   pretty_dio_logger: ^1.4.0
   socket_io_client: ^3.1.2
   url_launcher: ^6.3.1
   path_provider: ^2.1.5
-  mobile_scanner: ^3.5.2
-  fluttertoast: ^8.2.2
+  mobile_scanner: ^7.0.1
+  fluttertoast: ^9.0.0
   just_audio: ^0.10.4
+  pay: ^3.2.1
+  package_info_plus: ^8.0.0
+  flutter_native_splash: ^2.4.4
+  firebase_analytics: ^11.6.0
+
+
+
 
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
-  flutter_native_splash: ^2.4.4
-  riverpod_generator: ^2.6.2
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^3.0.0
   build_runner: ^2.4.13
-  custom_lint: ^0.7.0
-  riverpod_lint: ^2.6.2
-  auto_route_generator: ^9.0.0
+  custom_lint: ^0.8.0
+  riverpod_lint: ^3.0.1
+  auto_route_generator: ^10.1.0
   flutter_gen_runner: ^5.8.0
-  freezed: ^2.5.7
+  freezed: ^3.0.6
   json_serializable: ^6.8.0
-  hive_generator: ^2.0.0
+  # hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.14.4
+  
+# إعدادات أيقونة التطبيق ↓
+flutter_launcher_icons:  # <-- ضع هذا القسم هنا (على نفس مستوى dependencies)
+  android: true
+  ios: true
+  image_path: "assets/images/logo_image.png" 
+  adaptive_icon_background: "#E5BB3B"
+  adaptive_icon_foreground: "assets/images/logo_image.png" 
+
+      # For Android 13+ Themed Icons
+  adaptive_icon_monochrome: "assets/images/logo_image.png" # Monochrome icon (e.g., 432x432)
+# ---------------------
 
 flutter:
   uses-material-design: true
@@ -94,6 +116,7 @@ flutter:
     - assets/translations/
     - assets/fonts/
     - assets/sounds/
+    - assets/payment/
     - .env
     
   fonts:
