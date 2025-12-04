@@ -20,9 +20,9 @@ class PastOrdersList extends ConsumerWidget {
 
     return asyncOrders.when(
       data: (orders) {
-        if (orders.isEmpty) {
-          return  Center(child: Text('no_orders_found'.tr()));
-        }
+        // if (orders.isEmpty) {
+        //   return  Center(child: Text('no_orders_found'.tr()));
+        // }
 
         final pastOrders = orders.where((order) => order.status != 'Accepted').toList();
 
@@ -58,7 +58,10 @@ class PastOrdersList extends ConsumerWidget {
           ),
         );
       },
-      error: (error, stackTrace) => const AppErrorWidget(),
+      error: (error, stackTrace) =>  AppErrorWidget(
+            onRetry: () => ref.read(myOrdersControllerProvider.notifier).build(),
+
+      ),
       loading: () => const FadeCircleLoadingIndicator(),
     );
   }

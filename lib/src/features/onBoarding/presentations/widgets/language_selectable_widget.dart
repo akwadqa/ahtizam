@@ -77,7 +77,7 @@ class LanguageSelectableWidget extends StatelessWidget {
     );
   }
 
-  _buildChooseText(BuildContext context) => Directionality(
+  Directionality _buildChooseText(BuildContext context) => Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

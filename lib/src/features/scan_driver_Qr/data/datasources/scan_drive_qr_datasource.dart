@@ -1,6 +1,5 @@
 import 'package:ahtizam/src/constants/Api/api_response.dart';
 import 'package:ahtizam/src/constants/Api/end_points.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/driver_date_model.dart';
 import 'package:ahtizam/src/features/scan_driver_Qr/domain/model/driver_info_model.dart';
 import 'package:ahtizam/src/network/services/network_service.dart';
 

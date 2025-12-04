@@ -4,7 +4,7 @@ part 'coordinates_params.freezed.dart';
 part 'coordinates_params.g.dart';
 
 @freezed
-class CoordinatesParams with _$CoordinatesParams {
+abstract class CoordinatesParams with _$CoordinatesParams {
   const factory CoordinatesParams({
     required double lat,
     required double lng,

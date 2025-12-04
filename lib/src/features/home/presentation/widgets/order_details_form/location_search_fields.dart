@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/location_search_controller.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/shared_widgets/location_auto_complete_widget.dart';
@@ -34,7 +35,7 @@ class LocationSearchFields extends ConsumerWidget {
                   children: [
                     LocationAutoCompleteField(
                       controller: myLocationController,
-                      hintText: "شارع الدوحة",
+                      hintText: "doha_street".tr(),
                       fieldId: 'myLocation', // Unique ID for this field
 
                       onSelected: (place) {
@@ -43,13 +44,13 @@ class LocationSearchFields extends ConsumerWidget {
                             .read(locationSearchControllerProvider.notifier)
                             .onMyLocationChanged(place);
 
-                        debugPrint("Selected Location: ${place}");
+                        debugPrint("Selected Location: $place");
                       },
                     ),
                     10.verticalSpace,
                     LocationAutoCompleteField(
                       controller: workShopLocationController,
-                      hintText: "تصليح قطر الدولي",
+                      hintText: "qatar_repair_txt".tr(),
                       fieldId: 'workShopLocation', // Unique ID for this field
 
                       onSelected: (place) {
@@ -57,7 +58,7 @@ class LocationSearchFields extends ConsumerWidget {
                         ref
                             .read(locationSearchControllerProvider.notifier)
                             .onWorkshopLocationChanged(place);
-                        debugPrint("Selected Location: ${place}");
+                        debugPrint("Selected Location: $place");
                       },
                     ),
                   ],

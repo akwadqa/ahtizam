@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/select_location_from_map_controller.dart';
-import 'package:ahtizam/src/features/home/application/map_service.dart';
 
 /// **Select Location from Map Button**
 class SelectLocationButton extends ConsumerWidget {

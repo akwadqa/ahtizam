@@ -6,21 +6,50 @@ part of 'profile_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileControllerHash() => r'e54e3789756c3c238cbb0b384fdb0bb1050c7699';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ProfileController].
 @ProviderFor(ProfileController)
-final profileControllerProvider =
-    AsyncNotifierProvider<ProfileController, ProfileModel>.internal(
-  ProfileController.new,
-  name: r'profileControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$profileControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const profileControllerProvider = ProfileControllerProvider._();
 
-typedef _$ProfileController = AsyncNotifier<ProfileModel>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ProfileControllerProvider
+    extends $AsyncNotifierProvider<ProfileController, ProfileModel> {
+  const ProfileControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'profileControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$profileControllerHash();
+
+  @$internal
+  @override
+  ProfileController create() => ProfileController();
+}
+
+String _$profileControllerHash() => r'b08c5aed6ba1633b17772d42d4af4b98b0c910cc';
+
+abstract class _$ProfileController extends $AsyncNotifier<ProfileModel> {
+  FutureOr<ProfileModel> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<ProfileModel>, ProfileModel>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<ProfileModel>, ProfileModel>,
+              AsyncValue<ProfileModel>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

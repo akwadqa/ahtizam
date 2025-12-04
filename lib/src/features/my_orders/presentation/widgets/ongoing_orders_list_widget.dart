@@ -1,5 +1,4 @@
 // features/my_orders/presentation/widgets/ongoing_orders_list_widget.dart
-import 'package:ahtizam/src/features/my_order_details/presentation/controller/my_order_details_controller.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_controller.dart';
 import 'package:ahtizam/src/features/my_orders/presentation/widgets/my_order_card.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
@@ -19,9 +18,9 @@ class OngoingOrdersList extends ConsumerWidget {
 
     return asyncOrders.when(
       data: (orders) {
-        if (orders.isEmpty) {
-          return  Center(child: Text('no_orders_found'.tr()));
-        }
+        // if (orders.isEmpty) {
+        //   return  Center(child: Text('no_orders_found'.tr()));
+        // }
 
         // فلترة الطلبات الجارية فقط
         final activeOrders = orders.where((order) => order.status == 'Accepted').toList();
@@ -58,7 +57,10 @@ class OngoingOrdersList extends ConsumerWidget {
           ),
         );
       },
-      error: (error, stackTrace) => const AppErrorWidget(),
+      error: (error, stackTrace) =>  AppErrorWidget(
+            onRetry: () => ref.read(myOrdersControllerProvider.notifier).build(),
+
+      ),
       loading: () => const FadeCircleLoadingIndicator(),
     );
   }

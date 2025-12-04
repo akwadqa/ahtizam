@@ -1,5 +1,4 @@
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/driver_date_model.dart';
 import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';

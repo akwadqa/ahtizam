@@ -16,8 +16,8 @@ class RatingRemoteDataSource {
 // I/flutter ( 9892): ╟ rating: 2
 // I/flutter ( 9892): ╟ reference_doctype: Quick Order
 // I/flutter ( 9892): ╟ reference_name: QO251159
-final ii=RatingParams(driverId: "DR-25-1046", rating: "2",referenceDoctype: "Quick Order", referenceName: "QO251159");
-      final formData = FormData.fromMap(ii.toJson());
+// final ii=RatingParams(driverId: "DR-25-1046", rating: "2",referenceDoctype: "Quick Order", referenceName: "QO251159");
+      final formData = FormData.fromMap(ratingParams.toJson());
 
       final response =
           await _networkService.post(EndPoints.ratingApi, data: formData);

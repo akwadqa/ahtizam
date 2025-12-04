@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'package:ahtizam/src/core/notifications/services/notifications_service.dart';
 import 'package:ahtizam/src/features/auth/regestration/data/repository/auth_repository.dart';
 import 'package:ahtizam/src/features/auth/regestration/domain/entity/login_params.dart';
 import 'package:ahtizam/src/features/auth/verification_code/domain/model/verification_code_params.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ahtizam/src/features/auth/verification_code/data/repository/verification_code_repository.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
@@ -13,6 +13,7 @@ import '../../../../../shared_widgets/app_dialogs.dart';
 import '../../../regestration/application/auth_service.dart';
 
 part 'verification_code_controller.g.dart';
+
 @riverpod
 class VerificationCodeController extends _$VerificationCodeController {
   static const int initialCountdown = 35;
@@ -63,25 +64,27 @@ class VerificationCodeController extends _$VerificationCodeController {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final verificationCode = ref.read(verificatonCodeRepositoryProvider);
-      final userData = await verificationCode.verificatonCode(VerificationCodeParams(otp: otp, phone: phone));
+      final userData = await verificationCode.verificatonCode(
+        VerificationCodeParams(otp: otp, phone: phone),
+      );
 
       await ref.read(userDataProvider.notifier).setData(userData.data!.***REMOVED***);
       await ref.read(userDataProvider.notifier).saveUserInfo(userData.data!);
       stopCountdown();
       ref.invalidate(dioProvider);
-
+      await Future.delayed(Duration(milliseconds: 50));
+      await ref
+          .read(notificationsServiceProvider)
+          .sendDeviceToken(userData.data?.email ?? "");
       (err) => AsyncError(err.toString(), StackTrace.current);
-
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-    if (state is AsyncData && _hasSubmitted) {
-      debugPrint("HERE WE GO TO MAIN PAGE");
-      context.router.pushAndPopUntil( MainRoute(),    predicate: (_) => false,
-);
-    } else if (state is AsyncError) {
-      showErrorDialog(context, (state as AsyncError).error.toString());
-    }
+      if (state is AsyncData && _hasSubmitted) {
+        debugPrint("HERE WE GO TO MAIN PAGE");
+        context.router.pushAndPopUntil(MainRoute(), predicate: (_) => false);
+      } else if (state is AsyncError) {
+        showErrorDialog(context, (state as AsyncError).error.toString());
+      }
     });
   }
 }

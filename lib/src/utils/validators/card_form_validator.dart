@@ -25,7 +25,7 @@ class CardFormValidator {
       MinLength(5, context.tr('expiry_date_invalid')),
       QRule(
         (value) {
-          if (value == null || value.isEmpty) return false;
+          if (value.isEmpty) return false;
           if (!RegExp(r'^\d{2}/\d{4}$').hasMatch(value)) return false;
 
           final month = int.tryParse(value.substring(0, 2));

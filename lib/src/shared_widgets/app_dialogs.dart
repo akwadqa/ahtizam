@@ -4,8 +4,8 @@ import 'dart:ui';
 import 'package:ahtizam/src/features/auth/regestration/application/auth_service.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
-import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
+import 'package:ahtizam/src/features/profile/presentation/controllers/profile_controller.dart';
 import 'package:ahtizam/src/features/wallet/presentation/controller/wallet_controller.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
@@ -18,6 +18,7 @@ import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/payment_controller/payment_coupon_controller.dart';
 import 'package:ahtizam/src/shared_widgets/custom_button_widget.dart';
 import 'package:queen_validators/queen_validators.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../gen/assets.gen.dart';
 import '../features/payment/presentation/widgets/success_payment.dart';
@@ -194,9 +195,13 @@ Future<void> showRateDriverDialog(
                       padding: EdgeInsets.zero,
                       alignment: AlignmentDirectional.topStart,
                       onPressed: () {
+                        ref.read(mapControllerProvider.notifier)
+                          ..resetPoints()
+                          ..updateLocation();
                         ref
                             .read(quickOrderControllerProvider.notifier)
                             .resetOrderDetails();
+      ref.read(priceOfferControllerProvider.notifier).resetOrderDetails();
 
                         Navigator.pop(context);
                       }),
@@ -218,17 +223,16 @@ Future<void> showAcceptCancelOrder(
         return showYesNowChoicesDialog(context,
             title: "cancel_order_msg",
             dsc: "cancel_order_dsc", yesButton: () async {
-          ref.read(quickOrderControllerProvider.notifier).resetOrderDetails();
-          ref
-              .read(hideLayersDuringOrderControllerProvider.notifier)
-              .hideLayersDuringOrder();
-          ref.read(mapControllerProvider.notifier)
-            ..resetPoints()
-            ..updateLocation();
-          Navigator.pop(context);
+          final result = await ref
+              .read(quickOrderControllerProvider.notifier)
+              .cancelOrder(context: context);
+          //  if(result){
+          //   Navigator.pop(context);
 
-          // await Future.delayed(Duration(milliseconds: 1000));
-          // Navigator.pop(context);
+          //   // Navigator.pop(context);
+          //  }
+          //   // await Future.delayed(Duration(milliseconds: 1000));
+          //   // Navigator.pop(context);
         });
       });
 }
@@ -257,6 +261,216 @@ void showLogoutDialog(BuildContext context) {
           },
         );
       });
+}
+void showDeleteAccountDialog(BuildContext context,WidgetRef ref) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Consumer(
+          builder: (context, ref, _) {
+            final userData = ref.read(userDataProvider.notifier);
+            final profileState=ref.watch(profileControllerProvider);
+            return 
+            
+            Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 20),
+      backgroundColor: Colors.white.withOpacity(0.99),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          40.verticalSpace,
+
+          Text(
+            "delete_account".tr(),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  // color: Colors.grey,
+                ),
+          ).centered(),
+
+          40.verticalSpace,
+
+          Text(
+            "delete_account_confirmation".tr(),
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                fontSize: 14,
+                color: AppColors.darkerGray,
+                fontWeight: FontWeight.w500),
+          ),
+
+          40.verticalSpace,
+
+          // **Pay Button**
+(profileState.isLoading)?Center(child: FadeCircleLoadingIndicator()):
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: CustomButtonWidget(
+                  text: context.tr("yes"),
+                  onTap: ()async{
+                     final success = await ref
+                  .read(profileControllerProvider.notifier)
+                  .deleteAccount();
+
+              if (success) {
+                Navigator.pop(context);
+                await userData.removeData();
+                context.router.replaceAll([const LoginRoute()]);
+                 ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("")),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+
+                  SnackBar(backgroundColor: AppColors.darkRed, content: Text("account_deactivated_success".tr())),
+                );
+              }
+                  },
+                  backgroundColor: AppColors.black,
+                  isFiled: true,
+                  height: 45,
+                  radius: 12,
+                  width: MediaQuery.sizeOf(context).width,
+                ),
+              ),
+              20.horizontalSpace,
+              Flexible(
+                child: CustomButtonWidget(
+                  text: context.tr("no"),
+                  onTap: 
+                      () {
+                        Navigator.pop(context);
+                      },
+                  color: AppColors.black,
+                  isFiled: false,
+                  borderColor: AppColors.darkGray,
+                  height: 45,
+                  radius: 12,
+                  width: MediaQuery.sizeOf(context).width,
+                ),
+              ),
+            ],
+          )
+        ],
+      ).symmetricPadding(horizontal: 20, vertical: 25));
+
+            
+            // Stack(
+            //   children: [
+            //     Container(
+            //       child: showYesNowChoicesDialog(
+            //         context,
+            //         title: "delete_account".tr(),
+            //         dsc: "delete_account_msg".tr(),
+            //         yesButton: () async {
+                
+            //           final delete=await ref.read(profileControllerProvider.notifier).deleteAccount();   
+            //           if(delete) {             
+            //           Navigator.pop(context);
+            //           await userData.removeData();
+            //           context.router.replaceAll([const LoginRoute()]);
+            //     }
+            //           // Navigator.pop(context);
+            //         },
+            //       ),
+            //     ),
+
+            //   ],
+            // );
+          },
+        );
+      });
+}
+Future<void> showUpdateDialog(
+  BuildContext context,
+  String title,
+  String message,
+  String? url,
+  bool isRequired,
+) async {
+  await showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) {
+      final theme = Theme.of(context);
+
+      return PopScope(
+        canPop:!isRequired,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            title.tr(),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          content: Text(
+            message.tr(),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              height: 1.5,
+              color: theme.colorScheme.onSurface.withOpacity(0.8),
+            ),
+          ),
+          actionsPadding: const EdgeInsets.only(bottom: 8, right: 8, left: 8),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actions: [
+              Row(
+                children: [
+            if (!isRequired)
+
+                  Expanded(
+                    child: CustomButtonWidget(
+                      text: 'later'.tr(),
+                      backgroundColor: Colors.transparent,
+                      color: AppColors.black900,
+                      isFiled: false,
+                      height: 45,
+                      radius: 10,
+                      width: double.infinity,
+                      onTap: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                  child: CustomButtonWidget(
+                    text: 'update'.tr(),
+                    backgroundColor: AppColors.primary,
+                    color: AppColors.offWhite,
+                    isFiled: true,
+                    height: 45,
+                    width: double.infinity/2,
+                    radius: 10,
+                    onTap: () async {
+                      if (url == null) return;
+                      final uri = Uri.parse(url);
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                      } else {
+                        if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(tr('could_not_open_link'))),
+                          );
+                        }
+                      }
+                    },
+                  ),
+                              ),
+                ],
+              ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 Future<void> showAutoClosingDialog(BuildContext context, String message,
@@ -371,12 +585,12 @@ Future<void> showTruckDetailsDialog({
   );
 }
 
-_customeDivider() => Divider(
+Divider _customeDivider() => Divider(
       color: AppColors.lightGray,
       height: 1,
     );
 
-_truckRow(BuildContext context, String value) {
+Widget _truckRow(BuildContext context, String value) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -505,7 +719,9 @@ Future<void> showPaymentDialog(
                                     null) // Show original price if discount applied
                               Text(
                                 "with_currency".tr(args: [
-                                  paymentStateValue.baseCost.toString()
+                                  paymentStateValue.baseCost
+                                          ?.toStringAsFixed(2) ??
+                                      ""
                                 ]),
                                 style: Theme.of(context)
                                     .textTheme
@@ -520,7 +736,7 @@ Future<void> showPaymentDialog(
                             6.horizontalSpace,
                             Text(
                               "with_currency".tr(args: [
-                                paymentStateValue.totalCost.toString()
+                                paymentStateValue.totalCost.toStringAsFixed(2)
                               ]),
                               style: Theme.of(context)
                                   .textTheme
@@ -555,6 +771,7 @@ Future<void> showPaymentDialog(
                             ),
                             Spacer(),
                             Text(
+                              // paymentState.value,
                               "$duration - $distance",
                               style: Theme.of(context)
                                   .textTheme
@@ -684,15 +901,15 @@ Future<void> showPaymentDialog(
                                               if (!result) {
                                                 debugPrint(
                                                     "not valid coupon code yet");
-                                                    if(!context.mounted) {
-                                                      ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                      content: Text(
-                                                          "not valid coupon code "
-                                                              .tr())),
-                                                );
-                                                    }
+                                                if (!context.mounted) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    SnackBar(
+                                                        content: Text(
+                                                            "not valid coupon code "
+                                                                .tr())),
+                                                  );
+                                                }
                                               }
                                             }
                                           }
@@ -961,8 +1178,8 @@ Future<void> showSuccessWiwthdrawingDialog({
   );
 }
 
-void showWalletRechargeDialog(BuildContext context, String message) {
-  showDialog(
+Future<void> showWalletRechargeDialog(BuildContext context, String message) async{
+ await showDialog(
     context: context,
     builder: (_) => AlertDialog(
       title: Text('wallet_insufficient_title'.tr()),

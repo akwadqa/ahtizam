@@ -4,7 +4,7 @@ part 'profile_model.freezed.dart';
 part 'profile_model.g.dart';
 
 @freezed
-class ProfileModel with _$ProfileModel {
+abstract class ProfileModel with _$ProfileModel {
   factory ProfileModel({
     @JsonKey(name: "full_name") required String fullName,
     @JsonKey(name: "mobile_no") required String mobileNumber,

@@ -6,8 +6,8 @@ part of 'rating_params.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RatingParamsImpl _$$RatingParamsImplFromJson(Map<String, dynamic> json) =>
-    _$RatingParamsImpl(
+_RatingParams _$RatingParamsFromJson(Map<String, dynamic> json) =>
+    _RatingParams(
       driverId: json['driver_id'] as String,
       rating: json['rating'] as String,
       comment: json['comment'] as String?,
@@ -15,12 +15,11 @@ _$RatingParamsImpl _$$RatingParamsImplFromJson(Map<String, dynamic> json) =>
       referenceName: json['reference_name'] as String?,
     );
 
-Map<String, dynamic> _$$RatingParamsImplToJson(_$RatingParamsImpl instance) =>
+Map<String, dynamic> _$RatingParamsToJson(_RatingParams instance) =>
     <String, dynamic>{
       'driver_id': instance.driverId,
       'rating': instance.rating,
-      if (instance.comment case final value?) 'comment': value,
-      if (instance.referenceDoctype case final value?)
-        'reference_doctype': value,
-      if (instance.referenceName case final value?) 'reference_name': value,
+      'comment': ?instance.comment,
+      'reference_doctype': ?instance.referenceDoctype,
+      'reference_name': ?instance.referenceName,
     };

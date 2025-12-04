@@ -1,4 +1,5 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,7 @@ class PricesOfferScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedFilter = ref.watch(pricesFilterControllerProvider);
+    final offerData = ref.watch(priceOfferControllerProvider);
     final pricesData = ref.watch(pricesOfferDataControllerProvider);
     final filteredData = ref
         .read(pricesOfferDataControllerProvider.notifier)
@@ -33,11 +35,12 @@ class PricesOfferScreen extends ConsumerWidget {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: filteredData.length,
+              itemCount: offerData.value?.availableOffers.length,
               itemBuilder: (context, index) {
-                final offer = filteredData[index];
+                // final offer = offerData.value?.availableOffers[index];
+                final offer = filteredData.isEmpty?offerData.value?.availableOffers[index]:filteredData[index];
                 return PriceOfferCard(
-                  priceOfferModel: offer,
+                  priceOfferModel: offer!,
                 );
               },
             ),

@@ -1,18 +1,19 @@
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
-import 'package:ahtizam/src/extenssions/widget_extensions.dart';
+import 'package:ahtizam/src/features/home/application/map_service.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/payment/domain/models/payment_method.dart';
-import 'package:ahtizam/src/routing/app_router.gr.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
+import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
-import 'package:ahtizam/src/theme/app_colors.dart';
 import 'package:ahtizam/src/utils/helper_methods.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../controller/payment_controller.dart';
-import '../widgets/empty_card_section.dart';
 import '../widgets/payment_bottom_section.dart';
 import '../widgets/payment_methods_list.dart';
 
@@ -24,38 +25,76 @@ class PaymentMethodPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final paymentState = ref.watch(paymentControllerProvider);
     final paymentController = ref.read(paymentControllerProvider.notifier);
+    final isPaid = paymentState.asData?.value.isPaid ?? false;
 
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (bool didPop, Object? result) async {
         if (didPop) return;
 
-        if (paymentState.value!.isPaid) {
+        if (isPaid) {
           // If payment is done, show a confirmation dialog before allowing pop
           final shouldPop = await showDialog<bool>(
               context: context,
               builder: (BuildContext context) {
                 return showYesNowChoicesDialog(context,
                     title: "alert_paided_title".tr(context: context),
-                    dsc:
-                        "alert_paided_description".tr(context: context),
+                    dsc: "alert_paided_description".tr(context: context),
                     noButton: () => Navigator.of(context).pop(false),
                     yesButton: () async {
+                      // final result = await ref
+                      //     .read(quickOrderControllerProvider.notifier)
+                      //     .cancelOrder(context: context);
+                      // if (result) {
+                      //   ref
+                      //       .read(quickOrderControllerProvider.notifier)
+                      //       .resetOrderDetails();
+                      //   ref
+                      //       .read(hideLayersDuringOrderControllerProvider
+                      //           .notifier)
+                      //       .hideLayersDuringOrder();
+                      //   ref.read(mapControllerProvider.notifier)
+                      //     ..resetPoints()
+                      //     ..updateLocation();
+                      //   Navigator.pop(context);
+                      // }
+                      // Navigator.of(context).pop(true);
+
+                      final ok = await ref
+                          .read(quickOrderControllerProvider.notifier)
+                          .cancelOrder(context: context);
+                      if (ok) {
+                        ref
+                            .read(quickOrderControllerProvider.notifier)
+                            .resetOrderDetails();
+      ref.read(priceOfferControllerProvider.notifier).resetOrderDetails();
+
+                        ref.read(mapControllerProvider.notifier)
+                          ..resetPoints()
+                          ..changeOrderActiveStatus()
+                          ..updateLocation();
+                        ref
+                            .read(scanDriverQrControllerProvider.notifier)
+                            .resetScannedValue();
+                        ref
+                            .read(hideLayersDuringOrderControllerProvider
+                                .notifier)
+                            .hideLayersDuringOrder();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        paymentController.resetPayment();
+                      }
                       Navigator.of(context).pop(true);
                     });
               });
 
-          if (shouldPop == true) {
-            // If user chooses Yes, pop the page
-            Navigator.pop(context);
-          }
+          if (shouldPop == true) Navigator.pop(context);
         } else {
           // If payment is not done, allow pop
           Navigator.of(context).pop();
+          paymentController.resetPayment();
         }
       },
-      
-
       child: Scaffold(
         endDrawerEnableOpenDragGesture: true,
         resizeToAvoidBottomInset: false,
@@ -104,6 +143,7 @@ class PaymentMethodPage extends ConsumerWidget {
           paymentMethods: state.paymentMethods,
           selectedMethod: state.selectedMethod,
           onMethodSelected: controller.selectPaymentMethod,
+          isPaied:state.isPaid ,
         ),
 
         Padding(
@@ -146,18 +186,17 @@ class PaymentMethodPage extends ConsumerWidget {
                 ),
                 _buildSummaryRow("tax_fee".tr(),
                     "${state.taxFee.toStringAsFixed(2)} ${'currency'.tr()}"),
-                if (state.discountAmount != null && state.discountAmount! > 0)
-                  ...[
-                      const DottedDivider(
-                  height: 1,
-                  color: Colors.grey,
-                  dashWidth: 4,
-                  dashSpacing: 4,
-                ),
-                       _buildSummaryRow("discount".tr(),
-                    "${state.discountAmount?.toStringAsFixed(2)} - ${'currency'.tr()}"),
-              
-                  ]
+                if (state.discountAmount != null &&
+                    state.discountAmount! > 0) ...[
+                  const DottedDivider(
+                    height: 1,
+                    color: Colors.grey,
+                    dashWidth: 4,
+                    dashSpacing: 4,
+                  ),
+                  _buildSummaryRow("discount".tr(),
+                      "${state.discountAmount?.toStringAsFixed(2)} - ${'currency'.tr()}"),
+                ]
               ],
             ),
           ),
@@ -261,6 +300,8 @@ class PaymentMethodPage extends ConsumerWidget {
         return "credit_card_info".tr();
       case 'wallet':
         return "wallet_info".tr();
+      case 'cash':
+        return "cash_info".tr();
       case 'google_pay':
         return "google_pay_info".tr();
       default:

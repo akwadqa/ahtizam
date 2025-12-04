@@ -6,10 +6,8 @@ import 'package:pinput/pinput.dart';
 import 'package:ahtizam/src/extenssions/int_extenssion.dart';
 import 'package:ahtizam/src/extenssions/widget_extensions.dart';
 import 'package:ahtizam/src/features/auth/verification_code/presentation/controller/verification_code_controller.dart';
-import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/custom_back_arrow_widget.dart';
 import 'package:ahtizam/src/theme/app_colors.dart';
-import '../../../../../shared_widgets/app_dialogs.dart';
 import '../../../../../shared_widgets/custom_button_widget.dart';
 import '../../../../../shared_widgets/fade_circle_loading_indicator.dart';
 
@@ -168,7 +166,7 @@ final countdown = verificationController.countdown;
     );
   }
 
-  _buildAppBar(BuildContext context) => AppBar(
+  AppBar _buildAppBar(BuildContext context) => AppBar(
         backgroundColor: AppColors.white,
         centerTitle: true,
         // leadingWidth: 65,
@@ -180,7 +178,7 @@ final countdown = verificationController.countdown;
         leading: CustomBackArrowWidget(),
       );
 
-  _buildHeader(BuildContext context, String inputedPhone) {
+  Column _buildHeader(BuildContext context, String inputedPhone) {
     return Column(
       children: [
         Text(
@@ -206,7 +204,7 @@ final countdown = verificationController.countdown;
     );
   }
 
-  _buildPrivacyAndPolicyCondition(BuildContext context) => Wrap(
+  Wrap _buildPrivacyAndPolicyCondition(BuildContext context) => Wrap(
         alignment: WrapAlignment.center,
         children: [
           Text(

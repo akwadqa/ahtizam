@@ -1,7 +1,5 @@
 import 'dart:ui';
-import 'package:ahtizam/src/constants/socket_events.dart';
 import 'package:ahtizam/src/core/enums/order_status.dart';
-import 'package:ahtizam/src/core/services/socket_service.dart';
 import 'package:ahtizam/src/features/home/application/map_service.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_controller.dart';
@@ -9,9 +7,7 @@ import 'package:ahtizam/src/features/home/presentation/controllers/select_truck_
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/hide_layers_during_order_controller.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/driver_details_widgets/driver_details_bottom_sheet.dart';
 import 'package:ahtizam/src/features/home/presentation/widgets/top_navigation_card.dart';
-import 'package:ahtizam/src/features/messages/presentation/controller/chat_controller.dart';
-import 'package:ahtizam/src/features/my_order_details/domain/model/my_order_details_model.dart';
-import 'package:ahtizam/src/features/my_orders/presentation/controller/my_orders_controller.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
@@ -54,31 +50,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   //   return true; // Exit app
   // }
 
-@override
-void initState() {
-  super.initState();
+    ProviderSubscription<AsyncValue<OrderState?>>? _orderSub; // PATCH
+  OrderStatus? _prev;
+  static const _TAG = '[HOME]';
 
-  WidgetsBinding.instance.addPostFrameCallback((_) async {
-    final orders = await ref.read(myOrdersControllerProvider.notifier).fetchOrders(page: 1);
-    final activeOrders = orders.where((order) => order.status == 'Accepted').toList();
+  @override
+  void initState() {
+    super.initState();
+    debugPrint('$_TAG initState: registering order listener');
 
-    if (activeOrders.isNotEmpty) {
-      final orderModel = activeOrders.first;
-      await ref.read(quickOrderControllerProvider.notifier).rehydrateOrder(orderModel, context);
-    }
-  });
-}
+    // ✅ اشترك مرة واحدة – يشتغل على كل تغيير حالة بعد كده
+    // _orderSub = ref.listenManual<AsyncValue<OrderState?>>(
+    //   quickOrderControllerProvider,
+    //   (prev, next) async {
+    //     final statusStr = next.asData?.value?.orderDetails?.status;
+    //             debugPrint('$_TAG listener: next statusStr=$statusStr, prev=${_prev?.name}');
+
+    //     if (statusStr == null) return;
+    //     final status = OrderStatusExtension.fromString(statusStr);
+    //     if (status == _prev) {
+    //       debugPrint('$_TAG listener: same status (${status?.name}), skip.');
+    //       return;
+    //     }        _prev = status;
+
+    //     await _handleStatusChange(status!);
+    //   },
+    //   fireImmediately: true, // ✅ نفّذ فورًا للحالة الحالية إن وجدت
+    // );
+  }
+
+  // @override
+  // void dispose() {
+  //       debugPrint('$_TAG dispose: closing order listener');
+
+  //   _orderSub?.close(); // ✅ مهم لمنع التسريبات وتكرار الـlisteners
+  //   super.dispose();
+  // }
+  // !
+//   WidgetsBinding.instance.addPostFrameCallback((_) async {
+//     final orders =  ref.watch(myOrdersControllerProvider);
+//     final activeOrders = orders.value?.where((order) => order.status == 'Accepted').toList();
+// if(activeOrders!=null){
+//     if (activeOrders.isNotEmpty) {
+//       final orderModel = activeOrders.first;
+//       await ref.read(quickOrderControllerProvider.notifier).rehydrateOrder(orderModel, context);
+//     }}
+//   });
+  // !
+
 
   @override
   Widget build(BuildContext context) {
+  
+    final asyncOrder = ref.watch(quickOrderControllerProvider);
+    final asyncOffer = ref.watch(priceOfferControllerProvider);
+final showSheet = asyncOrder is AsyncData && asyncOrder.value?.orderDetails != null;
+
     final isSecondWidgetVisible =
         ref.watch(changeRequestOrderStateServiceProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
     final hideWidgetsDuringOrder =
         ref.watch(hideLayersDuringOrderControllerProvider);
-    final asyncOrder = ref.watch(quickOrderControllerProvider);
-    final showSheet =
-        asyncOrder is AsyncData && asyncOrder.value?.orderDetails != null;
     final showMap = ref.watch(showMapControllerProvider);
    return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -104,8 +136,10 @@ void initState() {
           const TopNavigationBar(),
           if (!hideWidgetsDuringOrder) ...[
             (isThirdWidgetVisible)
-                ? const RequestDetailsForm()
-                : isSecondWidgetVisible
+                ?
+                 const RequestDetailsForm()
+                : 
+                isSecondWidgetVisible
                     ? const _RequestOrderBottomActionCard()
                     : const _BottomActionCard(),
             if (isThirdWidgetVisible) _orderButton(context, ref),

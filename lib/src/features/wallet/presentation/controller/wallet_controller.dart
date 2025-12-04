@@ -10,12 +10,11 @@ import 'package:ahtizam/src/shared_widgets/app_dialogs.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'wallet_controller.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class WalletController extends _$WalletController {
   List<TransactionHistory> _history = [];
   int _currentPage = 1;
@@ -83,7 +82,7 @@ class WalletController extends _$WalletController {
       final walletId = await repo.getWalletRequestIdUrl(amount: amount);
       final lang = ref.watch(currentLanguageProvider);
 
-      if (walletId == null || walletId.isEmpty) throw "Missing wallet ID";
+      // if (walletId == null || walletId.isEmpty) throw "Missing wallet ID";
 
       // /// 1. Get payment URL from your backend
       final response = await ref.read(paymentRepositoryProvider).getPaymentUrl(

@@ -1,9 +1,6 @@
-import 'package:ahtizam/src/constants/Api/api_response.dart';
-import 'package:ahtizam/src/features/home/domain/models/order/quick_order_details_model.dart';
 import 'package:ahtizam/src/features/my_order_details/data/datasources/my_order_details_datasource.dart';
 import 'package:ahtizam/src/features/my_order_details/domain/model/my_order_details_model.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'my_order_details_repository.g.dart';

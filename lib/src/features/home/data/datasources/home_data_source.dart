@@ -7,7 +7,6 @@ import 'package:ahtizam/src/features/home/domain/models/order/quick_order_model.
 import 'package:ahtizam/src/features/home/domain/models/service_types/service_types_model.dart';
 import 'package:ahtizam/src/network/services/network_service.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 
 class HomeRemoteDataSource {
   final NetworkService _networkService;
@@ -19,6 +18,7 @@ class HomeRemoteDataSource {
       CoordinatesParams destinationCoordinates,
       String email,
       String serviceItemId,
+      int orderType,
       String? couponCode) async {
     try {
       final Response response = await _networkService.post(
@@ -26,6 +26,7 @@ class HomeRemoteDataSource {
         data: {
           'passenger_coordinates': passengerCoordinates.toJson(),
           'destination_coordinates': destinationCoordinates.toJson(),
+          'quick_order_type': orderType,
           'service_type': serviceItemId,
           'passenger_email': email,
           if (couponCode != null) "coupon_code": couponCode,
@@ -41,38 +42,47 @@ class HomeRemoteDataSource {
     }
   }
 
- Future<ApiResponse<QuickOrderModel>> proccessQuickOrder(
-  String quickOrderId,
-  String? driverId,
-  String paymentMethod,
-  File? mapScreenshotFile,
-) async {
-  try {
-    // Prepare multipart form data
-    final formData = FormData.fromMap({
-      'quick_order_id': quickOrderId,
-     if(driverId!=null) 'driver_id': driverId,
-      'payment_method': paymentMethod,
-      if (mapScreenshotFile != null)
-        'map_image_file': await MultipartFile.fromFile(
-          mapScreenshotFile.path,
-          filename: 'map_image${DateTime.now()}.png',
-        ),
-    });
+  Future<ApiResponse<QuickOrderModel>> proccessQuickOrder({
+    required String quickOrderId,
+    String? quickOrderOfferId,
+    required int orderType,
+    String? driverId,
+    bool? onlyUpdatePayment,
+    String? paymentMethod,
+    File? mapScreenshotFile,
+  }) async {
+    try {
+      // Prepare multipart form data
+      final formData = FormData.fromMap({
+        'quick_order_id': quickOrderId,
+        if (quickOrderOfferId != null)
+          'quick_order_offer_id': quickOrderOfferId,
+        'quick_order_type': orderType,
+        if (driverId != null) 'driver_id': driverId,
+        'payment_method': paymentMethod,
+        'only_update_payment': onlyUpdatePayment != null
+            ? onlyUpdatePayment
+                ? 1
+                : 0
+            : 0,
+        // if (mapScreenshotFile != null)
+        //   'map_image_file': await MultipartFile.fromFile(
+        //     mapScreenshotFile.path,
+        //     filename: 'map_image${DateTime.now()}.png',
+        //   ),
+      });
 
-    final Response response = await _networkService.post(
-      EndPoints.processQuickOrderApi,
-      data: formData,
-    );
+      final Response response = await _networkService
+          .post(EndPoints.processQuickOrderApi, data: formData);
 
-    return ApiResponse.fromJson(
-      response.data,
-      (json) => QuickOrderModel.fromJson(json as Map<String, dynamic>),
-    );
-  } catch (e) {
-    return ApiResponse.error(message: e.toString());
+      return ApiResponse.fromJson(
+        response.data,
+        (json) => QuickOrderModel.fromJson(json as Map<String, dynamic>),
+      );
+    } catch (e) {
+      return ApiResponse.error(message: e.toString());
+    }
   }
-}
 
   Future<ApiResponse<List<ServiceTypesModel>>> getServiceTypes() async {
     try {
@@ -90,4 +100,23 @@ class HomeRemoteDataSource {
       return ApiResponse.error(message: e.toString());
     }
   }
+
+  Future<ApiResponse> cancelOrder({
+    required String orderId,
+  }) async {
+    try {
+      final ApiResponse response = await _networkService.post(
+        EndPoints.cancelOrderApi,
+        data: {
+          'quick_order_id': orderId,
+          // 'status_code': orderStatus.toString(),
+        },
+      );
+      return ApiResponse.success(message: response.message);
+    } catch (e) {
+      return ApiResponse.error(message: e.toString());
+    }
+  }
+
+
 }

@@ -20,6 +20,10 @@ abstract class EndPoints {
       'ehtezam.api.quick_order.get_quick_order_details';
   static const String ratingApi =
       'ehtezam.api.review.driver_review';
+  static const String cancelOrderApi =
+      'ehtezam.api.quick_order.cancel_quick_order';
+  static const String selectPriceOffer =
+      'ehtezam.api.quick_order.select_offer';
 
   // 🟪 PAYMENT
 
@@ -33,6 +37,14 @@ abstract class EndPoints {
 
   // 🟨 Profile
   static const String profileDataApi = 'ehtezam.api.profile.profile';
+  static const String settingsApi = 'ehtezam.api.api.get_ehtezam_details';
+  static const String checkVersionApi = 'ehtezam.api.api.get_app_versions';
+  static const String deleteAccountApi = 'ehtezam.api.profile.deactivate_user';
   static const String walletHistoryDataApi =
       'ehtezam.api.digital_wallet.digital_wallet_history';
+  // 🟪 ALL App NOTIFICATIONS
+  static const String ordersNotificationsApi =
+      'ehtezam.api.quick_order.get_quick_order_offer_details';
+  // ! FCM TOKEN
+  static const String sendFcmToken = 'fcm_frappe.api.device_***REMOVED***';
 }

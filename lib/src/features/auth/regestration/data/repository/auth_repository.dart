@@ -3,7 +3,6 @@ import 'package:ahtizam/src/features/auth/regestration/data/data_source/auth_rem
 import 'package:ahtizam/src/features/auth/regestration/domain/entity/login_params.dart';
 import 'package:ahtizam/src/features/auth/regestration/domain/entity/signup_params.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 

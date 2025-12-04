@@ -38,27 +38,23 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: _controller,
-                  onPageChanged: (int index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  itemCount: onBoardingItems(context).length,
-                  itemBuilder: (context, index) {
-                    return onBoardingItems(context)[index];
-                  },
-                ),
-              ),
-              _buildNextButton(context),
-            ],
+          Expanded(
+            child: PageView.builder(
+              controller: _controller,
+              onPageChanged: (int index) {
+                setState(() {
+                  currentIndex = index;
+                });
+              },
+              itemCount: onBoardingItems(context).length,
+              itemBuilder: (context, index) {
+                return onBoardingItems(context)[index];
+              },
+            ),
           ),
+          _buildNextButton(context),
         ],
       ),
     );
@@ -92,8 +88,13 @@ class _OnBoardingScreenState extends ConsumerState<OnBoardingScreen> {
 List<Widget> onBoardingItems(BuildContext context) => [
       _buildOnboardingPage(
         context,
-        image: Flexible(
-            child: Assets.images.onboarding1Im.image(width: double.infinity)),
+        image: SizedBox(
+      width: double.infinity,
+      child: Assets.images.onboarding1Im.image(
+        fit: BoxFit.cover,
+        width: double.infinity,
+      ),
+    ),
         title: context.tr("welcome_msg"),
         description: context.tr("welcome_dsc"),
       ),

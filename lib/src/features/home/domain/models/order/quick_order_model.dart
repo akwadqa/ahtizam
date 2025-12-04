@@ -4,7 +4,7 @@ part 'quick_order_model.freezed.dart';
 part 'quick_order_model.g.dart';
 
 @freezed
-class QuickOrderModel with _$QuickOrderModel {
+abstract class QuickOrderModel with _$QuickOrderModel {
   const factory QuickOrderModel({
    @JsonKey(name: "quick_order_id") required String quickOrderId,
    @JsonKey(name: "base_fee") required double baseFee,

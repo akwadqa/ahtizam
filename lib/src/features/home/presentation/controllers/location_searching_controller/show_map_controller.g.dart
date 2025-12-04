@@ -6,21 +6,58 @@ part of 'show_map_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(ShowMapController)
+const showMapControllerProvider = ShowMapControllerProvider._();
+
+final class ShowMapControllerProvider
+    extends $NotifierProvider<ShowMapController, bool> {
+  const ShowMapControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'showMapControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$showMapControllerHash();
+
+  @$internal
+  @override
+  ShowMapController create() => ShowMapController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
 String _$showMapControllerHash() => r'3a7389b9d63cde53aee99beef1e7da7bddcb6446';
 
-/// See also [ShowMapController].
-@ProviderFor(ShowMapController)
-final showMapControllerProvider =
-    AutoDisposeNotifierProvider<ShowMapController, bool>.internal(
-  ShowMapController.new,
-  name: r'showMapControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$showMapControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$ShowMapController = AutoDisposeNotifier<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$ShowMapController extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

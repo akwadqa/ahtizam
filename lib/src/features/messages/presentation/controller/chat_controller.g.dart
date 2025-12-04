@@ -6,21 +6,58 @@ part of 'chat_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatControllerHash() => r'c34efd29cdf22800b638007d84f9d16620882348';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [ChatController].
 @ProviderFor(ChatController)
-final chatControllerProvider =
-    NotifierProvider<ChatController, ChatState>.internal(
-  ChatController.new,
-  name: r'chatControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$chatControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const chatControllerProvider = ChatControllerProvider._();
 
-typedef _$ChatController = Notifier<ChatState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ChatControllerProvider
+    extends $NotifierProvider<ChatController, ChatState> {
+  const ChatControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chatControllerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$chatControllerHash();
+
+  @$internal
+  @override
+  ChatController create() => ChatController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ChatState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ChatState>(value),
+    );
+  }
+}
+
+String _$chatControllerHash() => r'1782f4906622c56690180aa9e97884ed095f1d78';
+
+abstract class _$ChatController extends $Notifier<ChatState> {
+  ChatState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ChatState, ChatState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ChatState, ChatState>,
+              ChatState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

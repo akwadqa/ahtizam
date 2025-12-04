@@ -4,7 +4,7 @@ part 'rating_params.freezed.dart';
 part 'rating_params.g.dart';
 
 @freezed
-class RatingParams with _$RatingParams {
+abstract class RatingParams with _$RatingParams {
   const factory RatingParams({
     @JsonKey(name: 'driver_id') required String driverId,
     @JsonKey(name: 'rating') required String rating,

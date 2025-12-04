@@ -6,20 +6,57 @@ part of 'home_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeServiceHash() => r'45b8c27298a531cfe3bd7844bbc9cbb4171b01ad';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [HomeService].
 @ProviderFor(HomeService)
-final homeServiceProvider =
-    AutoDisposeNotifierProvider<HomeService, void>.internal(
-  HomeService.new,
-  name: r'homeServiceProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$homeServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const homeServiceProvider = HomeServiceProvider._();
 
-typedef _$HomeService = AutoDisposeNotifier<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class HomeServiceProvider extends $NotifierProvider<HomeService, void> {
+  const HomeServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'homeServiceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$homeServiceHash();
+
+  @$internal
+  @override
+  HomeService create() => HomeService();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(void value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<void>(value),
+    );
+  }
+}
+
+String _$homeServiceHash() => r'060475b5f9268e9aa9c8b219354a05d863b60bd9';
+
+abstract class _$HomeService extends $Notifier<void> {
+  void build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    build();
+    final ref = this.ref as $Ref<void, void>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<void, void>,
+              void,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, null);
+  }
+}

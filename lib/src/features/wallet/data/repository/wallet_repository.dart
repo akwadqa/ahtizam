@@ -4,7 +4,6 @@ import 'package:ahtizam/src/features/wallet/data/data_source/wallet_remote_data_
 import 'package:ahtizam/src/features/wallet/domain/model/wallet_model.dart';
 import 'package:ahtizam/src/network/exception/dio_exceptions.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 

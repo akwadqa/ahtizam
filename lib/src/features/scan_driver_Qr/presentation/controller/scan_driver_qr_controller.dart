@@ -19,7 +19,7 @@ class ScanDriverQrController extends _$ScanDriverQrController {
 
 void resetScannedValue(){
         final currentState = state.value;
-    state = AsyncData(currentState!.copyWith(scanned: false));
+    state = AsyncData(currentState!.copyWith(scanned: false,driverId: null));
   
 }
   Future<void> searchByDriverID(BuildContext context, String driverId) async {

@@ -1,4 +1,5 @@
-
+import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:ahtizam/src/features/scan_driver_Qr/presentation/controller/scan_driver_qr_controller.dart';
 import 'package:ahtizam/src/utils/functions.dart';
 
@@ -23,7 +24,10 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final truckState = ref.watch(selectServiceTypeControllerProvider);
     final orderState = ref.watch(quickOrderControllerProvider);
-
+    final orderType =
+        ref.watch(showOrderFormControllerProvider.notifier).initiallValue;
+    final bool isPriceOfferOrder = orderType != "request_now";
+    bool loading = false;
     ref.listen<AsyncValue<OrderState?>>(
       quickOrderControllerProvider,
       (prev, next) {
@@ -56,8 +60,9 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
           });
         }
 
-        if (next is AsyncData) {
+        if (next is AsyncData && prev is AsyncLoading) {
           debugPrint("✅ Order data received: ${next.value}");
+
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (Navigator.of(context, rootNavigator: true).canPop()) {
               Navigator.of(context, rootNavigator: true).pop();
@@ -83,7 +88,8 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
           final selectedTruck = state?.selectedServiceType;
           final scanState = ref.watch(scanDriverQrControllerProvider);
           final selectionLocked = scanState.value?.scanned ?? false;
-          final scannedServiceId = scanState.value?.driverInfoModel?.serviceType;
+          final scannedServiceId =
+              scanState.value?.driverInfoModel?.serviceType;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +115,7 @@ class TruckSelectionBottomSheet extends ConsumerWidget {
                         selectedTruck?.serviceId == truck.serviceId;
                     // final isDisabled = selectedTruck != null && !isSelected;
                     // final isMatched = selectedTruck?.serviceId == truck.serviceId;
-final isDisabled = selectionLocked && !isSelected;
+                    final isDisabled = selectionLocked && !isSelected;
                     final isMatchedByScan = truck.serviceId == scannedServiceId;
                     // final isDisabled =
                     //     selectionLocked; // ✅ all disabled if locked
@@ -120,14 +126,14 @@ final isDisabled = selectionLocked && !isSelected;
                     return Opacity(
                       opacity: isDisabled ? 0.4 : 1.0,
                       child: GestureDetector(
-                        onTap: isDisabled||isMatchedByScan
+                        onTap: isDisabled || isMatchedByScan
                             ? null
-                            : () async{
+                            : () async {
                                 ref
                                     .read(selectServiceTypeControllerProvider
                                         .notifier)
                                     .selectServiceType(truck);
-                              await  ref
+                                await ref
                                     .read(quickOrderControllerProvider.notifier)
                                     .createOrder();
                               },
@@ -217,7 +223,11 @@ final isDisabled = selectionLocked && !isSelected;
                   children: [
                     Icon(Icons.check_circle, color: AppColors.black, size: 18),
                     5.horizontalSpace,
-                    Text("delivery_fee".tr(),
+                    Text(
+                      isPriceOfferOrder?
+                      
+                      "expected_delivery_fee".tr()
+                      :"delivery_fee".tr(),
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
@@ -225,7 +235,7 @@ final isDisabled = selectionLocked && !isSelected;
                     Spacer(),
                     Text(
                         "with_currency".tr(args: [
-                          orderState.value!.orderModel!.baseFee.toString()
+                          orderState.value!.orderModel!.baseFee.toStringAsFixed(2).toString()
                         ]),
                         style: Theme.of(context)
                             .textTheme
@@ -239,7 +249,12 @@ final isDisabled = selectionLocked && !isSelected;
                   children: [
                     Icon(Icons.check_circle, color: AppColors.black, size: 18),
                     5.horizontalSpace,
-                    Text("application_tax".tr(),
+                    Text(
+                      isPriceOfferOrder?
+                      "expected_application_tax".tr()
+                     : "application_tax"
+                      
+                      .tr(),
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!
@@ -247,8 +262,8 @@ final isDisabled = selectionLocked && !isSelected;
                     Spacer(),
                     Text(
                         "with_currency".tr(args: [
-                          orderState.value!.orderModel?.taxFee.toString() ??
-                              "90"
+                          orderState.value!.orderModel?.taxFee.toStringAsFixed(2).toString() ??
+                              "00"
                         ]),
                         style: Theme.of(context)
                             .textTheme
@@ -321,13 +336,18 @@ final isDisabled = selectionLocked && !isSelected;
                   onTap: selectedTruck == null
                       ? null
                       : () async {
-                          showPaymentDialog(
-                            context,
-                            totalCost:
-                                orderState.value?.orderModel?.finalFee ?? 0,
-                            duration: distanceStr,
-                            distance: timeStr,
-                          );
+                          isPriceOfferOrder
+                              ? ref
+                                  .read(priceOfferControllerProvider.notifier)
+                                  .processOrder(context)
+                              : showPaymentDialog(
+                                  context,
+                                  totalCost:
+                                      orderState.value?.orderModel?.finalFee ??
+                                          0,
+                                  duration: distanceStr,
+                                  distance: timeStr,
+                                );
                           //  await ref
                           //           .read(quickOrderControllerProvider.notifier)
                           //           .createOrder();

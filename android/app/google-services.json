@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "438670902644",
-    "project_id": "ahtezam-akwad",
-    "storage_bucket": "ahtezam-akwad.firebasestorage.app"
+    "project_number": "871911088481",
+    "project_id": "ahtizam-app",
+    "storage_bucket": "ahtizam-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:438670902644:android:fbc2c6245d27f601dcd821",
+        "mobilesdk_app_id": "1:871911088481:android:ece2956912a36ede30e520",
         "android_client_info": {
-          "package_name": "com.example.ahtizam"
+          "package_name": "qa.app.ahtezam"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCaPxbOILQsJnhmc-4qtUbt0sEVSYwS1iw"
+          "current_key": "AIzaSyA9P-9zX1OVslaEGdwrHUGAK_2rIpRgakM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871911088481:android:b177c50e6fae55dd30e520",
+        "android_client_info": {
+          "package_name": "qa.app.ehtezam.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9P-9zX1OVslaEGdwrHUGAK_2rIpRgakM"
         }
       ],
       "services": {

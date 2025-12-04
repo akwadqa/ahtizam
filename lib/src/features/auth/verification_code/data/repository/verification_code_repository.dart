@@ -2,7 +2,6 @@ import 'package:ahtizam/src/features/app/domain/model/user_information.dart';
 import 'package:ahtizam/src/features/auth/verification_code/data/data_source/verification_code_data_source.dart';
 import 'package:ahtizam/src/features/auth/verification_code/domain/model/verification_code_params.dart';
 import 'package:ahtizam/src/network/services/dio_client.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../../constants/Api/api_response.dart';

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ahtizam/src/shared_widgets/custom_appbar.dart';
-import 'package:ahtizam/src/shared_widgets/custom_back_arrow_widget.dart';
 import 'package:ahtizam/src/shared_widgets/fade_circle_loading_indicator.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +12,16 @@ class PaymentWebViewPage extends StatefulWidget {
   final String redirectUrl;
   final void Function(bool success)? onResult;
 
-  const PaymentWebViewPage({super.key, required this.redirectUrl, this.onResult});
+  const PaymentWebViewPage({
+    super.key,
+    required this.redirectUrl,
+    this.onResult,
+  });
 
   @override
   State<PaymentWebViewPage> createState() => _PaymentWebViewPageState();
 }
+
 class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
   late final WebViewController controller;
   bool _hasCompleted = false; // 👈 prevent double-pop
@@ -56,41 +60,47 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
     }
   }
 
-void _handleResult(String rawBody) {
-  if (_hasCompleted) return;
-  _hasCompleted = true;
+  void _handleResult(String rawBody) {
+    if (_hasCompleted) return;
+    _hasCompleted = true;
 
-  try {
-    final bodyStr = rawBody.toString();
+    try {
+      final bodyStr = rawBody.toString();
 
-    // 1. Remove surrounding quotes if needed (on Android)
-    final unquoted = bodyStr.startsWith('"') ? json.decode(bodyStr) : bodyStr;
+      // 1. Remove surrounding quotes if needed (on Android)
+      final unquoted = bodyStr.startsWith('"') ? json.decode(bodyStr) : bodyStr;
 
-    // 2. Parse the inner JSON string
-    final parsed = json.decode(unquoted);
+      // 2. Parse the inner JSON string
+      final parsed = json.decode(unquoted);
 
-    if (parsed['message'] == 'Txn Success') {
-      widget.onResult?.call(true);
-      context.maybePop(true); // ✅ Return to success screen
-    } else {
-      debugPrint("⚠️ Payment failed or unknown response: $parsed");
+      if (parsed['message'] == 'Txn Success') {
+        widget.onResult?.call(true);
+        context.maybePop(true); // ✅ Return to success screen
+      } else {
+        debugPrint("⚠️ Payment failed or unknown response: $parsed");
+        widget.onResult?.call(false);
+        context.maybePop(false); // optional: go back with failure
+      }
+    } catch (e) {
+      debugPrint("❌ Failed to decode or handle result: $e");
       widget.onResult?.call(false);
-      context.maybePop(false); // optional: go back with failure
+      context.maybePop(false);
     }
-  } catch (e) {
-    debugPrint("❌ Failed to decode or handle result: $e");
-    widget.onResult?.call(false);
-    context.maybePop(false);
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
-        child: CustomAppbar(title: "payment_information"),
+        child: CustomAppbar(
+          title: "payment_information",
+          onBack: () {
+            Navigator.of(context).pop();
+            // if(context.router.currentPath==AppRoutes.wallet)
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: WebViewWidget(controller: controller),
     );

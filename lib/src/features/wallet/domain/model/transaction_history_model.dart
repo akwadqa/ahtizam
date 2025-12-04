@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'transaction_history_model.freezed.dart';
 part 'transaction_history_model.g.dart';
 @freezed
-class TransactionHistory with _$TransactionHistory {
+abstract class TransactionHistory with _$TransactionHistory {
   const factory TransactionHistory({
     @JsonKey(name: 'transaction_date') required DateTime transactionDate,
     @JsonKey(name: 'transaction_time') required String transactionTime,

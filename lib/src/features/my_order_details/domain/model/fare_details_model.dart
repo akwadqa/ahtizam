@@ -3,7 +3,7 @@ part 'fare_details_model.freezed.dart';
 part 'fare_details_model.g.dart';
 
 @freezed
-class FareDetails with _$FareDetails {
+abstract class FareDetails with _$FareDetails {
   const factory FareDetails({
     @JsonKey(name: "base_fare") required double baseFare,
     @JsonKey(name: "discount_amount")  int? discountAmount,

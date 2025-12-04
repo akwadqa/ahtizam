@@ -6,9 +6,8 @@ part of 'service_types_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ServiceTypesModelImpl _$$ServiceTypesModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ServiceTypesModelImpl(
+_ServiceTypesModel _$ServiceTypesModelFromJson(Map<String, dynamic> json) =>
+    _ServiceTypesModel(
       serviceId: json['service_id'] as String,
       serviceItem: json['service_item'] as String,
       vehiclesSize: json['vehicles_size'] as String,
@@ -16,8 +15,7 @@ _$ServiceTypesModelImpl _$$ServiceTypesModelImplFromJson(
       serviceCostPerKm: (json['service_cost_per_km'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$$ServiceTypesModelImplToJson(
-        _$ServiceTypesModelImpl instance) =>
+Map<String, dynamic> _$ServiceTypesModelToJson(_ServiceTypesModel instance) =>
     <String, dynamic>{
       'service_id': instance.serviceId,
       'service_item': instance.serviceItem,

@@ -1,6 +1,5 @@
 import 'package:ahtizam/src/features/home/domain/models/coordinates_params.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_google_places_hoc081098/google_maps_webservice_places.dart';
 import 'package:google_geocoding_api/google_geocoding_api.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,7 +10,7 @@ part 'location_search_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class LocationSearchController extends _$LocationSearchController {
-  final TextEditingController myLocationController = TextEditingController();
+   TextEditingController myLocationController = TextEditingController(text: "");
   final TextEditingController workShopLocationController =
       TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -94,9 +93,13 @@ class LocationSearchController extends _$LocationSearchController {
     }
   }
 
-  void restoreSearchFields() {
-    myLocationController.clear();
-    workShopLocationController.clear();
+  void restoreSearchFields({bool? withMyLocation}) {
+    if(withMyLocation!=null) {
+      myLocationController.clear();
+    }
+    workShopLocationController.clear(); 
+    workShopLocationController.text='';
+
   }
 
   void onWorkshopLocationChanged(String value) async {

@@ -56,4 +56,22 @@ class ProfileRemoteDataSource {
       rethrow;
     }
   }
+  Future<ApiResponse<bool>> deleteAccount() async {
+    try {
+      final response = await _networkService
+          .put(EndPoints.deleteAccountApi,);
+
+      if (response.data == null || response.statusCode != 200) {
+        throw Exception('Failed to l delete account');
+      }
+
+      return ApiResponse.fromJson(
+        response.data as Map<String, dynamic>,
+        (json) => true,
+      );
+    } catch (e) {
+      debugPrint('Error in deleteAccount: $e');
+      rethrow;
+    }
+  }
 }

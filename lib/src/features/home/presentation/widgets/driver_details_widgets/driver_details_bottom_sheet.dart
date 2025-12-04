@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:ahtizam/src/constants/Api/services_urls.dart';
 import 'package:ahtizam/src/features/home/presentation/controllers/location_searching_controller/show_map_controller.dart';
@@ -6,8 +5,7 @@ import 'package:ahtizam/src/features/home/presentation/controllers/quick_order_c
 import 'package:ahtizam/src/features/home/presentation/controllers/toggle_layers_controllers/show_order_form_controller.dart';
 import 'package:ahtizam/src/features/messages/presentation/controller/chat_controller.dart';
 import 'package:ahtizam/src/features/messages/presentation/controller/send_message_controller.dart';
-import 'package:ahtizam/src/features/messages/presentation/screens/chat_screens.dart';
-import 'package:ahtizam/src/features/messages/presentation/screens/messages_screen.dart';
+import 'package:ahtizam/src/features/prices_offer/presentation/controllers/price_offer_controller.dart';
 import 'package:ahtizam/src/routing/app_router.gr.dart';
 import 'package:ahtizam/src/shared_widgets/app_error_widget.dart';
 import 'package:ahtizam/src/shared_widgets/circle_image_widget.dart';
@@ -57,6 +55,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
     final chatBadge = ref.watch(chatControllerProvider).showNewMessage;
 
     final asyncDriverInfo = ref.watch(quickOrderControllerProvider);
+    final asyncSelectedOfferInfo = ref.watch(priceOfferControllerProvider);
     final isThirdWidgetVisible = ref.watch(showOrderFormControllerProvider);
     final hideDriverBottomSheet = ref.watch(showMapControllerProvider);
     final sendMessage = ref.watch(sendMessageControllerProvider.notifier);
@@ -66,6 +65,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
         if (data?.orderDetails == null) return SizedBox();
         // if (data?.orderDetails != null) {
         final orderDetailsData = data?.orderDetails?.driverData;
+        final offerDetailsData = asyncSelectedOfferInfo.value?.selectedOffer;
         // }
         return hideDriverBottomSheet
             ? SizedBox.expand()
@@ -80,7 +80,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                       left: 22,
                       right: 22,
                       top: 25,
-                      bottom: isThirdWidgetVisible ? 125 : 25),
+                      bottom:  25),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.99),
                     borderRadius:
@@ -108,7 +108,11 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                             imageUrl: orderDetailsData?.image != null
                                 ? ServicesUrls.imageUrl +
                                     orderDetailsData!.image!
-                                : null,
+                                :
+                               offerDetailsData?.driverImage !=null?
+                               ServicesUrls.imageUrl +
+                                    offerDetailsData!.driverImage!:
+                                 null,
                             // "https://i.pinimg.com/736x/c6/5e/55/c65e55dcc904491dc5549bad8ecca3bb.jpg",
                             height: 125,
                             width: 125,
@@ -138,7 +142,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  orderDetailsData?.name ?? "driver",
+                                  orderDetailsData?.name??offerDetailsData?.driverName ?? "driver",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyMedium!
@@ -153,7 +157,7 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                                         color: Colors.amber, size: 18),
                                     4.horizontalSpace,
                                     Text(
-                                      orderDetailsData?.rate.toString() ?? "0",
+                                      orderDetailsData?.rate.toString()??offerDetailsData?.driverRating.toString() ?? "0",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
@@ -181,8 +185,20 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                             children: [
                               Assets.icons.truck.svg(),
                               5.verticalSpace,
+                              Row(
+                                children: [
+                                  Text(
+                                    orderDetailsData?.vehiclePlateNumber??offerDetailsData?.vehiclePlateNumber ?? "KE232",
+                                    style: TextStyle(
+                                        fontSize: 13, fontWeight: FontWeight.w600,color: AppColors.darkGray),
+                                  ),
+                                  4.horizontalSpace,
+                                  Icon(Icons.medical_information_outlined),
+
+                                ],
+                              ),
                               Text(
-                                orderDetailsData?.vehicleType ?? "KE232",
+                                orderDetailsData?.vehicleType??offerDetailsData?.vehicleType ?? "KE232",
                                 style: TextStyle(
                                     fontSize: 14, fontWeight: FontWeight.bold),
                               ),
@@ -317,10 +333,18 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                                 // args: [orderDetailsData?.name ?? ""]
                               ),
                               onTap: () {
+
                                 if (orderDetailsData?.phone != null) {
                                   final Uri telLaunchUri = Uri(
                                     scheme: 'tel',
                                     path: orderDetailsData?.phone,
+                                  );
+                                  launchUrl(telLaunchUri);
+                                }
+                               else if (offerDetailsData?.driverNumber != null) {
+                                  final Uri telLaunchUri = Uri(
+                                    scheme: 'tel',
+                                    path: offerDetailsData?.driverNumber,
                                   );
                                   launchUrl(telLaunchUri);
                                 }
@@ -376,14 +400,17 @@ class DriverDetailsBottomSheet extends ConsumerWidget {
                         ],
                       ),
 
-                      10.verticalSpace,
+                      100.verticalSpace,
                     ],
                   ),
                 ),
               );
       },
       loading: () => FadeCircleLoadingIndicator(),
-      error: (error, stackTrace) => AppErrorWidget(),
+      error: (error, stackTrace) => AppErrorWidget(
+                    // onRetry: () => ref.read(myOrdersControllerProvider.notifier).build(),
+
+      ),
     );
   }
 }

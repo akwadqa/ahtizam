@@ -4,7 +4,6 @@ import 'package:ahtizam/src/features/profile/data/repository/profile_repository.
 import 'package:ahtizam/src/features/profile/domain/model/profile_data_params.dart';
 import 'package:ahtizam/src/features/profile/domain/model/profile_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../auth/regestration/application/auth_service.dart';
@@ -13,10 +12,11 @@ part 'profile_controller.g.dart';
 
 @Riverpod(keepAlive: true)
 class ProfileController extends _$ProfileController {
-  late final TextEditingController fullNameController;
-  late final TextEditingController emailController;
-  late final TextEditingController phoneController;
-  late final String? personalImage;
+   TextEditingController? fullNameController;
+  TextEditingController? emailController;
+  TextEditingController? phoneController;
+
+  String? personalImage;
   File? _pickedImage;
 
   // Expose the picked image
@@ -28,18 +28,33 @@ class ProfileController extends _$ProfileController {
     state = AsyncLoading();
     final userData = ref.read(userDataProvider.notifier).userinformation;
 
-    try {
+     try {
       final data = await ref.watch(profileRepositoryProvider).getProfileData();
-      fullNameController = TextEditingController(text: data.fullName);
-      emailController = TextEditingController(text: data.email);
-      phoneController = TextEditingController(text: data.mobileNumber);
+
+      // Initialize ONCE
+      fullNameController ??=
+          TextEditingController(text: data.fullName ?? userData.fullName);
+
+      emailController ??=
+          TextEditingController(text: data.email ?? userData.email);
+
+      phoneController ??=
+          TextEditingController(text: data.mobileNumber ?? userData.mobileNumber);
+
       personalImage = data.profileImage;
+
       return data;
     } catch (e) {
-      fullNameController = TextEditingController(text: userData.fullName);
-      emailController = TextEditingController(text: userData.email);
-      phoneController = TextEditingController(text: userData.mobileNumber);
-      // Return a default profile with the basic user data if API fails
+      // fallback
+      fullNameController ??=
+          TextEditingController(text: userData.fullName);
+
+      emailController ??=
+          TextEditingController(text: userData.email);
+
+      phoneController ??=
+          TextEditingController(text: userData.mobileNumber);
+
       return ProfileModel(
         fullName: userData.fullName,
         email: userData.email,
@@ -47,6 +62,7 @@ class ProfileController extends _$ProfileController {
         profileImage: null,
       );
     }
+  
   }
 
   void setPersonalImage(File file) {
@@ -67,19 +83,19 @@ class ProfileController extends _$ProfileController {
       final updatedData = await ref
           .watch(profileRepositoryProvider)
           .updateProfileData(ProfileDataParams(
-            name: fullNameController.text == userData.fullName
+            name: fullNameController?.text == userData.fullName
                 ? null
-                : fullNameController.text,
-            phone: phoneController.text == userData.mobileNumber
+                : fullNameController?.text,
+            phone: phoneController?.text == userData.mobileNumber
                 ? null
-                : phoneController.text,
+                : phoneController?.text,
             // email: emailController.text,
             image: _pickedImage,
           ));
       await ref.read(userDataProvider.notifier).updateBasicUserFields(
-            fullName: fullNameController.text,
-            email: emailController.text,
-            phoneNumber: phoneController.text,
+            fullName: fullNameController?.text,
+            email: emailController?.text,
+            phoneNumber: phoneController?.text,
           );
       state = AsyncData(updatedData);
       return true;
@@ -89,6 +105,22 @@ class ProfileController extends _$ProfileController {
     }
   }
 
+Future<bool> deleteAccount()async{
+  state=AsyncLoading();
+  final result = await AsyncValue.guard(() async {
+    return await ref.read(profileRepositoryProvider).deleteAccount();
+  });
+
+  state = AsyncData(state.value!);
+
+  if (result.hasError) {
+    debugPrint("Delete account error: ${result.error}");
+    return false;
+  }
+
+  return result.value ?? false;
+
+}
   bool validateAndSave() {
     if (formKey.currentState?.validate() ?? false) {
       formKey.currentState?.save();

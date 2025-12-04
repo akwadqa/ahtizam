@@ -6,21 +6,58 @@ part of 'add_card_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(AddCardController)
+const addCardControllerProvider = AddCardControllerProvider._();
+
+final class AddCardControllerProvider
+    extends $NotifierProvider<AddCardController, AddCardState> {
+  const AddCardControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'addCardControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$addCardControllerHash();
+
+  @$internal
+  @override
+  AddCardController create() => AddCardController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AddCardState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AddCardState>(value),
+    );
+  }
+}
+
 String _$addCardControllerHash() => r'64997b6864efc66f32b29abc9f8320eedb6e0f3d';
 
-/// See also [AddCardController].
-@ProviderFor(AddCardController)
-final addCardControllerProvider =
-    AutoDisposeNotifierProvider<AddCardController, AddCardState>.internal(
-  AddCardController.new,
-  name: r'addCardControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$addCardControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$AddCardController = AutoDisposeNotifier<AddCardState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$AddCardController extends $Notifier<AddCardState> {
+  AddCardState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AddCardState, AddCardState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AddCardState, AddCardState>,
+              AddCardState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
