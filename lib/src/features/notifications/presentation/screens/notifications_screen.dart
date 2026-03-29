@@ -30,7 +30,7 @@ class NotificationsScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size(double.infinity, 65),
-        child: CustomAppbar(title: context.tr('notifications'),withBackButton: false,),
+        child: CustomAppbar(title: context.tr('notifications')),
       ),
       body: ordersNotificationsAsync.when(
         data: (notifications) {
